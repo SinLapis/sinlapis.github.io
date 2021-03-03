@@ -1,0 +1,73 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta name="generator" content="Hexo 3.9.0"><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta name="description" content="kotlin+nodejs+idea+gradle项目构建"><meta name="keywords" content="idea,gradle,nodejs,kotlin"><meta name="author" content="SinLapis"><meta name="copyright" content="SinLapis"><title>kotlin+nodejs+idea+gradle项目构建 | SinLapis的博客</title><link rel="shortcut icon" href="/images/87235d96-63d9-443d-a4fa-8093fac33ada_200x200.png"><link rel="stylesheet" href="/css/index.css?version=1.6.1"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@latest/css/font-awesome.min.css?version=1.6.1"><link rel="dns-prefetch" href="https://cdn.staticfile.org"><link rel="dns-prefetch" href="https://cdn.bootcss.com"><link rel="dns-prefetch" href="https://creativecommons.org"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  }
+} </script><link rel="stylesheet" href="/css/prism.css" type="text/css"></head><body><i class="fa fa-arrow-right" id="toggle-sidebar" aria-hidden="true"></i><div id="sidebar"><div class="toggle-sidebar-info text-center"><span data-toggle="Toggle article">Toggle site</span><hr></div><div class="sidebar-toc"><div class="sidebar-toc__title">Catalog</div><div class="sidebar-toc__progress"><span class="progress-notice">You've read</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar"></div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#kotlin-nodejs-idea-gradle项目构建"><span class="toc-number">1.</span> <span class="toc-text">kotlin + nodejs + idea + gradle项目构建</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#创建项目"><span class="toc-number">1.1.</span> <span class="toc-text">创建项目</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#配置build-gradle"><span class="toc-number">1.2.</span> <span class="toc-text">配置build.gradle</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#编写Kotlin"><span class="toc-number">1.3.</span> <span class="toc-text">编写Kotlin</span></a></li></ol></li></ol></div></div><div class="author-info hide"><div class="author-info__avatar text-center"><img src="/images/3774d809.jpg"></div><div class="author-info__name text-center">SinLapis</div><div class="author-info__description text-center"></div><hr><div class="author-info-articles"><a class="author-info-articles__archives article-meta" href="/archives"><span class="pull-left">Articles</span><span class="pull-right">103</span></a><a class="author-info-articles__tags article-meta" href="/tags"><span class="pull-left">Tags</span><span class="pull-right">70</span></a><a class="author-info-articles__categories article-meta" href="/categories"><span class="pull-left">Categories</span><span class="pull-right">20</span></a></div><hr><div class="author-info-links"><div class="author-info-links__title text-center">Links</div><a class="author-info-links__name text-center" href="http://chace.in/">chace</a></div></div></div><div id="content-outer"><div class="no-bg" id="top-container"><div id="page-header"><span class="pull-left"> <a id="site-name" href="/">SinLapis的博客</a></span><i class="fa fa-bars toggle-menu pull-right" aria-hidden="true"></i><span class="pull-right menus"><a class="site-page" href="/">Home</a><a class="site-page" href="/ACGBlog">ACG</a><a class="site-page" href="/archives">Archives</a><a class="site-page" href="/tags">Tags</a><a class="site-page" href="/categories">Categories</a></span></div><div id="post-info"><div id="post-title">kotlin+nodejs+idea+gradle项目构建</div><div id="post-meta"><time class="post-meta__date"><i class="fa fa-calendar" aria-hidden="true"></i> 2019-12-11</time><span class="post-meta__separator">|</span><i class="fa fa-inbox post-meta__icon" aria-hidden="true"></i><a class="post-meta__categories" href="/categories/杂项/">杂项</a></div></div></div><div class="layout" id="content-inner"><article id="post"><div class="article-container" id="post-content"><h1 id="kotlin-nodejs-idea-gradle项目构建"><a href="#kotlin-nodejs-idea-gradle项目构建" class="headerlink" title="kotlin + nodejs + idea + gradle项目构建"></a>kotlin + nodejs + idea + gradle项目构建</h1><p>kotlin转nodejs的插件只能用gradle，maven虽然也有但是不会用。这玩意我居然搞了一天才看到”Hello, JavaScript!”，人老了。</p>
+<p>主要参考：<a href="https://www.bennyhuo.com/2019/03/11/kotlin-nodejs/" target="_blank" rel="noopener">基于 Node.js 环境的 KotlinJs 工程的完美搭建</a>。</p>
+<h2 id="创建项目"><a href="#创建项目" class="headerlink" title="创建项目"></a>创建项目</h2><p>现在nodejs已经是IDEA中自带插件了，不再需要手动安装。直接创建项目，选gradle -&gt; kotlin(JavaScript)。</p>
+<p>之后需要等IDEA将项目配置完毕。</p>
+<h2 id="配置build-gradle"><a href="#配置build-gradle" class="headerlink" title="配置build.gradle"></a>配置build.gradle</h2><pre class=" language-groovy"><code class="language-groovy">group <span class="token string">'org.ndp'</span>
+version <span class="token string">'1'</span>
+
+buildscript <span class="token punctuation">{</span>
+    ext<span class="token operator">.</span>kotlin_version <span class="token operator">=</span> <span class="token string">'1.3.60'</span>
+    repositories <span class="token punctuation">{</span>
+        <span class="token function">mavenCentral</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+    dependencies <span class="token punctuation">{</span>
+        classpath <span class="token string">"org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+apply plugin<span class="token punctuation">:</span> <span class="token string">'kotlin2js'</span>
+
+buildscript <span class="token punctuation">{</span>
+    repositories <span class="token punctuation">{</span>
+        maven <span class="token punctuation">{</span>
+            url <span class="token string">"https://dl.bintray.com/kotlin/kotlin-eap"</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+    dependencies <span class="token punctuation">{</span>
+        classpath <span class="token string">"org.jetbrains.kotlin:kotlin-frontend-plugin:0.0.45"</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+apply plugin<span class="token punctuation">:</span> <span class="token string">'org.jetbrains.kotlin.frontend'</span>
+
+repositories <span class="token punctuation">{</span>
+    <span class="token function">mavenCentral</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+
+dependencies <span class="token punctuation">{</span>
+    compile <span class="token string">"org.jetbrains.kotlin:kotlin-stdlib-js:$kotlin_version"</span>
+<span class="token punctuation">}</span>
+
+compileKotlin2Js <span class="token punctuation">{</span>
+    kotlinOptions<span class="token operator">.</span>moduleKind <span class="token operator">=</span> <span class="token string">"commonjs"</span>
+    kotlinOptions<span class="token operator">.</span>sourceMap <span class="token operator">=</span> <span class="token boolean">true</span>
+    kotlinOptions<span class="token operator">.</span>metaInfo <span class="token operator">=</span> <span class="token boolean">true</span>
+<span class="token punctuation">}</span>
+
+kotlinFrontend <span class="token punctuation">{</span>
+    npm <span class="token punctuation">{</span>
+        devDependency <span class="token string">"karma"</span>     <span class="token comment" spellcheck="true">// development dependency</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>之后需要静待gradle配置好，时间比较长。</p>
+<p>不要在<code>compileKotlin2Js</code>中设置输出目录，会导致<code>Error: Cannot find module &#39;kotlin&#39;</code>。</p>
+<h2 id="编写Kotlin"><a href="#编写Kotlin" class="headerlink" title="编写Kotlin"></a>编写Kotlin</h2><p>在<code>src/main/kotlin/</code>下新建kt文件：</p>
+<pre class=" language-kotlin"><code class="language-kotlin"><span class="token keyword">fun</span> <span class="token function">main</span><span class="token punctuation">(</span>args<span class="token operator">:</span> Array<span class="token operator">&lt;</span>String<span class="token operator">></span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Hello JavaScript!"</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>点击<code>main</code>旁边的运行即可看到结果。</p>
+</div></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="mailto:undefined">SinLapis</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="http://sinlapis.github.io/2019/12/11/kotlin-nodejs-idea-gradle项目构建/">http://sinlapis.github.io/2019/12/11/kotlin-nodejs-idea-gradle项目构建/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/idea/">idea</a><a class="post-meta__tags" href="/tags/gradle/">gradle</a><a class="post-meta__tags" href="/tags/nodejs/">nodejs</a><a class="post-meta__tags" href="/tags/kotlin/">kotlin</a></div><nav id="pagination"><div class="prev-post pull-left"><a href="/2019/12/11/kotlin-puppeteer写爬虫/"><i class="fa fa-chevron-left">  </i><span>kotlin+puppeteer写爬虫</span></a></div><div class="next-post pull-right"><a href="/2019/12/02/maven的kotlin项目打包以及添加kotlin依赖/"><span>maven的kotlin项目打包以及添加kotlin依赖</span><i class="fa fa-chevron-right"></i></a></div></nav></div></div><footer><div class="layout" id="footer"><div class="copyright">&copy;2017 - 2021 By SinLapis</div><div class="framework-info"><span>Driven - </span><a href="http://hexo.io"><span>Hexo</span></a><span class="footer-separator">|</span><span>Theme - </span><a href="https://github.com/Molunerfinn/hexo-theme-melody"><span>Melody</span></a></div><div class="busuanzi"><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><span id="busuanzi_container_page_pv"><i class="fa fa-file-o"></i><span id="busuanzi_value_page_pv"></span><span></span></span></div></div></footer><i class="fa fa-arrow-up" id="go-up" aria-hidden="true"></i><script src="https://cdn.jsdelivr.net/npm/animejs@latest/anime.min.js"></script><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@latest/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-ui-pack@latest/velocity.ui.min.js"></script><script src="/js/utils.js?version=1.6.1"></script><script src="/js/fancybox.js?version=1.6.1"></script><script src="/js/sidebar.js?version=1.6.1"></script><script src="/js/copy.js?version=1.6.1"></script><script src="/js/fireworks.js?version=1.6.1"></script><script src="/js/transition.js?version=1.6.1"></script><script src="/js/scroll.js?version=1.6.1"></script><script src="/js/head.js?version=1.6.1"></script><script>if(/Android|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent)) {
+  $('#nav').addClass('is-mobile')
+  $('footer').addClass('is-mobile')
+}</script></body></html>

@@ -1,0 +1,70 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta name="generator" content="Hexo 3.9.0"><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta name="description" content="记录：给centos/rhel服务器安装GNOME以及VNC，实现界面远程控制服务器"><meta name="keywords" content="Linux"><meta name="author" content="SinLapis"><meta name="copyright" content="SinLapis"><title>记录：给centos/rhel服务器安装GNOME以及VNC，实现界面远程控制服务器 | SinLapis的博客</title><link rel="shortcut icon" href="/images/87235d96-63d9-443d-a4fa-8093fac33ada_200x200.png"><link rel="stylesheet" href="/css/index.css?version=1.6.1"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@latest/css/font-awesome.min.css?version=1.6.1"><link rel="dns-prefetch" href="https://cdn.staticfile.org"><link rel="dns-prefetch" href="https://cdn.bootcss.com"><link rel="dns-prefetch" href="https://creativecommons.org"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  }
+} </script><link rel="stylesheet" href="/css/prism.css" type="text/css"></head><body><i class="fa fa-arrow-right" id="toggle-sidebar" aria-hidden="true"></i><div id="sidebar"><div class="toggle-sidebar-info text-center"><span data-toggle="Toggle article">Toggle site</span><hr></div><div class="sidebar-toc"><div class="sidebar-toc__title">Catalog</div><div class="sidebar-toc__progress"><span class="progress-notice">You've read</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar"></div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#服务器部分（CentOS-7）"><span class="toc-number">1.</span> <span class="toc-text">服务器部分（CentOS 7）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#客户端部分（Windows）"><span class="toc-number">2.</span> <span class="toc-text">客户端部分（Windows）</span></a></li></ol></div></div><div class="author-info hide"><div class="author-info__avatar text-center"><img src="/images/3774d809.jpg"></div><div class="author-info__name text-center">SinLapis</div><div class="author-info__description text-center"></div><hr><div class="author-info-articles"><a class="author-info-articles__archives article-meta" href="/archives"><span class="pull-left">Articles</span><span class="pull-right">103</span></a><a class="author-info-articles__tags article-meta" href="/tags"><span class="pull-left">Tags</span><span class="pull-right">70</span></a><a class="author-info-articles__categories article-meta" href="/categories"><span class="pull-left">Categories</span><span class="pull-right">20</span></a></div><hr><div class="author-info-links"><div class="author-info-links__title text-center">Links</div><a class="author-info-links__name text-center" href="http://chace.in/">chace</a></div></div></div><div id="content-outer"><div class="no-bg" id="top-container"><div id="page-header"><span class="pull-left"> <a id="site-name" href="/">SinLapis的博客</a></span><i class="fa fa-bars toggle-menu pull-right" aria-hidden="true"></i><span class="pull-right menus"><a class="site-page" href="/">Home</a><a class="site-page" href="/ACGBlog">ACG</a><a class="site-page" href="/archives">Archives</a><a class="site-page" href="/tags">Tags</a><a class="site-page" href="/categories">Categories</a></span></div><div id="post-info"><div id="post-title">记录：给centos/rhel服务器安装GNOME以及VNC，实现界面远程控制服务器</div><div id="post-meta"><time class="post-meta__date"><i class="fa fa-calendar" aria-hidden="true"></i> 2017-12-24</time><span class="post-meta__separator">|</span><i class="fa fa-inbox post-meta__icon" aria-hidden="true"></i><a class="post-meta__categories" href="/categories/Linux/">Linux</a></div></div></div><div class="layout" id="content-inner"><article id="post"><div class="article-container" id="post-content"><h2 id="服务器部分（CentOS-7）"><a href="#服务器部分（CentOS-7）" class="headerlink" title="服务器部分（CentOS 7）"></a>服务器部分（CentOS 7）</h2><ul>
+<li>安装GNOME：</li>
+</ul>
+<pre class=" language-shell"><code class="language-shell">
+yum groupinstall -y "GNOME Desktop"
+
+</code></pre>
+<ul>
+<li>安装VNC</li>
+</ul>
+<pre class=" language-shell"><code class="language-shell">
+yum install vnc-server vnc*
+
+</code></pre>
+<ul>
+<li>修改<code>/etc/sysconfig/vncservers</code>：</li>
+</ul>
+<pre class=" language-config"><code class="language-config">
+VNCSERVERS="1:root"
+VNCSERVERARGS[1]="-geometry 1024x768 -alwaysshared -depth 24"
+
+</code></pre>
+<ul>
+<li>添加/修改<code>/root/.vnc/xstartup</code></li>
+</ul>
+<pre class=" language-config"><code class="language-config">
+#!/bin/sh
+unset SESSION_MANAGER
+[ -x /etc/vnc/xstartup ] && exec /etc/vnc/xstartup
+[ -r $HOME/.Xresources ] && xrdb $HOME/.Xresources
+xsetroot -solid grey vncconfig -iconic &
+gnome-session &
+
+</code></pre>
+<ul>
+<li><p>终端输入<code>vncpasswd</code>并根据提示设置密码。</p>
+</li>
+<li><p>终端输入<code>vncserver</code>以启动vncserver。</p>
+</li>
+<li><p>防火墙开启端口<code>5901</code>、<code>6001</code>：</p>
+</li>
+</ul>
+<pre class=" language-shell"><code class="language-shell">
+iptables -A INPUT -p tcp --dport 3836 -j ACCEPT
+iptables -A INPUT -p tcp --sport 3836 -j ACCEPT
+iptables -A INPUT -p tcp --dport 9996 -j ACCEPT
+iptables -A INPUT -p tcp --sport 9996 -j ACCEPT
+
+iptables-save
+
+</code></pre>
+<h2 id="客户端部分（Windows）"><a href="#客户端部分（Windows）" class="headerlink" title="客户端部分（Windows）"></a>客户端部分（Windows）</h2><ul>
+<li><p>下载<code>VNC-Viewer</code>并安装。</p>
+</li>
+<li><p>建立连接，输入<code>&lt;ip&gt;:1</code>，其中<code>&lt;ip&gt;</code>为装有VNC的服务器地址，按回车后输入密码即可。</p>
+</li>
+</ul>
+</div></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="mailto:undefined">SinLapis</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="http://sinlapis.github.io/2017/12/24/记录：给centos-rhel服务器安装GNOME以及VNC，实现图形远程控制服务器/">http://sinlapis.github.io/2017/12/24/记录：给centos-rhel服务器安装GNOME以及VNC，实现图形远程控制服务器/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Linux/">Linux</a></div><nav id="pagination"><div class="prev-post pull-left"><a href="/2017/12/25/记录：mysql在windows-centos下的安装/"><i class="fa fa-chevron-left">  </i><span>记录：MySQL在Windows/CentOS下的安装</span></a></div><div class="next-post pull-right"><a href="/2017/12/24/记录：rhel中yum换centos源/"><span>记录：rhel中yum换centos源</span><i class="fa fa-chevron-right"></i></a></div></nav></div></div><footer><div class="layout" id="footer"><div class="copyright">&copy;2017 - 2021 By SinLapis</div><div class="framework-info"><span>Driven - </span><a href="http://hexo.io"><span>Hexo</span></a><span class="footer-separator">|</span><span>Theme - </span><a href="https://github.com/Molunerfinn/hexo-theme-melody"><span>Melody</span></a></div><div class="busuanzi"><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><span id="busuanzi_container_page_pv"><i class="fa fa-file-o"></i><span id="busuanzi_value_page_pv"></span><span></span></span></div></div></footer><i class="fa fa-arrow-up" id="go-up" aria-hidden="true"></i><script src="https://cdn.jsdelivr.net/npm/animejs@latest/anime.min.js"></script><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@latest/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-ui-pack@latest/velocity.ui.min.js"></script><script src="/js/utils.js?version=1.6.1"></script><script src="/js/fancybox.js?version=1.6.1"></script><script src="/js/sidebar.js?version=1.6.1"></script><script src="/js/copy.js?version=1.6.1"></script><script src="/js/fireworks.js?version=1.6.1"></script><script src="/js/transition.js?version=1.6.1"></script><script src="/js/scroll.js?version=1.6.1"></script><script src="/js/head.js?version=1.6.1"></script><script>if(/Android|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent)) {
+  $('#nav').addClass('is-mobile')
+  $('footer').addClass('is-mobile')
+}</script></body></html>

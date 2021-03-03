@@ -1,0 +1,113 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta name="generator" content="Hexo 3.9.0"><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta name="description" content="MongoDB笔记0x04"><meta name="keywords" content="MongoDB"><meta name="author" content="SinLapis"><meta name="copyright" content="SinLapis"><title>MongoDB笔记0x04 | SinLapis的博客</title><link rel="shortcut icon" href="/images/87235d96-63d9-443d-a4fa-8093fac33ada_200x200.png"><link rel="stylesheet" href="/css/index.css?version=1.6.1"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@latest/css/font-awesome.min.css?version=1.6.1"><link rel="dns-prefetch" href="https://cdn.staticfile.org"><link rel="dns-prefetch" href="https://cdn.bootcss.com"><link rel="dns-prefetch" href="https://creativecommons.org"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  }
+} </script><link rel="stylesheet" href="/css/prism.css" type="text/css"></head><body><i class="fa fa-arrow-right" id="toggle-sidebar" aria-hidden="true"></i><div id="sidebar"><div class="toggle-sidebar-info text-center"><span data-toggle="Toggle article">Toggle site</span><hr></div><div class="sidebar-toc"><div class="sidebar-toc__title">Catalog</div><div class="sidebar-toc__progress"><span class="progress-notice">You've read</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar"></div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#4-查询"><span class="toc-number">1.</span> <span class="toc-text">4 查询</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#4-1-find"><span class="toc-number">1.1.</span> <span class="toc-text">4.1 find</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-2-查询条件"><span class="toc-number">1.2.</span> <span class="toc-text">4.2 查询条件</span></a></li></ol></li></ol></div></div><div class="author-info hide"><div class="author-info__avatar text-center"><img src="/images/3774d809.jpg"></div><div class="author-info__name text-center">SinLapis</div><div class="author-info__description text-center"></div><hr><div class="author-info-articles"><a class="author-info-articles__archives article-meta" href="/archives"><span class="pull-left">Articles</span><span class="pull-right">103</span></a><a class="author-info-articles__tags article-meta" href="/tags"><span class="pull-left">Tags</span><span class="pull-right">70</span></a><a class="author-info-articles__categories article-meta" href="/categories"><span class="pull-left">Categories</span><span class="pull-right">20</span></a></div><hr><div class="author-info-links"><div class="author-info-links__title text-center">Links</div><a class="author-info-links__name text-center" href="http://chace.in/">chace</a></div></div></div><div id="content-outer"><div class="no-bg" id="top-container"><div id="page-header"><span class="pull-left"> <a id="site-name" href="/">SinLapis的博客</a></span><i class="fa fa-bars toggle-menu pull-right" aria-hidden="true"></i><span class="pull-right menus"><a class="site-page" href="/">Home</a><a class="site-page" href="/ACGBlog">ACG</a><a class="site-page" href="/archives">Archives</a><a class="site-page" href="/tags">Tags</a><a class="site-page" href="/categories">Categories</a></span></div><div id="post-info"><div id="post-title">MongoDB笔记0x04</div><div id="post-meta"><time class="post-meta__date"><i class="fa fa-calendar" aria-hidden="true"></i> 2017-10-27</time><span class="post-meta__separator">|</span><i class="fa fa-inbox post-meta__icon" aria-hidden="true"></i><a class="post-meta__categories" href="/categories/Database/">Database</a></div></div></div><div class="layout" id="content-inner"><article id="post"><div class="article-container" id="post-content"><h1 id="4-查询"><a href="#4-查询" class="headerlink" title="4 查询"></a>4 查询</h1><h2 id="4-1-find"><a href="#4-1-find" class="headerlink" title="4.1 find"></a>4.1 find</h2><p>在MongoDB中，使用<code>find()</code>来进行查询操作。第一个参数是查询条件，类型为文档，其中包括希望返回结果满足的键值对的要求。如果有对个键值对，将视为“与”进行查询。</p>
+<p><code>find()</code>的第二个参数为希望返回/不返回的键，类型为文档，键即文档的键，值为1则返回该键值对，值为0则不返回该键值对。<code>_id</code>默认是返回的，如果不希望返回<code>_id</code>，可以使用<code>&quot;_id&quot;: 0</code>。</p>
+<h2 id="4-2-查询条件"><a href="#4-2-查询条件" class="headerlink" title="4.2 查询条件"></a>4.2 查询条件</h2><p>除了精确查询以外，还可以使用<code>$lt</code>、<code>$lte</code>、<code>$gt</code>、<code>$gte</code>来进行范围查询，它们分别表示<code>&lt;</code>、<code>&lt;=</code>、<code>&gt;</code>、<code>&gt;=</code>。例如：</p>
+<pre class=" language-json"><code class="language-json">
+<span class="token punctuation">{</span>
+  <span class="token property">"age"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">"$gt"</span><span class="token operator">:</span> <span class="token number">18</span><span class="token punctuation">,</span>
+    <span class="token property">"$lt"</span><span class="token operator">:</span> <span class="token number">30</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+</code></pre>
+<p>上述查询条件表示查找键名<code>&quot;age&quot;</code>值大于18小于30的文档。另外，<code>$ne</code>表示不相等。</p>
+<p>关于<code>$in</code>、<code>$nin</code>：如果希望能查找某个键对应的多个值，可以使用<code>$in</code>。<code>$in</code>的参数为一个数组，数组中的值可以为任何类型，MongoDB会查找所有该键的值在数组中的文档。<code>$nin</code>则相反，会返回所有该键的值不在数组中的文档。</p>
+<p>关于<code>$or</code>：<code>$or</code>可以进行不同键的“或”查询。和<code>$in</code>类似，其参数为一个数组，不过数组中的值均为文档类型。文档中即普通的查询条件。</p>
+<p><code>$not</code>：<code>$not</code>会返回所有不符合参数中查询条件的文档。和<code>$and</code>、<code>$or</code>都被称为“元操作符”。</p>
+<p><code>null</code>值：如果查询时设置值为<code>null</code>，则查询不仅会返回对应键值为<code>null</code>的文档，还会返回没有对应键的文档。如果不希望返回这些缺少键的文档，可以使用<code>$exist</code>来判断键值对是否存在。</p>
+<p>正则表达式：进行匹配的值可以是正则表达式，所有含有匹配正则表达式的对应键值的文档都会被返回。使用正则表达式进行查询之前最好在shell中进行正则表达式的验证来防止出现问题。</p>
+<p>数组查询：如果有一个文档：</p>
+<pre class=" language-json"><code class="language-json">
+<span class="token punctuation">{</span>
+  <span class="token property">"fruit"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">"apple"</span><span class="token punctuation">,</span> <span class="token string">"banana"</span><span class="token punctuation">,</span> <span class="token string">"peach"</span><span class="token punctuation">]</span>
+<span class="token punctuation">}</span>
+
+</code></pre>
+<p>如果查询条件如下：</p>
+<pre class=" language-json"><code class="language-json">
+<span class="token punctuation">{</span>
+  <span class="token property">"fruit"</span><span class="token operator">:</span> <span class="token string">"apple"</span>
+<span class="token punctuation">}</span>
+
+</code></pre>
+<p>则之前的文档会成功匹配。即如上的查询条件意味着MongoDB会查找数组内部的值。但是如果查询条件如下：</p>
+<pre class=" language-json"><code class="language-json">
+<span class="token punctuation">{</span>
+  <span class="token property">"fruit"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">"apple"</span><span class="token punctuation">,</span> <span class="token string">"banana"</span><span class="token punctuation">]</span>
+<span class="token punctuation">}</span>
+
+</code></pre>
+<p>或</p>
+<pre class=" language-json"><code class="language-json">
+<span class="token punctuation">{</span>
+  <span class="token property">"fruit"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">"banana"</span><span class="token punctuation">,</span> <span class="token string">"apple"</span><span class="token punctuation">,</span> <span class="token string">"peach"</span><span class="token punctuation">]</span>
+<span class="token punctuation">}</span>
+
+</code></pre>
+<p>都不会匹配所提供的文档。即值如果是数组的话会进行精确匹配，无论是缺项或者是乱序都不会匹配。</p>
+<p><code>$all</code>：<code>$all</code>可以接受一个数组作为查询参数，只要对应键的数组中包含该数组内所有值的文档就会作为结果返回。其中<code>$all</code>的数组参数的顺序是无关紧要的。</p>
+<p><code>$slice</code>：<code>$slice</code>可以限制返回的文档数。为正值时返回前面指定数目的文档，为负值时返回后面指定数目的文档。<code>$slice</code>还可以指定偏移，例如：</p>
+<pre class=" language-json"><code class="language-json">
+<span class="token punctuation">{</span>
+  <span class="token property">"comments"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">"$slice"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token number">23</span><span class="token punctuation">,</span> <span class="token number">10</span><span class="token punctuation">]</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+</code></pre>
+<p>表示从第24个元素开始，返回10个文档，不足则全部返回。</p>
+<p>数组和范围查询相互作用：例如文档：</p>
+<pre class=" language-json"><code class="language-json">
+<span class="token punctuation">[</span>
+  <span class="token punctuation">{</span><span class="token property">"x"</span><span class="token operator">:</span> <span class="token number">5</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">{</span><span class="token property">"x"</span><span class="token operator">:</span> <span class="token number">15</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">{</span><span class="token property">"x"</span><span class="token operator">:</span> <span class="token number">25</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">{</span><span class="token property">"x"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token number">5</span><span class="token punctuation">,</span> <span class="token number">25</span><span class="token punctuation">]</span><span class="token punctuation">}</span>
+<span class="token punctuation">]</span>
+
+</code></pre>
+<p>如果查询条件为：</p>
+<pre class=" language-json"><code class="language-json">
+<span class="token punctuation">{</span>
+  <span class="token property">"x"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">"$gt"</span><span class="token operator">:</span> <span class="token number">10</span><span class="token punctuation">,</span>
+    <span class="token property">"$lt"</span><span class="token operator">:</span> <span class="token number">20</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+</code></pre>
+<p>则结果会返回：</p>
+<pre class=" language-json"><code class="language-json">
+<span class="token punctuation">[</span>
+  <span class="token punctuation">{</span><span class="token property">"x"</span><span class="token operator">:</span> <span class="token number">15</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">{</span><span class="token property">"x"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token number">5</span><span class="token punctuation">,</span> <span class="token number">25</span><span class="token punctuation">]</span><span class="token punctuation">}</span>
+<span class="token punctuation">]</span>
+
+</code></pre>
+<p>匹配<code>{&quot;x&quot;: [5, 25]}</code>的原因是<code>5</code>小于<code>20</code>且<code>25</code>大于<code>10</code>。</p>
+<p>查询内嵌文档：如果直接进行查询的话需要内嵌文档完全一致（即和数组查询一样是精确匹配），而且不能针对内嵌文档进行范围等条件查询。使用<code>$elemMatch</code>来满足进行内嵌文档的查询。例如：</p>
+<pre class=" language-json"><code class="language-json">
+<span class="token punctuation">{</span>
+  <span class="token property">"comments"</span><span class="token operator">:</span><span class="token punctuation">{</span>
+    <span class="token property">"$elemMatch"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+      <span class="token property">"author"</span><span class="token operator">:</span> <span class="token string">"Joe"</span><span class="token punctuation">,</span>
+      <span class="token property">"score"</span><span class="token operator">:</span> <span class="token punctuation">{</span><span class="token property">"$gte"</span><span class="token operator">:</span> <span class="token number">5</span><span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+</code></pre>
+<p>可以查到评论中Joe 大于等于5分的评论。</p>
+</div></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="mailto:undefined">SinLapis</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="http://sinlapis.github.io/2017/10/27/MongoDB笔记0x04/">http://sinlapis.github.io/2017/10/27/MongoDB笔记0x04/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/MongoDB/">MongoDB</a></div><nav id="pagination"><div class="prev-post pull-left"><a href="/2017/10/28/MongoDB笔记0x05/"><i class="fa fa-chevron-left">  </i><span>MongoDB笔记0x05</span></a></div><div class="next-post pull-right"><a href="/2017/10/24/MongoDB笔记0x03/"><span>MongoDB笔记0x03</span><i class="fa fa-chevron-right"></i></a></div></nav></div></div><footer><div class="layout" id="footer"><div class="copyright">&copy;2017 - 2021 By SinLapis</div><div class="framework-info"><span>Driven - </span><a href="http://hexo.io"><span>Hexo</span></a><span class="footer-separator">|</span><span>Theme - </span><a href="https://github.com/Molunerfinn/hexo-theme-melody"><span>Melody</span></a></div><div class="busuanzi"><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><span id="busuanzi_container_page_pv"><i class="fa fa-file-o"></i><span id="busuanzi_value_page_pv"></span><span></span></span></div></div></footer><i class="fa fa-arrow-up" id="go-up" aria-hidden="true"></i><script src="https://cdn.jsdelivr.net/npm/animejs@latest/anime.min.js"></script><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@latest/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-ui-pack@latest/velocity.ui.min.js"></script><script src="/js/utils.js?version=1.6.1"></script><script src="/js/fancybox.js?version=1.6.1"></script><script src="/js/sidebar.js?version=1.6.1"></script><script src="/js/copy.js?version=1.6.1"></script><script src="/js/fireworks.js?version=1.6.1"></script><script src="/js/transition.js?version=1.6.1"></script><script src="/js/scroll.js?version=1.6.1"></script><script src="/js/head.js?version=1.6.1"></script><script>if(/Android|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent)) {
+  $('#nav').addClass('is-mobile')
+  $('footer').addClass('is-mobile')
+}</script></body></html>

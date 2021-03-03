@@ -1,0 +1,254 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta name="generator" content="Hexo 3.9.0"><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta name="description" content="Java8实战笔记0x03"><meta name="keywords" content="笔记,Java"><meta name="author" content="SinLapis"><meta name="copyright" content="SinLapis"><title>Java8实战笔记0x03 | SinLapis的博客</title><link rel="shortcut icon" href="/images/87235d96-63d9-443d-a4fa-8093fac33ada_200x200.png"><link rel="stylesheet" href="/css/index.css?version=1.6.1"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@latest/css/font-awesome.min.css?version=1.6.1"><link rel="dns-prefetch" href="https://cdn.staticfile.org"><link rel="dns-prefetch" href="https://cdn.bootcss.com"><link rel="dns-prefetch" href="https://creativecommons.org"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  }
+} </script><link rel="stylesheet" href="/css/prism.css" type="text/css"></head><body><i class="fa fa-arrow-right" id="toggle-sidebar" aria-hidden="true"></i><div id="sidebar"><div class="toggle-sidebar-info text-center"><span data-toggle="Toggle article">Toggle site</span><hr></div><div class="sidebar-toc"><div class="sidebar-toc__title">Catalog</div><div class="sidebar-toc__progress"><span class="progress-notice">You've read</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar"></div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#并行数据处理与性能"><span class="toc-number">1.</span> <span class="toc-text">并行数据处理与性能</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#并行流"><span class="toc-number">1.1.</span> <span class="toc-text">并行流</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#将顺序流转换为并行流"><span class="toc-number">1.1.1.</span> <span class="toc-text">将顺序流转换为并行流</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#高效使用并行流"><span class="toc-number">1.1.2.</span> <span class="toc-text">高效使用并行流</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#分支-合并框架"><span class="toc-number">1.2.</span> <span class="toc-text">分支/合并框架</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#使用RecursiveTask"><span class="toc-number">1.2.1.</span> <span class="toc-text">使用RecursiveTask</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#使用分支-合并框架的最佳做法"><span class="toc-number">1.2.2.</span> <span class="toc-text">使用分支/合并框架的最佳做法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#工作窃取"><span class="toc-number">1.2.3.</span> <span class="toc-text">工作窃取</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Spliterator"><span class="toc-number">1.3.</span> <span class="toc-text">Spliterator</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#拆分过程"><span class="toc-number">1.3.1.</span> <span class="toc-text">拆分过程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#实现自定义Spliterator"><span class="toc-number">1.3.2.</span> <span class="toc-text">实现自定义Spliterator</span></a></li></ol></li></ol></li></ol></div></div><div class="author-info hide"><div class="author-info__avatar text-center"><img src="/images/3774d809.jpg"></div><div class="author-info__name text-center">SinLapis</div><div class="author-info__description text-center"></div><hr><div class="author-info-articles"><a class="author-info-articles__archives article-meta" href="/archives"><span class="pull-left">Articles</span><span class="pull-right">103</span></a><a class="author-info-articles__tags article-meta" href="/tags"><span class="pull-left">Tags</span><span class="pull-right">70</span></a><a class="author-info-articles__categories article-meta" href="/categories"><span class="pull-left">Categories</span><span class="pull-right">20</span></a></div><hr><div class="author-info-links"><div class="author-info-links__title text-center">Links</div><a class="author-info-links__name text-center" href="http://chace.in/">chace</a></div></div></div><div id="content-outer"><div class="no-bg" id="top-container"><div id="page-header"><span class="pull-left"> <a id="site-name" href="/">SinLapis的博客</a></span><i class="fa fa-bars toggle-menu pull-right" aria-hidden="true"></i><span class="pull-right menus"><a class="site-page" href="/">Home</a><a class="site-page" href="/ACGBlog">ACG</a><a class="site-page" href="/archives">Archives</a><a class="site-page" href="/tags">Tags</a><a class="site-page" href="/categories">Categories</a></span></div><div id="post-info"><div id="post-title">Java8实战笔记0x03</div><div id="post-meta"><time class="post-meta__date"><i class="fa fa-calendar" aria-hidden="true"></i> 2019-08-08</time><span class="post-meta__separator">|</span><i class="fa fa-inbox post-meta__icon" aria-hidden="true"></i><a class="post-meta__categories" href="/categories/Java/">Java</a></div></div></div><div class="layout" id="content-inner"><article id="post"><div class="article-container" id="post-content"><h1 id="并行数据处理与性能"><a href="#并行数据处理与性能" class="headerlink" title="并行数据处理与性能"></a>并行数据处理与性能</h1><h2 id="并行流"><a href="#并行流" class="headerlink" title="并行流"></a>并行流</h2><h3 id="将顺序流转换为并行流"><a href="#将顺序流转换为并行流" class="headerlink" title="将顺序流转换为并行流"></a>将顺序流转换为并行流</h3><ul>
+<li>可以把流转换成并行流，从而让前面的函数归约过程并行运行。对顺序流调用<code>parallel()</code>方法。</li>
+</ul>
+<pre class=" language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">long</span> <span class="token function">parallelSum</span><span class="token punctuation">(</span><span class="token keyword">long</span> n<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> Stream<span class="token punctuation">.</span><span class="token function">iterate</span><span class="token punctuation">(</span>1L<span class="token punctuation">,</span> i <span class="token operator">-</span><span class="token operator">></span> i <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span>
+        <span class="token punctuation">.</span><span class="token function">limit</span><span class="token punctuation">(</span>n<span class="token punctuation">)</span>
+        <span class="token punctuation">.</span><span class="token function">parallel</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token function">reduce</span><span class="token punctuation">(</span>0L<span class="token punctuation">,</span> Long<span class="token operator">:</span><span class="token operator">:</span>sum<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<ul>
+<li>对顺序流调用<code>parallel()</code>方法不意味着流本身有任何实际的变化。它内部实际上就是设了一个<code>boolean</code>标志，表示让调用<code>parallel()</code>方法之后进行的所有操作都并行执行。类似的，对并行流调用<code>sequential()</code>方法就可以把它变成顺序流。不过在一个流水线中，只有最后一个<code>parallel()</code>或者<code>squential()</code>方法生效，影响整个流水线。</li>
+</ul>
+<h3 id="高效使用并行流"><a href="#高效使用并行流" class="headerlink" title="高效使用并行流"></a>高效使用并行流</h3><ul>
+<li>首先应该进行<strong>测量</strong>。并行流并不总是比顺序流快。</li>
+<li>留意<strong>装箱</strong>。自动装箱合拆箱操作会大大降低性能。可以使用原始类型流（<code>IntStream</code>、<code>LongStream</code>、<code>DoubleStream</code>）来避免这种操作。</li>
+<li>有些操作<strong>本身在并行流上的性能就比顺序流差</strong>，特别是<code>limit</code>和<code>findFirst</code>等依赖于元素顺序的操作，它们在并行流上执行的代价非常大。</li>
+<li>要考虑流的操作流水线的<strong>总计算成本</strong>。设<code>N</code>是要处理的元素总数，<code>Q</code>是一个元素通过流水线的大致处理成本，则<code>N*Q</code>就是这个对成本的一个粗略估计。Q值较高就意味着使用并行流时性能好的可能性比较大。</li>
+<li>对于较小的数据量，选择并行流几乎不是一个好的决定。并行处理少数几个元素的好处还抵不上<strong>并行化造成的额外开销</strong>。</li>
+<li>要考虑<strong>流背后的数据结构是否容易分解</strong>。例如<code>ArrayList</code>的拆分效率比<code>LinkedList</code>高得多，因为前者不用遍历就可以平均拆分，后者则必须遍历。</li>
+<li>流自身的特点，以及流水线中的中间操作修改流的方式，都可能会<strong>改变分解过程的性能</strong>。例如一个流可以分成大小相同的两部分，这样每个部分都可以比较高效地并行处理，但筛选操作可能会丢弃的元素个数却无法预测，导致流的大小未知。</li>
+<li>要考虑终端操作中合并步骤的代价。如果代价很大，那么组合每个子流产生的部分结果所付出的代价就可能会超过通过并行流得到的性能提升。</li>
+</ul>
+<h2 id="分支-合并框架"><a href="#分支-合并框架" class="headerlink" title="分支/合并框架"></a>分支/合并框架</h2><ul>
+<li>分支/合并框架的目的是以递归的方式将可以并行的任务拆分成更小的任务，然后将每个子任务的结果合并起来生成整体结果。它是<code>ExecutorService</code>接口的一个实现，它把子任务分配给线程池（称为<code>ForkJoinPool</code>）中的工作线程。</li>
+</ul>
+<h3 id="使用RecursiveTask"><a href="#使用RecursiveTask" class="headerlink" title="使用RecursiveTask"></a>使用RecursiveTask</h3><ul>
+<li>要把任务提交到线程池，必须创建<code>RecursiveTask&lt;R&gt;</code>的一个子类，其中<code>R</code>时并行化任务（以及所有子任务）产生的结果类型，或者如果任务不返回结果，则是<code>RecursiveAction</code>类型。要定义<code>RecursiveTask</code>只需要实现它唯一的抽象方法<code>compute</code>。这个方法同时定义了将任务拆分成子任务的逻辑，以及无法再久拆分或不方便再拆分时，生成单个子任务结果的逻辑。</li>
+</ul>
+<pre class=" language-java"><code class="language-java"><span class="token keyword">class</span> <span class="token class-name">ForkJoinSumCalculator</span> <span class="token keyword">extends</span> <span class="token class-name">RecursiveTask</span><span class="token operator">&lt;</span>Long<span class="token operator">></span> <span class="token punctuation">{</span>
+    <span class="token keyword">private</span> <span class="token keyword">final</span> <span class="token keyword">long</span><span class="token punctuation">[</span><span class="token punctuation">]</span> numbers<span class="token punctuation">;</span>
+    <span class="token keyword">private</span> <span class="token keyword">final</span> <span class="token keyword">int</span> start<span class="token punctuation">;</span>
+    <span class="token keyword">private</span> <span class="token keyword">final</span> <span class="token keyword">int</span> end<span class="token punctuation">;</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">final</span> <span class="token keyword">long</span> THRESHOLD <span class="token operator">=</span> 10_000<span class="token punctuation">;</span>
+
+    <span class="token keyword">public</span> <span class="token function">ForkJoinSumCalculator</span><span class="token punctuation">(</span><span class="token keyword">long</span><span class="token punctuation">[</span><span class="token punctuation">]</span> numbers<span class="token punctuation">,</span> <span class="token keyword">int</span> start<span class="token punctuation">,</span> <span class="token keyword">int</span> end<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>numbers <span class="token operator">=</span> numbers<span class="token punctuation">;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>start <span class="token operator">=</span> start<span class="token punctuation">;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>end <span class="token operator">=</span> end<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token function">ForkJoinSumCalculator</span><span class="token punctuation">(</span><span class="token keyword">long</span><span class="token punctuation">[</span><span class="token punctuation">]</span> numbers<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">(</span>numbers<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> numbers<span class="token punctuation">.</span>length<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">private</span> <span class="token keyword">long</span> <span class="token function">computeSequentially</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">long</span> sum <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> start<span class="token punctuation">;</span> i <span class="token operator">&lt;</span> end<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            sum <span class="token operator">+=</span> numbers<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">return</span> sum<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">protected</span> Long <span class="token function">compute</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">int</span> length <span class="token operator">=</span> end <span class="token operator">-</span> start<span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>length <span class="token operator">&lt;=</span> THRESHOLD<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">return</span> <span class="token function">computeSequentially</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        ForkJoinSumCalculator leftTask <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ForkJoinSumCalculator</span><span class="token punctuation">(</span>numbers<span class="token punctuation">,</span> start<span class="token punctuation">,</span> start <span class="token operator">+</span> <span class="token punctuation">(</span>length <span class="token operator">>></span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        leftTask<span class="token punctuation">.</span><span class="token function">fork</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        ForkJoinSumCalculator rightTask <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ForkJoinSumCalculator</span><span class="token punctuation">(</span>numbers<span class="token punctuation">,</span> start <span class="token operator">+</span> <span class="token punctuation">(</span>length <span class="token operator">>></span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">,</span> end<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        Long rightResult <span class="token operator">=</span> rightTask<span class="token punctuation">.</span><span class="token function">compute</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        Long leftResult <span class="token operator">=</span> leftTask<span class="token punctuation">.</span><span class="token function">join</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> leftResult <span class="token operator">+</span> rightResult<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">long</span> <span class="token function">forkJoinSum</span><span class="token punctuation">(</span><span class="token keyword">long</span> n<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">long</span><span class="token punctuation">[</span><span class="token punctuation">]</span> numbers <span class="token operator">=</span> LongStream<span class="token punctuation">.</span><span class="token function">rangeClosed</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> n<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">toArray</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        ForkJoinTask<span class="token operator">&lt;</span>Long<span class="token operator">></span> task <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ForkJoinSumCalculator</span><span class="token punctuation">(</span>numbers<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">ForkJoinPool</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">invoke</span><span class="token punctuation">(</span>task<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h3 id="使用分支-合并框架的最佳做法"><a href="#使用分支-合并框架的最佳做法" class="headerlink" title="使用分支/合并框架的最佳做法"></a>使用分支/合并框架的最佳做法</h3><ul>
+<li>对一个任务调用<code>join</code>方法会阻塞调用方，直到该任务做出结果。因此，有必要在两个子任务的计算都开始之后再调用它。否则会比原始的顺序算法更慢更复杂，因为每个子任务都必须等待另一个子任务完成才能启动。</li>
+<li>不应该在<code>RecursiveTask</code>内部使用<code>ForkJoinPool</code>的<code>invoke</code>方法。相反，应该直接调用<code>compute</code>或<code>fork</code>方法，只有顺序代码才应该用<code>invoke</code>来启动并行计算。</li>
+<li>对子任务调用<code>fork</code>方法可以把它排进<code>ForkJoinPool</code>。同时对左右两边的子任务调用<code>fork</code>的效率要比直接对其中一个调用<code>compute</code>低。直接调用<code>compute</code>可以为其中一个子任务重用同一线程，从而避免在线程池中多分配一个任务造成的开销。</li>
+<li>调试使用分支/合并框架的并行计算可能有点棘手，特别是查看栈跟踪无法起作用，因为调用<code>compute</code>的线程并不是概念上的调用方。</li>
+<li>和并行流一样，在多核处理器上使用分支/合并框架不一定比顺序执行快。分支/合并框架需要“预热”或者说要执行几遍才会被JIT编译器优化。</li>
+</ul>
+<h3 id="工作窃取"><a href="#工作窃取" class="headerlink" title="工作窃取"></a>工作窃取</h3><ul>
+<li>在理想情况下，划分并行任务时，应该让每个任务都用完全相同的时间完成，让所有的CPU内核都同样繁忙。但是实际上，每个子任务所花的时间可能天差地别，要么是因为划分策略效率低，要么是有不可预知的原因，例如磁盘访问慢，或是需要和外部服务进行协调执行。</li>
+<li>分支/合并框架使用工作窃取来解决工作量不平衡的问题。在实际使用中，任务会被差不多地分配到<code>ForkJoinPool</code>中的所有线程上。每个线程都为分配给它的任务保存一个双向链式队列，每完成一个任务，就会从队列头上取出下一个任务开始执行。如果某个线程早早完成了分配给它的所有任务，也就是它的任务队列已经空了，而其它的线程还很忙。这时，该线程会随机选择一个别的线程，从其队尾“偷走”一个任务。这个过程一直继续下去，直到所有的任务都执行完毕，所有的队列都清空。这就是为什么要划成许多小任务而不是少数几个大任务，这有助于更好地在工作线程之间平衡负载。</li>
+</ul>
+<h2 id="Spliterator"><a href="#Spliterator" class="headerlink" title="Spliterator"></a>Spliterator</h2><ul>
+<li><code>Spliterator</code>，和<code>Iterator</code>一样用于遍历数据源中的元素，但它是为了并行执行而设计的。</li>
+</ul>
+<pre class=" language-java"><code class="language-java"><span class="token comment" spellcheck="true">// Spliterator接口定义</span>
+<span class="token keyword">public</span> <span class="token keyword">interface</span> <span class="token class-name">Spliterator</span><span class="token operator">&lt;</span>T<span class="token operator">></span> <span class="token punctuation">{</span>
+    <span class="token keyword">boolean</span> <span class="token function">tryAdvance</span><span class="token punctuation">(</span>Consumer<span class="token operator">&lt;</span><span class="token operator">?</span> <span class="token keyword">super</span> T<span class="token operator">></span> action<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    Spliterator<span class="token operator">&lt;</span>T<span class="token operator">></span> <span class="token function">trySplit</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">long</span> <span class="token function">estimateSize</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">int</span> <span class="token function">characteristics</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h3 id="拆分过程"><a href="#拆分过程" class="headerlink" title="拆分过程"></a>拆分过程</h3><p><img src="/images/2019-08-12_202534.png" alt="拆分过程状态转换"></p>
+<ul>
+<li>将<code>Stream</code>拆分成多个部分的算法是一个递归过程，不断地对<code>Spliterator</code>调用<code>trySplit</code>直到它返回<code>null</code>。当所有的<code>Spliterator</code>都返回<code>null</code>则拆分终止。</li>
+<li><code>Spliterator</code>接口声明的最后一个抽象方法是<code>characteristics</code>，它将返回一个<code>int</code>，代表<code>Spliterator</code>本身特性集的编码。</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>特性</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ORDERED</code></td>
+<td>元素有既定顺序（例如<code>List</code>），因此<code>Spliterator</code>在遍历和划分时也会遵守这一顺序</td>
+</tr>
+<tr>
+<td><code>DISTINCT</code></td>
+<td>对于任意一对遍历过的元素<code>x</code>和<code>y</code>，<code>x.equals(y)</code>返回<code>false</code></td>
+</tr>
+<tr>
+<td><code>SORTED</code></td>
+<td>遍历的元素按照一个预定义的顺序排序</td>
+</tr>
+<tr>
+<td><code>SIZED</code></td>
+<td>该<code>Spliterator</code>由一个已知大小的源建立（例如<code>Set</code>），因此<code>estimatedSize()</code>返回的是准确值</td>
+</tr>
+<tr>
+<td><code>NONNULL</code></td>
+<td>保证遍历的元素不会为<code>null</code></td>
+</tr>
+<tr>
+<td><code>IMMUTABLE</code></td>
+<td><code>Spliterator</code>的数据源不能被修改。这意味着在遍历时不能添加、删除或修改任何元素</td>
+</tr>
+<tr>
+<td><code>CONCURRENT</code></td>
+<td>该<code>Spliterator</code>的数据源可以被其他线程同时修改而无需同步</td>
+</tr>
+<tr>
+<td><code>SUBSIZED</code></td>
+<td>该<code>Spliterator</code>和所有从它拆分出来的<code>Spliterator</code>都是<code>SIZED</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="实现自定义Spliterator"><a href="#实现自定义Spliterator" class="headerlink" title="实现自定义Spliterator"></a>实现自定义Spliterator</h3><pre class=" language-java"><code class="language-java"><span class="token keyword">class</span> <span class="token class-name">WordCounterSpliterator</span> <span class="token keyword">implements</span> <span class="token class-name">Spliterator</span><span class="token operator">&lt;</span>Character<span class="token operator">></span> <span class="token punctuation">{</span>
+    <span class="token keyword">private</span> <span class="token keyword">final</span> String string<span class="token punctuation">;</span>
+    <span class="token keyword">private</span> <span class="token keyword">int</span> currentChar <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">public</span> <span class="token function">WordCounterSpliterator</span><span class="token punctuation">(</span>String string<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>string <span class="token operator">=</span> string<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> <span class="token keyword">boolean</span> <span class="token function">tryAdvance</span><span class="token punctuation">(</span>Consumer<span class="token operator">&lt;</span><span class="token operator">?</span> <span class="token keyword">super</span> Character<span class="token operator">></span> action<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        action<span class="token punctuation">.</span><span class="token function">accept</span><span class="token punctuation">(</span>string<span class="token punctuation">.</span><span class="token function">charAt</span><span class="token punctuation">(</span>currentChar<span class="token operator">++</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> currentChar <span class="token operator">&lt;</span> string<span class="token punctuation">.</span><span class="token function">length</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> Spliterator<span class="token operator">&lt;</span>Character<span class="token operator">></span> <span class="token function">trySplit</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">int</span> currentSize <span class="token operator">=</span> string<span class="token punctuation">.</span><span class="token function">length</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-</span> currentChar<span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>currentSize <span class="token operator">&lt;</span> <span class="token number">10</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">return</span> null<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token comment" spellcheck="true">// 从中间开始，找下一个空白字符，然后拆分，以避免从单词中间拆开</span>
+        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> splitPos <span class="token operator">=</span> <span class="token punctuation">(</span>currentSize <span class="token operator">>></span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token operator">+</span> currentChar<span class="token punctuation">;</span> splitPos <span class="token operator">&lt;</span> string<span class="token punctuation">.</span><span class="token function">length</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> splitPos<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span>Character<span class="token punctuation">.</span><span class="token function">isWhitespace</span><span class="token punctuation">(</span>string<span class="token punctuation">.</span><span class="token function">charAt</span><span class="token punctuation">(</span>splitPos<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                Spliterator<span class="token operator">&lt;</span>Character<span class="token operator">></span> spliterator <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">WordCounterSpliterator</span><span class="token punctuation">(</span>string<span class="token punctuation">.</span><span class="token function">substring</span><span class="token punctuation">(</span>currentChar<span class="token punctuation">,</span> splitPos<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                currentChar <span class="token operator">=</span> splitPos<span class="token punctuation">;</span>
+                <span class="token keyword">return</span> spliterator<span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">return</span> null<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> <span class="token keyword">long</span> <span class="token function">estimateSize</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> string<span class="token punctuation">.</span><span class="token function">length</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-</span> currentChar<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> <span class="token keyword">int</span> <span class="token function">characteristics</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> ORDERED <span class="token operator">+</span> SIZED <span class="token operator">+</span> SUBSIZED <span class="token operator">+</span> NONNULL <span class="token operator">+</span> IMMUTABLE<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">class</span> <span class="token class-name">WordCounter</span> <span class="token punctuation">{</span>
+    <span class="token keyword">private</span> <span class="token keyword">final</span> <span class="token keyword">int</span> counter<span class="token punctuation">;</span>
+    <span class="token keyword">private</span> <span class="token keyword">final</span> <span class="token keyword">boolean</span> lastSpace<span class="token punctuation">;</span>
+
+    <span class="token keyword">public</span> <span class="token function">WordCounter</span><span class="token punctuation">(</span><span class="token keyword">int</span> counter<span class="token punctuation">,</span> <span class="token keyword">boolean</span> lastSpace<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>counter <span class="token operator">=</span> counter<span class="token punctuation">;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>lastSpace <span class="token operator">=</span> lastSpace<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment" spellcheck="true">// 遍历，见状态转换图</span>
+    <span class="token keyword">public</span> WordCounter <span class="token function">accumulate</span><span class="token punctuation">(</span>Character c<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>Character<span class="token punctuation">.</span><span class="token function">isWhitespace</span><span class="token punctuation">(</span>c<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">return</span> lastSpace <span class="token operator">?</span> <span class="token keyword">this</span> <span class="token operator">:</span> <span class="token keyword">new</span> <span class="token class-name">WordCounter</span><span class="token punctuation">(</span>counter<span class="token punctuation">,</span> <span class="token boolean">true</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+            <span class="token keyword">return</span> lastSpace <span class="token operator">?</span> <span class="token keyword">new</span> <span class="token class-name">WordCounter</span><span class="token punctuation">(</span>counter <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token boolean">false</span><span class="token punctuation">)</span> <span class="token operator">:</span> <span class="token keyword">this</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment" spellcheck="true">// 归约方法，将两个WordCounter合并为一个</span>
+    <span class="token keyword">public</span> WordCounter <span class="token function">combine</span><span class="token punctuation">(</span>WordCounter wordCounter<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">WordCounter</span><span class="token punctuation">(</span>counter <span class="token operator">+</span> wordCounter<span class="token punctuation">.</span>counter<span class="token punctuation">,</span> wordCounter<span class="token punctuation">.</span>lastSpace<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">int</span> <span class="token function">getCounter</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> counter<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Main</span> <span class="token punctuation">{</span>
+
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">int</span> <span class="token function">countWords</span><span class="token punctuation">(</span>Stream<span class="token operator">&lt;</span>Character<span class="token operator">></span> stream<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// 使用流归约</span>
+        WordCounter wordCounter <span class="token operator">=</span> stream<span class="token punctuation">.</span><span class="token function">reduce</span><span class="token punctuation">(</span>
+                <span class="token keyword">new</span> <span class="token class-name">WordCounter</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token boolean">true</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+                WordCounter<span class="token operator">:</span><span class="token operator">:</span>accumulate<span class="token punctuation">,</span>
+                WordCounter<span class="token operator">:</span><span class="token operator">:</span>combine
+        <span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> wordCounter<span class="token punctuation">.</span><span class="token function">getCounter</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">final</span> String SENTENCE <span class="token operator">=</span> <span class="token string">" Nel mezzo del cammin di nostra vita mi ritrovai in una selva oscura"</span> <span class="token operator">+</span>
+                <span class="token string">" che la dritta via era smarrita "</span><span class="token punctuation">;</span>
+        Spliterator<span class="token operator">&lt;</span>Character<span class="token operator">></span> spliterator <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">WordCounterSpliterator</span><span class="token punctuation">(</span>SENTENCE<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        Stream<span class="token operator">&lt;</span>Character<span class="token operator">></span> stream <span class="token operator">=</span> StreamSupport<span class="token punctuation">.</span><span class="token function">stream</span><span class="token punctuation">(</span>spliterator<span class="token punctuation">,</span> <span class="token boolean">true</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Found "</span> <span class="token operator">+</span> Main<span class="token punctuation">.</span><span class="token function">countWords</span><span class="token punctuation">(</span>stream<span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token string">" words"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<ul>
+<li><code>tryAdvance</code>方法的行为类似于普通的<code>Iterator</code>，因为它会按顺序一个一个使用<code>Spliterator</code>中的元素，并且还有其他元素要遍历就返回<code>true</code>。在上面代码中，<code>tryAdvance</code>将当前位置的<code>Character</code>传给了<code>Consumer</code>，并让位置加一。作为参数传递的<code>Consumer</code>是一个Java内部类，在遍历流时将要处理的<code>Character</code>传给了一系列要对其执行的函数。这里传递给了<code>accumulate()</code>。</li>
+<li><code>trySplit</code>方法定义了拆分要遍历的数据结构的逻辑。首先要设定不再进一步拆分的下限，以避免生成太多的任务。拆分时，一旦找到合适的位置，就可以创建一个新的<code>Spliterator</code>来遍历从当前位置到拆分位置的子串。</li>
+<li><code>estimatedSize</code>是这个<code>Spliterator</code>解析的<code>String</code>的总长度和当前遍历位置的差。</li>
+</ul>
+</div></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="mailto:undefined">SinLapis</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="http://sinlapis.github.io/2019/08/08/Java8实战笔记0x03/">http://sinlapis.github.io/2019/08/08/Java8实战笔记0x03/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/笔记/">笔记</a><a class="post-meta__tags" href="/tags/Java/">Java</a></div><nav id="pagination"><div class="prev-post pull-left"><a href="/2019/08/12/Java8实战笔记0x04/"><i class="fa fa-chevron-left">  </i><span>Java8实战笔记0x04</span></a></div><div class="next-post pull-right"><a href="/2019/08/05/Java8实战笔记0x02/"><span>Java8实战笔记0x02</span><i class="fa fa-chevron-right"></i></a></div></nav></div></div><footer><div class="layout" id="footer"><div class="copyright">&copy;2017 - 2021 By SinLapis</div><div class="framework-info"><span>Driven - </span><a href="http://hexo.io"><span>Hexo</span></a><span class="footer-separator">|</span><span>Theme - </span><a href="https://github.com/Molunerfinn/hexo-theme-melody"><span>Melody</span></a></div><div class="busuanzi"><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><span id="busuanzi_container_page_pv"><i class="fa fa-file-o"></i><span id="busuanzi_value_page_pv"></span><span></span></span></div></div></footer><i class="fa fa-arrow-up" id="go-up" aria-hidden="true"></i><script src="https://cdn.jsdelivr.net/npm/animejs@latest/anime.min.js"></script><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@latest/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-ui-pack@latest/velocity.ui.min.js"></script><script src="/js/utils.js?version=1.6.1"></script><script src="/js/fancybox.js?version=1.6.1"></script><script src="/js/sidebar.js?version=1.6.1"></script><script src="/js/copy.js?version=1.6.1"></script><script src="/js/fireworks.js?version=1.6.1"></script><script src="/js/transition.js?version=1.6.1"></script><script src="/js/scroll.js?version=1.6.1"></script><script src="/js/head.js?version=1.6.1"></script><script>if(/Android|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent)) {
+  $('#nav').addClass('is-mobile')
+  $('footer').addClass('is-mobile')
+}</script></body></html>

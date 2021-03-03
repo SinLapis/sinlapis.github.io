@@ -1,0 +1,399 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta name="generator" content="Hexo 3.9.0"><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta name="description" content="Java编程思想笔记0x12"><meta name="keywords" content="笔记,Java"><meta name="author" content="SinLapis"><meta name="copyright" content="SinLapis"><title>Java编程思想笔记0x12 | SinLapis的博客</title><link rel="shortcut icon" href="/images/87235d96-63d9-443d-a4fa-8093fac33ada_200x200.png"><link rel="stylesheet" href="/css/index.css?version=1.6.1"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@latest/css/font-awesome.min.css?version=1.6.1"><link rel="dns-prefetch" href="https://cdn.staticfile.org"><link rel="dns-prefetch" href="https://cdn.bootcss.com"><link rel="dns-prefetch" href="https://creativecommons.org"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  }
+} </script><link rel="stylesheet" href="/css/prism.css" type="text/css"></head><body><i class="fa fa-arrow-right" id="toggle-sidebar" aria-hidden="true"></i><div id="sidebar"><div class="toggle-sidebar-info text-center"><span data-toggle="Toggle article">Toggle site</span><hr></div><div class="sidebar-toc"><div class="sidebar-toc__title">Catalog</div><div class="sidebar-toc__progress"><span class="progress-notice">You've read</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar"></div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#枚举类型（二）"><span class="toc-number">1.</span> <span class="toc-text">枚举类型（二）</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#使用EnumSet替代标志"><span class="toc-number">1.1.</span> <span class="toc-text">使用EnumSet替代标志</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#使用EnumMap"><span class="toc-number">1.2.</span> <span class="toc-text">使用EnumMap</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#常量相关方法"><span class="toc-number">1.3.</span> <span class="toc-text">常量相关方法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#使用enum职责链"><span class="toc-number">1.3.1.</span> <span class="toc-text">使用enum职责链</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#使用enum的状态机"><span class="toc-number">1.3.2.</span> <span class="toc-text">使用enum的状态机</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#多路分发"><span class="toc-number">1.4.</span> <span class="toc-text">多路分发</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#使用enum分发"><span class="toc-number">1.4.1.</span> <span class="toc-text">使用enum分发</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#使用常量相关的方法"><span class="toc-number">1.4.2.</span> <span class="toc-text">使用常量相关的方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#使用EnumMap分发"><span class="toc-number">1.4.3.</span> <span class="toc-text">使用EnumMap分发</span></a></li></ol></li></ol></li></ol></div></div><div class="author-info hide"><div class="author-info__avatar text-center"><img src="/images/3774d809.jpg"></div><div class="author-info__name text-center">SinLapis</div><div class="author-info__description text-center"></div><hr><div class="author-info-articles"><a class="author-info-articles__archives article-meta" href="/archives"><span class="pull-left">Articles</span><span class="pull-right">103</span></a><a class="author-info-articles__tags article-meta" href="/tags"><span class="pull-left">Tags</span><span class="pull-right">70</span></a><a class="author-info-articles__categories article-meta" href="/categories"><span class="pull-left">Categories</span><span class="pull-right">20</span></a></div><hr><div class="author-info-links"><div class="author-info-links__title text-center">Links</div><a class="author-info-links__name text-center" href="http://chace.in/">chace</a></div></div></div><div id="content-outer"><div class="no-bg" id="top-container"><div id="page-header"><span class="pull-left"> <a id="site-name" href="/">SinLapis的博客</a></span><i class="fa fa-bars toggle-menu pull-right" aria-hidden="true"></i><span class="pull-right menus"><a class="site-page" href="/">Home</a><a class="site-page" href="/ACGBlog">ACG</a><a class="site-page" href="/archives">Archives</a><a class="site-page" href="/tags">Tags</a><a class="site-page" href="/categories">Categories</a></span></div><div id="post-info"><div id="post-title">Java编程思想笔记0x12</div><div id="post-meta"><time class="post-meta__date"><i class="fa fa-calendar" aria-hidden="true"></i> 2019-07-21</time><span class="post-meta__separator">|</span><i class="fa fa-inbox post-meta__icon" aria-hidden="true"></i><a class="post-meta__categories" href="/categories/Java/">Java</a></div></div></div><div class="layout" id="content-inner"><article id="post"><div class="article-container" id="post-content"><h1 id="枚举类型（二）"><a href="#枚举类型（二）" class="headerlink" title="枚举类型（二）"></a>枚举类型（二）</h1><h2 id="使用EnumSet替代标志"><a href="#使用EnumSet替代标志" class="headerlink" title="使用EnumSet替代标志"></a>使用EnumSet替代标志</h2><ul>
+<li>是一种面向<code>enum</code>的标志，可以用来表示某种“开/关”信息。其内部实现是将一个<code>long</code>值作为位向量，因此<code>EnumSet</code>非常高效。</li>
+</ul>
+<pre class=" language-java"><code class="language-java"><span class="token keyword">enum</span> AlarmPoints <span class="token punctuation">{</span>
+    STAIR1<span class="token punctuation">,</span> STAIR2<span class="token punctuation">,</span> LOBBY<span class="token punctuation">,</span> OFFICE1<span class="token punctuation">,</span> OFFICE2<span class="token punctuation">,</span> OFFICE3<span class="token punctuation">,</span>
+    OFFICE4<span class="token punctuation">,</span> BATHROOM<span class="token punctuation">,</span> UTILITY<span class="token punctuation">,</span> KITCHEN
+<span class="token punctuation">}</span>
+
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Test</span> <span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token keyword">throws</span> Exception <span class="token punctuation">{</span>
+        EnumSet<span class="token operator">&lt;</span>AlarmPoints<span class="token operator">></span> points <span class="token operator">=</span> EnumSet<span class="token punctuation">.</span><span class="token function">noneOf</span><span class="token punctuation">(</span>AlarmPoints<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        points<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span>AlarmPoints<span class="token punctuation">.</span>BATHROOM<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>points<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        points<span class="token punctuation">.</span><span class="token function">addAll</span><span class="token punctuation">(</span>EnumSet<span class="token punctuation">.</span><span class="token function">of</span><span class="token punctuation">(</span>AlarmPoints<span class="token punctuation">.</span>STAIR1<span class="token punctuation">,</span> AlarmPoints<span class="token punctuation">.</span>STAIR2<span class="token punctuation">,</span> AlarmPoints<span class="token punctuation">.</span>KITCHEN<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>points<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        points <span class="token operator">=</span> EnumSet<span class="token punctuation">.</span><span class="token function">allOf</span><span class="token punctuation">(</span>AlarmPoints<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        points<span class="token punctuation">.</span><span class="token function">removeAll</span><span class="token punctuation">(</span>EnumSet<span class="token punctuation">.</span><span class="token function">of</span><span class="token punctuation">(</span>AlarmPoints<span class="token punctuation">.</span>STAIR1<span class="token punctuation">,</span> AlarmPoints<span class="token punctuation">.</span>STAIR2<span class="token punctuation">,</span> AlarmPoints<span class="token punctuation">.</span>KITCHEN<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>points<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        points<span class="token punctuation">.</span><span class="token function">removeAll</span><span class="token punctuation">(</span>EnumSet<span class="token punctuation">.</span><span class="token function">range</span><span class="token punctuation">(</span>AlarmPoints<span class="token punctuation">.</span>OFFICE1<span class="token punctuation">,</span> AlarmPoints<span class="token punctuation">.</span>OFFICE4<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>points<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        points <span class="token operator">=</span> EnumSet<span class="token punctuation">.</span><span class="token function">complementOf</span><span class="token punctuation">(</span>points<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>points<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<ul>
+<li><del><code>EnumSet.of()</code>方法被重载了很多次，不仅为可变数量参数进行类重载，还为接收1到5个显式的参数的情况进行类重载。即当使用2到5个参数时，会调用对应的重载方法，而使用1个或者多于5个参数时，会调用可变参数的<code>of()</code>方法。注意，1个参数不会导致编译器构造可变参数数组。</del></li>
+<li><p><em>在JDK 11中，<code>EnumSet.of()</code>不同的重载方法有：1至5个显式声明参数的方法，和一个参数列表为<code>(E first, E... rest)</code>的方法。</em></p>
+</li>
+<li><p><em>在创建<code>EnumSet</code>对象时，如果枚举实例小于等于64个，则使用一个<code>long</code>值，否则使用一个<code>long</code>数组。</em></p>
+</li>
+</ul>
+<h2 id="使用EnumMap"><a href="#使用EnumMap" class="headerlink" title="使用EnumMap"></a>使用EnumMap</h2><ul>
+<li><code>EnumMap</code>要求其中的键必须来自一个<code>enum</code>。由于枚举实例总数量是确定的，<code>EnumMap</code>内部使用了数组实现。调用<code>put()</code>方法时键只能是枚举实例，其它操作和普通的<code>Map</code>基本一致。</li>
+</ul>
+<pre class=" language-java"><code class="language-java"><span class="token keyword">enum</span> AlarmPoints <span class="token punctuation">{</span>
+    STAIR1<span class="token punctuation">,</span> STAIR2<span class="token punctuation">,</span> LOBBY<span class="token punctuation">,</span> OFFICE1<span class="token punctuation">,</span> OFFICE2<span class="token punctuation">,</span> OFFICE3<span class="token punctuation">,</span>
+    OFFICE4<span class="token punctuation">,</span> BATHROOM<span class="token punctuation">,</span> UTILITY<span class="token punctuation">,</span> KITCHEN
+<span class="token punctuation">}</span>
+<span class="token keyword">interface</span> <span class="token class-name">Command</span> <span class="token punctuation">{</span>
+    <span class="token keyword">void</span> <span class="token function">action</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Test</span> <span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token keyword">throws</span> Exception <span class="token punctuation">{</span>
+        EnumMap<span class="token operator">&lt;</span>AlarmPoints<span class="token punctuation">,</span> Command<span class="token operator">></span> em <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">EnumMap</span><span class="token operator">&lt;</span><span class="token operator">></span><span class="token punctuation">(</span>AlarmPoints<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        em<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span>AlarmPoints<span class="token punctuation">.</span>KITCHEN<span class="token punctuation">,</span> <span class="token keyword">new</span> <span class="token class-name">Command</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">action</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Kichen fire!"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        em<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span>AlarmPoints<span class="token punctuation">.</span>BATHROOM<span class="token punctuation">,</span> <span class="token keyword">new</span> <span class="token class-name">Command</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">action</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Bathroom alart!"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">for</span><span class="token punctuation">(</span>Map<span class="token punctuation">.</span>Entry<span class="token operator">&lt;</span>AlarmPoints<span class="token punctuation">,</span> Command<span class="token operator">></span> e<span class="token operator">:</span> em<span class="token punctuation">.</span><span class="token function">entrySet</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">print</span><span class="token punctuation">(</span>e<span class="token punctuation">.</span><span class="token function">getKey</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token string">": "</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            e<span class="token punctuation">.</span><span class="token function">getValue</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">action</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">try</span> <span class="token punctuation">{</span>
+            em<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>AlarmPoints<span class="token punctuation">.</span>UTILITY<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">action</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">Exception</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>e<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span class="token comment" spellcheck="true">/* Output:
+BATHROOM: Bathroom alart!
+KITCHEN: Kichen fire!
+java.lang.NullPointerException
+*/</span>
+</code></pre>
+<ul>
+<li>上面代码是一种命令模式的用法，即首先需要一个只有单一方法的接口，然后从该接口实现具有各自不同的行为的多个子类。之后可以根据需要构造命令对象并使用。</li>
+<li>如果<code>EnumMap</code>没有为某个键调用<code>put()</code>方法来存入相应的值的话，那么其对应的值就为<code>null</code>。</li>
+<li><em>注意<code>foreach</code>中元素的泛型声明不可省略</em></li>
+</ul>
+<h2 id="常量相关方法"><a href="#常量相关方法" class="headerlink" title="常量相关方法"></a>常量相关方法</h2><ul>
+<li>可以为<code>enum</code>实例编写方法，从而为每个枚举实例赋予各自不同的行为。首先需要为<code>enum</code>定义一个或多个方法（或者抽象方法），然后为选择枚举实例进行覆盖方法（如果是抽象方法则每个枚举实例都要实现该方法）。</li>
+</ul>
+<pre class=" language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">enum</span> Test <span class="token punctuation">{</span>
+    DATE_TIME <span class="token punctuation">{</span>
+        String <span class="token function">getInfo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">return</span> DateFormat<span class="token punctuation">.</span><span class="token function">getDateInstance</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">format</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Date</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span> 
+    CLASSPATH <span class="token punctuation">{</span>
+        String <span class="token function">getInfo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">return</span> System<span class="token punctuation">.</span><span class="token function">getenv</span><span class="token punctuation">(</span><span class="token string">"CLASSPATH"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span> 
+    VERSION <span class="token punctuation">{</span>
+        String <span class="token function">getInfo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">return</span> System<span class="token punctuation">.</span><span class="token function">getProperty</span><span class="token punctuation">(</span><span class="token string">"java.version"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    TEST <span class="token punctuation">{</span>
+        String <span class="token function">getInfo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">return</span> <span class="token string">"test info"</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">int</span> <span class="token function">getNumber</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">return</span> <span class="token number">222222</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span><span class="token punctuation">;</span>
+    <span class="token keyword">abstract</span> String <span class="token function">getInfo</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">int</span> <span class="token function">getNumber</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token number">111111</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token keyword">throws</span> Exception <span class="token punctuation">{</span>
+        <span class="token keyword">for</span> <span class="token punctuation">(</span>Test t<span class="token operator">:</span> <span class="token function">values</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>t<span class="token punctuation">.</span><span class="token function">getInfo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token string">" "</span> <span class="token operator">+</span> t<span class="token punctuation">.</span><span class="token function">getNumber</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span class="token comment" spellcheck="true">/* Output:
+2019年7月21日 111111
+.;C:\Program Files\Java\jdk-11.0.3\lib\dt.jar;C:\Program Files\Java\jdk-11.0.3\lib\tools.jar; 111111
+11.0.3 111111
+test info 222222
+*/</span>
+</code></pre>
+<ul>
+<li>通过相应的枚举实例，可以调用其上的方法，这通常也称为表驱动的代码（tabledriven code）。在上面代码中，枚举实例似乎被当做其“超类”来使用，在调用覆盖（实现）的方法（抽象方法）时体现多态的行为。</li>
+</ul>
+<h3 id="使用enum职责链"><a href="#使用enum职责链" class="headerlink" title="使用enum职责链"></a>使用enum职责链</h3><ul>
+<li>在职责链设计模式中，可以用多种不同的方法来解决一个问题，然后将它们链接在一起。当一个请求到来时，遍历这个链，直到链中的某个解决方案能够处理该请求。</li>
+<li>通过常量相关的方法，可以很容易地实现一个简单的职责链。其中每一次尝试可以看做一个策略（设计模式），完整的处理方式列表就是一个职责链。</li>
+</ul>
+<pre class=" language-java"><code class="language-java"><span class="token keyword">enum</span> Handle <span class="token punctuation">{</span>
+    PLUS <span class="token punctuation">{</span>
+        <span class="token keyword">boolean</span> <span class="token function">modify</span><span class="token punctuation">(</span><span class="token keyword">int</span> src<span class="token punctuation">,</span> <span class="token keyword">int</span> target<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">switch</span><span class="token punctuation">(</span>target <span class="token operator">-</span> src<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                <span class="token keyword">case</span> <span class="token number">1</span><span class="token operator">:</span> 
+                    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"plus"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                    <span class="token keyword">return</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+                <span class="token keyword">default</span><span class="token operator">:</span> <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    MINUS <span class="token punctuation">{</span>
+        <span class="token keyword">boolean</span> <span class="token function">modify</span><span class="token punctuation">(</span><span class="token keyword">int</span> src<span class="token punctuation">,</span> <span class="token keyword">int</span> target<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">switch</span><span class="token punctuation">(</span>target <span class="token operator">-</span> src<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                <span class="token keyword">case</span> <span class="token operator">-</span><span class="token number">1</span><span class="token operator">:</span> 
+                    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"minus"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                    <span class="token keyword">return</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+                <span class="token keyword">default</span><span class="token operator">:</span> <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    ABS <span class="token punctuation">{</span>
+        <span class="token keyword">boolean</span> <span class="token function">modify</span><span class="token punctuation">(</span><span class="token keyword">int</span> src<span class="token punctuation">,</span> <span class="token keyword">int</span> target<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">switch</span><span class="token punctuation">(</span>target <span class="token operator">+</span> src<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                <span class="token keyword">case</span> <span class="token number">0</span><span class="token operator">:</span> 
+                    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"abs"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                    <span class="token keyword">return</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+                <span class="token keyword">default</span><span class="token operator">:</span> <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span><span class="token punctuation">;</span>
+    <span class="token keyword">abstract</span> <span class="token keyword">boolean</span> <span class="token function">modify</span><span class="token punctuation">(</span><span class="token keyword">int</span> src<span class="token punctuation">,</span> <span class="token keyword">int</span> target<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span> 
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Test</span> <span class="token punctuation">{</span>
+    <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">modify</span><span class="token punctuation">(</span><span class="token keyword">int</span> src<span class="token punctuation">,</span> <span class="token keyword">int</span> target<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">print</span><span class="token punctuation">(</span>src <span class="token operator">+</span> <span class="token string">" "</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">for</span><span class="token punctuation">(</span>Handle h<span class="token operator">:</span> Handle<span class="token punctuation">.</span><span class="token function">values</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">if</span><span class="token punctuation">(</span>h<span class="token punctuation">.</span><span class="token function">modify</span><span class="token punctuation">(</span>src<span class="token punctuation">,</span> target<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token keyword">return</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"can't modify"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token keyword">throws</span> Exception <span class="token punctuation">{</span>
+        Random r <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Random</span><span class="token punctuation">(</span><span class="token number">47</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">int</span> target <span class="token operator">=</span> r<span class="token punctuation">.</span><span class="token function">nextInt</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span> <span class="token operator">-</span> <span class="token number">5</span><span class="token punctuation">;</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>target<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token number">10</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">int</span> src <span class="token operator">=</span> r<span class="token punctuation">.</span><span class="token function">nextInt</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span> <span class="token operator">-</span> <span class="token number">5</span><span class="token punctuation">;</span>
+            <span class="token function">modify</span><span class="token punctuation">(</span>src<span class="token punctuation">,</span> target<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span class="token comment" spellcheck="true">/* Output:
+3
+0 can't modify
+-2 can't modify
+-4 can't modify
+-4 can't modify
+4 minus
+3 can't modify
+-5 can't modify
+-3 abs
+2 plus
+3 can't modify
+*/</span>
+</code></pre>
+<h3 id="使用enum的状态机"><a href="#使用enum的状态机" class="headerlink" title="使用enum的状态机"></a>使用enum的状态机</h3><ul>
+<li>枚举类型非常适合用来创建状态机。一个状态机有有限的特定状态，它通常根据输入，从一个状态转移到下一个状态。每个状态都具有某些可接受的输入，不同的输入回事状态机从当前状态转移到不同的新状态。由于<code>enum</code>对其实例有严格的限制，非常适合用来表现不同的状态和输入。</li>
+</ul>
+<pre class=" language-java"><code class="language-java"><span class="token keyword">enum</span> Check <span class="token punctuation">{</span>
+    EVEN <span class="token punctuation">{</span>
+        <span class="token keyword">void</span> <span class="token function">next</span><span class="token punctuation">(</span><span class="token keyword">char</span> n<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">switch</span><span class="token punctuation">(</span>n<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                <span class="token keyword">case</span> <span class="token string">'0'</span><span class="token operator">:</span>
+                    c <span class="token operator">=</span> ODD<span class="token punctuation">;</span>
+                    <span class="token keyword">return</span><span class="token punctuation">;</span>
+                <span class="token keyword">case</span> <span class="token string">'1'</span><span class="token operator">:</span>
+                    <span class="token keyword">return</span><span class="token punctuation">;</span>
+                <span class="token keyword">default</span><span class="token operator">:</span>
+                    c <span class="token operator">=</span> ERROR<span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    ODD <span class="token punctuation">{</span>
+        <span class="token keyword">void</span> <span class="token function">next</span><span class="token punctuation">(</span><span class="token keyword">char</span> n<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">switch</span><span class="token punctuation">(</span>n<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                <span class="token keyword">case</span> <span class="token string">'0'</span><span class="token operator">:</span>
+                    c <span class="token operator">=</span> EVEN<span class="token punctuation">;</span>
+                    <span class="token keyword">return</span><span class="token punctuation">;</span>
+                <span class="token keyword">case</span> <span class="token string">'1'</span><span class="token operator">:</span>
+                    <span class="token keyword">return</span><span class="token punctuation">;</span>
+                <span class="token keyword">default</span><span class="token operator">:</span>
+                    c <span class="token operator">=</span> ERROR<span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    ERROR<span class="token punctuation">;</span>
+    <span class="token keyword">private</span> <span class="token keyword">static</span> Check c<span class="token punctuation">;</span>
+    <span class="token keyword">void</span> <span class="token function">next</span><span class="token punctuation">(</span><span class="token keyword">char</span> n<span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">RuntimeException</span><span class="token punctuation">(</span><span class="token string">"no such method."</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token punctuation">}</span><span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">check</span><span class="token punctuation">(</span>String num<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        c <span class="token operator">=</span> EVEN<span class="token punctuation">;</span>
+        <span class="token keyword">char</span><span class="token punctuation">[</span><span class="token punctuation">]</span> ns <span class="token operator">=</span> num<span class="token punctuation">.</span><span class="token function">toCharArray</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">char</span> n<span class="token operator">:</span> ns<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            c<span class="token punctuation">.</span><span class="token function">next</span><span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">if</span><span class="token punctuation">(</span>c <span class="token operator">==</span> ERROR<span class="token punctuation">)</span> <span class="token keyword">break</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">switch</span><span class="token punctuation">(</span>c<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">case</span> ODD<span class="token operator">:</span>
+                System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"odd 0s"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token keyword">return</span><span class="token punctuation">;</span>
+            <span class="token keyword">case</span> EVEN<span class="token operator">:</span>
+                System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"even 0s"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token keyword">return</span><span class="token punctuation">;</span>
+            <span class="token keyword">case</span> ERROR<span class="token operator">:</span>
+                System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"incorrect input"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Test</span> <span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token keyword">throws</span> Exception <span class="token punctuation">{</span>
+        Check<span class="token punctuation">.</span><span class="token function">check</span><span class="token punctuation">(</span><span class="token string">"01001100001"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        Check<span class="token punctuation">.</span><span class="token function">check</span><span class="token punctuation">(</span><span class="token string">"000011110000"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        Check<span class="token punctuation">.</span><span class="token function">check</span><span class="token punctuation">(</span><span class="token string">"00110020"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span class="token comment" spellcheck="true">/* Output:
+odd 0s
+even 0s
+incorrect input
+*/</span>
+</code></pre>
+<ul>
+<li><em>上面代码中实现了判断一串字符串的二进制数中有奇数还是偶数个0。有三种状态，<code>EVEN</code>、<code>ODD</code>、<code>ERROR</code>，前两种状态根据输入的不同决定将要转移的下一个状态，而<code>ERROR</code>则表示输入有误，仅作为最终状态。</em></li>
+</ul>
+<h2 id="多路分发"><a href="#多路分发" class="headerlink" title="多路分发"></a>多路分发</h2><ul>
+<li><em>如果存在一种多元运算，其变量类型范围确定但是不能知道某个变量的具体类型，并且该运算结果与变量类型相关，即该运算的实现需要判断各个参数的类型，那么此时可以使用多路分发。</em></li>
+</ul>
+<pre class=" language-java"><code class="language-java"><span class="token keyword">enum</span> Outcome <span class="token punctuation">{</span> WIN<span class="token punctuation">,</span> DRAW<span class="token punctuation">,</span> LOSE<span class="token punctuation">}</span>
+<span class="token keyword">interface</span> <span class="token class-name">Item</span> <span class="token punctuation">{</span>
+    Outcome <span class="token function">compete</span><span class="token punctuation">(</span>Item it<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    Outcome <span class="token function">eval</span><span class="token punctuation">(</span>Paper p<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    Outcome <span class="token function">eval</span><span class="token punctuation">(</span>Scissors s<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    Outcome <span class="token function">eval</span><span class="token punctuation">(</span>Rock r<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">class</span> <span class="token class-name">Paper</span> <span class="token keyword">implements</span> <span class="token class-name">Item</span> <span class="token punctuation">{</span>
+    <span class="token keyword">public</span> Outcome <span class="token function">compete</span><span class="token punctuation">(</span>Item it<span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token keyword">return</span> it<span class="token punctuation">.</span><span class="token function">eval</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+    <span class="token keyword">public</span> Outcome <span class="token function">eval</span><span class="token punctuation">(</span>Paper p<span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token keyword">return</span> Outcome<span class="token punctuation">.</span>DRAW<span class="token punctuation">;</span> <span class="token punctuation">}</span>
+    <span class="token keyword">public</span> Outcome <span class="token function">eval</span><span class="token punctuation">(</span>Scissors s<span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token keyword">return</span> Outcome<span class="token punctuation">.</span>WIN<span class="token punctuation">;</span> <span class="token punctuation">}</span>
+    <span class="token keyword">public</span> Outcome <span class="token function">eval</span><span class="token punctuation">(</span>Rock r<span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token keyword">return</span> Outcome<span class="token punctuation">.</span>LOSE<span class="token punctuation">;</span> <span class="token punctuation">}</span>
+    <span class="token keyword">public</span> String <span class="token function">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token keyword">return</span> <span class="token string">"Paper"</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">class</span> <span class="token class-name">Scissors</span> <span class="token keyword">implements</span> <span class="token class-name">Item</span> <span class="token punctuation">{</span>
+    <span class="token keyword">public</span> Outcome <span class="token function">compete</span><span class="token punctuation">(</span>Item it<span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token keyword">return</span> it<span class="token punctuation">.</span><span class="token function">eval</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+    <span class="token keyword">public</span> Outcome <span class="token function">eval</span><span class="token punctuation">(</span>Paper p<span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token keyword">return</span> Outcome<span class="token punctuation">.</span>LOSE<span class="token punctuation">;</span> <span class="token punctuation">}</span>
+    <span class="token keyword">public</span> Outcome <span class="token function">eval</span><span class="token punctuation">(</span>Scissors s<span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token keyword">return</span> Outcome<span class="token punctuation">.</span>DRAW<span class="token punctuation">;</span> <span class="token punctuation">}</span>
+    <span class="token keyword">public</span> Outcome <span class="token function">eval</span><span class="token punctuation">(</span>Rock r<span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token keyword">return</span> Outcome<span class="token punctuation">.</span>WIN<span class="token punctuation">;</span> <span class="token punctuation">}</span>
+    <span class="token keyword">public</span> String <span class="token function">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token keyword">return</span> <span class="token string">"Scissors"</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">class</span> <span class="token class-name">Rock</span> <span class="token keyword">implements</span> <span class="token class-name">Item</span> <span class="token punctuation">{</span>
+    <span class="token keyword">public</span> Outcome <span class="token function">compete</span><span class="token punctuation">(</span>Item it<span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token keyword">return</span> it<span class="token punctuation">.</span><span class="token function">eval</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+    <span class="token keyword">public</span> Outcome <span class="token function">eval</span><span class="token punctuation">(</span>Paper p<span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token keyword">return</span> Outcome<span class="token punctuation">.</span>WIN<span class="token punctuation">;</span> <span class="token punctuation">}</span>
+    <span class="token keyword">public</span> Outcome <span class="token function">eval</span><span class="token punctuation">(</span>Scissors s<span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token keyword">return</span> Outcome<span class="token punctuation">.</span>LOSE<span class="token punctuation">;</span> <span class="token punctuation">}</span>
+    <span class="token keyword">public</span> Outcome <span class="token function">eval</span><span class="token punctuation">(</span>Rock r<span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token keyword">return</span> Outcome<span class="token punctuation">.</span>DRAW<span class="token punctuation">;</span> <span class="token punctuation">}</span>
+    <span class="token keyword">public</span> String <span class="token function">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token keyword">return</span> <span class="token string">"Rock"</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Test</span> <span class="token punctuation">{</span>
+    <span class="token keyword">static</span> <span class="token keyword">final</span> <span class="token keyword">int</span> SIZE <span class="token operator">=</span> <span class="token number">10</span><span class="token punctuation">;</span>
+    <span class="token keyword">private</span> <span class="token keyword">static</span> Random r <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Random</span><span class="token punctuation">(</span><span class="token number">47</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> Item <span class="token function">newItem</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">switch</span><span class="token punctuation">(</span>r<span class="token punctuation">.</span><span class="token function">nextInt</span><span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">default</span><span class="token operator">:</span>
+            <span class="token keyword">case</span> <span class="token number">0</span><span class="token operator">:</span> <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">Scissors</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">case</span> <span class="token number">1</span><span class="token operator">:</span> <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">Rock</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">case</span> <span class="token number">2</span><span class="token operator">:</span> <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">Paper</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">match</span><span class="token punctuation">(</span>Item a<span class="token punctuation">,</span> Item b<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>a <span class="token operator">+</span> <span class="token string">" vs. "</span> <span class="token operator">+</span> b <span class="token operator">+</span> <span class="token string">": "</span> <span class="token operator">+</span> a<span class="token punctuation">.</span><span class="token function">compete</span><span class="token punctuation">(</span>b<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token keyword">throws</span> Exception <span class="token punctuation">{</span>
+        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> SIZE<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token function">match</span><span class="token punctuation">(</span><span class="token function">newItem</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token function">newItem</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<ul>
+<li>上面代码实现了“石头、剪刀、布”游戏，采用了接口的方式进行多路分发（两路分发），避免了需要判断类型的代码。</li>
+</ul>
+<h3 id="使用enum分发"><a href="#使用enum分发" class="headerlink" title="使用enum分发"></a>使用enum分发</h3><pre class=" language-java"><code class="language-java"><span class="token keyword">enum</span> Outcome <span class="token punctuation">{</span> WIN<span class="token punctuation">,</span> DRAW<span class="token punctuation">,</span> LOSE<span class="token punctuation">}</span>
+<span class="token keyword">enum</span> RoShamBo2 <span class="token punctuation">{</span>
+    <span class="token function">PAPER</span><span class="token punctuation">(</span>Outcome<span class="token punctuation">.</span>DRAW<span class="token punctuation">,</span> Outcome<span class="token punctuation">.</span>LOSE<span class="token punctuation">,</span> Outcome<span class="token punctuation">.</span>WIN<span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token function">SCISSORS</span><span class="token punctuation">(</span>Outcome<span class="token punctuation">.</span>WIN<span class="token punctuation">,</span> Outcome<span class="token punctuation">.</span>DRAW<span class="token punctuation">,</span> Outcome<span class="token punctuation">.</span>LOSE<span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token function">ROCK</span><span class="token punctuation">(</span>Outcome<span class="token punctuation">.</span>LOSE<span class="token punctuation">,</span> Outcome<span class="token punctuation">.</span>WIN<span class="token punctuation">,</span> Outcome<span class="token punctuation">.</span>DRAW<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">private</span> Outcome vPaper<span class="token punctuation">,</span> vScissors<span class="token punctuation">,</span> vRock<span class="token punctuation">;</span>
+    <span class="token function">RoShamBo2</span><span class="token punctuation">(</span>Outcome paper<span class="token punctuation">,</span> Outcome scissors<span class="token punctuation">,</span> Outcome rock<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>vPaper <span class="token operator">=</span> paper<span class="token punctuation">;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>vScissorc <span class="token operator">=</span> scissors<span class="token punctuation">;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>vRock <span class="token operator">=</span> rock<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">public</span> Outcome <span class="token function">compete</span><span class="token punctuation">(</span>RoShamBo2 it<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">switch</span><span class="token punctuation">(</span>it<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">default</span><span class="token operator">:</span>
+            <span class="token keyword">case</span> Outcome<span class="token punctuation">.</span>PAPER<span class="token operator">:</span> <span class="token keyword">return</span> vPaper<span class="token punctuation">;</span>
+            <span class="token keyword">case</span> Outcome<span class="token punctuation">.</span>SCISSORS<span class="token operator">:</span> <span class="token keyword">return</span> vScissors<span class="token punctuation">;</span>
+            <span class="token keyword">case</span> Outcome<span class="token punctuation">.</span>ROCK<span class="token operator">:</span> <span class="token keyword">return</span> vRock<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span class="token comment" spellcheck="true">// 调用略</span>
+</code></pre>
+<ul>
+<li>上面代码使用构造器来初始化每个枚举实例，并以一组结果作为参数，形成类类似查询表的结构。</li>
+</ul>
+<h3 id="使用常量相关的方法"><a href="#使用常量相关的方法" class="headerlink" title="使用常量相关的方法"></a>使用常量相关的方法</h3><ul>
+<li>为每个枚举实例提供方法的不同实现同样可以完成多路分发，但是在需要添加类型时代码的改动量要多于使用<code>enum</code>分发。</li>
+</ul>
+<pre class=" language-java"><code class="language-java"><span class="token keyword">enum</span> Outcome <span class="token punctuation">{</span> WIN<span class="token punctuation">,</span> DRAW<span class="token punctuation">,</span> LOSE<span class="token punctuation">}</span>
+<span class="token keyword">enum</span> RoShamBo3 <span class="token punctuation">{</span>
+    PAPER <span class="token punctuation">{</span>
+        <span class="token keyword">public</span> Outcome <span class="token function">compete</span><span class="token punctuation">(</span>RoShamBo3 it<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">switch</span><span class="token punctuation">(</span>it<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                <span class="token keyword">default</span><span class="token operator">:</span> 
+                <span class="token keyword">case</span> PAPER<span class="token operator">:</span> <span class="token keyword">return</span> DRAW<span class="token punctuation">;</span>
+                <span class="token keyword">case</span> SCISSORS<span class="token operator">:</span> <span class="token keyword">return</span> LOSE<span class="token punctuation">;</span>
+                <span class="token keyword">case</span> ROCK<span class="token operator">:</span> <span class="token keyword">return</span> WIN<span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">// SCISSORS, ROCK略 </span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h3 id="使用EnumMap分发"><a href="#使用EnumMap分发" class="headerlink" title="使用EnumMap分发"></a>使用EnumMap分发</h3><pre class=" language-java"><code class="language-java"><span class="token keyword">enum</span> Outcome <span class="token punctuation">{</span> WIN<span class="token punctuation">,</span> DRAW<span class="token punctuation">,</span> LOSE<span class="token punctuation">}</span>
+<span class="token keyword">enum</span> RoShamBo5 <span class="token punctuation">{</span>
+    PAPER<span class="token punctuation">,</span> SCISSORS<span class="token punctuation">,</span> ROCK<span class="token punctuation">;</span>
+    <span class="token keyword">static</span> EnumMap<span class="token operator">&lt;</span>RoShamBo5<span class="token punctuation">,</span> EnumMap<span class="token operator">&lt;</span>RoShamBo5<span class="token punctuation">,</span> Outcome<span class="token operator">>></span> table <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">EnumMap</span><span class="token operator">&lt;</span><span class="token operator">></span><span class="token punctuation">(</span>RoShamBo5<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">static</span> <span class="token punctuation">{</span>
+        <span class="token keyword">for</span> <span class="token punctuation">(</span>RoShamBo5 it<span class="token operator">:</span> RoShamBo5<span class="token punctuation">.</span><span class="token function">values</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            table<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span>it<span class="token punctuation">,</span> <span class="token keyword">new</span> <span class="token class-name">EnumMap</span><span class="token operator">&lt;</span><span class="token operator">></span><span class="token punctuation">(</span>RoShamBo5<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token function">initRow</span><span class="token punctuation">(</span>PAPER<span class="token punctuation">,</span> Outcome<span class="token punctuation">.</span>DRAW<span class="token punctuation">,</span> Outcome<span class="token punctuation">.</span>LOSE<span class="token punctuation">,</span> Outcome<span class="token punctuation">.</span>WIN<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">initRow</span><span class="token punctuation">(</span>SCISSORS<span class="token punctuation">,</span> Outcome<span class="token punctuation">.</span>WIN<span class="token punctuation">,</span> Outcome<span class="token punctuation">.</span>DRAW<span class="token punctuation">,</span> Outcome<span class="token punctuation">.</span>LOSE<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">initRow</span><span class="token punctuation">(</span>ROCK<span class="token punctuation">,</span> Outcome<span class="token punctuation">.</span>LOSE<span class="token punctuation">,</span> Outcome<span class="token punctuation">.</span>WIN<span class="token punctuation">,</span> Outcome<span class="token punctuation">.</span>DRAW<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">initRow</span><span class="token punctuation">(</span>RoShamBo5 it<span class="token punctuation">,</span> Outcome vPAPER<span class="token punctuation">,</span> Outcome vSCISSORS<span class="token punctuation">,</span> Outcome vROCK<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        EnumMap<span class="token operator">&lt;</span>RoShamBo5<span class="token punctuation">,</span> Outcome<span class="token operator">></span> row <span class="token operator">=</span> RoShamBo5<span class="token punctuation">.</span>table<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>it<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        row<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span>RoShamBo5<span class="token punctuation">.</span>PAPER<span class="token punctuation">,</span> vPAPER<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        row<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span>RoShamBo5<span class="token punctuation">.</span>SCISSORS<span class="token punctuation">,</span> vSCISSORS<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        row<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span>RoShamBo5<span class="token punctuation">.</span>ROCK<span class="token punctuation">,</span> vROCK<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">public</span> Outcome <span class="token function">compete</span><span class="token punctuation">(</span>RoShamBo5 it<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> table<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>it<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<ul>
+<li>使用<code>EnumMap</code>实现类似于表格的方法，从而达到了分发的目的。当然也可以使用二维数组来实现。</li>
+</ul>
+</div></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="mailto:undefined">SinLapis</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="http://sinlapis.github.io/2019/07/21/Java编程思想笔记0x12/">http://sinlapis.github.io/2019/07/21/Java编程思想笔记0x12/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/笔记/">笔记</a><a class="post-meta__tags" href="/tags/Java/">Java</a></div><nav id="pagination"><div class="prev-post pull-left"><a href="/2019/07/22/全排列/"><i class="fa fa-chevron-left">  </i><span>全排列</span></a></div><div class="next-post pull-right"><a href="/2019/07/18/Java编程思想笔记0x11/"><span>Java编程思想笔记0x11</span><i class="fa fa-chevron-right"></i></a></div></nav></div></div><footer><div class="layout" id="footer"><div class="copyright">&copy;2017 - 2021 By SinLapis</div><div class="framework-info"><span>Driven - </span><a href="http://hexo.io"><span>Hexo</span></a><span class="footer-separator">|</span><span>Theme - </span><a href="https://github.com/Molunerfinn/hexo-theme-melody"><span>Melody</span></a></div><div class="busuanzi"><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><span id="busuanzi_container_page_pv"><i class="fa fa-file-o"></i><span id="busuanzi_value_page_pv"></span><span></span></span></div></div></footer><i class="fa fa-arrow-up" id="go-up" aria-hidden="true"></i><script src="https://cdn.jsdelivr.net/npm/animejs@latest/anime.min.js"></script><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@latest/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-ui-pack@latest/velocity.ui.min.js"></script><script src="/js/utils.js?version=1.6.1"></script><script src="/js/fancybox.js?version=1.6.1"></script><script src="/js/sidebar.js?version=1.6.1"></script><script src="/js/copy.js?version=1.6.1"></script><script src="/js/fireworks.js?version=1.6.1"></script><script src="/js/transition.js?version=1.6.1"></script><script src="/js/scroll.js?version=1.6.1"></script><script src="/js/head.js?version=1.6.1"></script><script>if(/Android|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent)) {
+  $('#nav').addClass('is-mobile')
+  $('footer').addClass('is-mobile')
+}</script></body></html>

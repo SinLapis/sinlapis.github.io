@@ -1,0 +1,71 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta name="generator" content="Hexo 3.9.0"><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta name="description" content="深入理解Java虚拟机笔记0x03"><meta name="keywords" content="笔记,Java"><meta name="author" content="SinLapis"><meta name="copyright" content="SinLapis"><title>深入理解Java虚拟机笔记0x03 | SinLapis的博客</title><link rel="shortcut icon" href="/images/87235d96-63d9-443d-a4fa-8093fac33ada_200x200.png"><link rel="stylesheet" href="/css/index.css?version=1.6.1"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@latest/css/font-awesome.min.css?version=1.6.1"><link rel="dns-prefetch" href="https://cdn.staticfile.org"><link rel="dns-prefetch" href="https://cdn.bootcss.com"><link rel="dns-prefetch" href="https://creativecommons.org"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  }
+} </script><link rel="stylesheet" href="/css/prism.css" type="text/css"></head><body><i class="fa fa-arrow-right" id="toggle-sidebar" aria-hidden="true"></i><div id="sidebar"><div class="toggle-sidebar-info text-center"><span data-toggle="Toggle article">Toggle site</span><hr></div><div class="sidebar-toc"><div class="sidebar-toc__title">Catalog</div><div class="sidebar-toc__progress"><span class="progress-notice">You've read</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar"></div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Java线程"><span class="toc-number">1.</span> <span class="toc-text">Java线程</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#volatile"><span class="toc-number">1.1.</span> <span class="toc-text">volatile</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Java线程实现"><span class="toc-number">1.2.</span> <span class="toc-text">Java线程实现</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#线程状态及转换"><span class="toc-number">1.3.</span> <span class="toc-text">线程状态及转换</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#线程安全"><span class="toc-number">1.4.</span> <span class="toc-text">线程安全</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#线程安全程度"><span class="toc-number">1.4.1.</span> <span class="toc-text">线程安全程度</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#线程安全的实现方法"><span class="toc-number">1.4.2.</span> <span class="toc-text">线程安全的实现方法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#互斥同步"><span class="toc-number">1.4.2.1.</span> <span class="toc-text">互斥同步</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#非阻塞同步"><span class="toc-number">1.4.2.2.</span> <span class="toc-text">非阻塞同步</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#无同步方案"><span class="toc-number">1.4.2.3.</span> <span class="toc-text">无同步方案</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#锁优化"><span class="toc-number">1.4.3.</span> <span class="toc-text">锁优化</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#自旋锁"><span class="toc-number">1.4.3.1.</span> <span class="toc-text">自旋锁</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#锁消除"><span class="toc-number">1.4.3.2.</span> <span class="toc-text">锁消除</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#锁粗化"><span class="toc-number">1.4.3.3.</span> <span class="toc-text">锁粗化</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#轻量级锁"><span class="toc-number">1.4.3.4.</span> <span class="toc-text">轻量级锁</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#偏向锁"><span class="toc-number">1.4.3.5.</span> <span class="toc-text">偏向锁</span></a></li></ol></li></ol></li></ol></li></ol></div></div><div class="author-info hide"><div class="author-info__avatar text-center"><img src="/images/3774d809.jpg"></div><div class="author-info__name text-center">SinLapis</div><div class="author-info__description text-center"></div><hr><div class="author-info-articles"><a class="author-info-articles__archives article-meta" href="/archives"><span class="pull-left">Articles</span><span class="pull-right">103</span></a><a class="author-info-articles__tags article-meta" href="/tags"><span class="pull-left">Tags</span><span class="pull-right">70</span></a><a class="author-info-articles__categories article-meta" href="/categories"><span class="pull-left">Categories</span><span class="pull-right">20</span></a></div><hr><div class="author-info-links"><div class="author-info-links__title text-center">Links</div><a class="author-info-links__name text-center" href="http://chace.in/">chace</a></div></div></div><div id="content-outer"><div class="no-bg" id="top-container"><div id="page-header"><span class="pull-left"> <a id="site-name" href="/">SinLapis的博客</a></span><i class="fa fa-bars toggle-menu pull-right" aria-hidden="true"></i><span class="pull-right menus"><a class="site-page" href="/">Home</a><a class="site-page" href="/ACGBlog">ACG</a><a class="site-page" href="/archives">Archives</a><a class="site-page" href="/tags">Tags</a><a class="site-page" href="/categories">Categories</a></span></div><div id="post-info"><div id="post-title">深入理解Java虚拟机笔记0x03</div><div id="post-meta"><time class="post-meta__date"><i class="fa fa-calendar" aria-hidden="true"></i> 2019-06-23</time><span class="post-meta__separator">|</span><i class="fa fa-inbox post-meta__icon" aria-hidden="true"></i><a class="post-meta__categories" href="/categories/Java/">Java</a></div></div></div><div class="layout" id="content-inner"><article id="post"><div class="article-container" id="post-content"><h1 id="Java线程"><a href="#Java线程" class="headerlink" title="Java线程"></a>Java线程</h1><h2 id="volatile"><a href="#volatile" class="headerlink" title="volatile"></a>volatile</h2><ul>
+<li>当变量声明为volatile时，变量将具备以下两个特性：<ul>
+<li>保证此变量对所有线程的可见性，即一个线程修改了volatile变量后，其余线程可以立即获得修改后的值。</li>
+<li>禁止指令重排序优化，即设置内存屏障，保证volatile变量修改更新到所有CPU上</li>
+</ul>
+</li>
+</ul>
+<h2 id="Java线程实现"><a href="#Java线程实现" class="headerlink" title="Java线程实现"></a>Java线程实现</h2><ul>
+<li>基于操作系统的原生线程模型。Windows和Linux下都使用一对一的线程模型。</li>
+</ul>
+<h2 id="线程状态及转换"><a href="#线程状态及转换" class="headerlink" title="线程状态及转换"></a>线程状态及转换</h2><ul>
+<li>新建：创建后未启动的线程</li>
+<li>运行：正在执行或者等待CPU为其分配运行时间</li>
+<li>无限期等待：等待被其它线程显式地唤醒，不会被分配CPU时间，例如没有设置Timeout的<code>Object.wait()</code>或者<code>Thread.join()</code></li>
+<li>限期等待：不会被分配CPU时间，但是不需要其它线程显式地唤醒，一定时间后会由系统自动唤醒，例如<code>Thread.sleep()</code>，设置了Timeout的<code>Object.wait()</code>或者<code>Thread.join()</code></li>
+<li>阻塞：等待获取一个排他锁。</li>
+<li>结束：已终止的线程状态。</li>
+</ul>
+<h2 id="线程安全"><a href="#线程安全" class="headerlink" title="线程安全"></a>线程安全</h2><h3 id="线程安全程度"><a href="#线程安全程度" class="headerlink" title="线程安全程度"></a>线程安全程度</h3><ol>
+<li>不可变：无论是对象的方法实现还是方法的调用者，都不需要再采取任何的线程安全保障措施。例如final关键字修饰的变量</li>
+<li>绝对线程安全：调用者不需要任何额外的同步措施。</li>
+<li>相对线程安全：保证对对象的单独操作是安全的，调用者不需要做额外的保障措施。但对于一些特定顺序的连续调用，就可能需要在调用端使用额外的同步手段来保证调用的正确性（可以保证调用对象不同的方法时，不同的方法不会交叉执行，但是无法保证一组方法的调用顺序）。例如对<code>Vector</code>对象同时进行<code>remove()</code>和<code>get()</code>操作时可能会出现删除第i个元素后面是访问第i个元素的情况。在Java语言中，大部分的线程安全类都属于这种类型。</li>
+<li>线程兼容：对象本身并不是线程安全的，但是可以通过在调用端正确地使用同步手段来保证对象在并发环境中可以安全使用。</li>
+<li>线程对立：无论调用端是否采取同步措施，都无法在多线程环境中并发使用的代码。</li>
+</ol>
+<h3 id="线程安全的实现方法"><a href="#线程安全的实现方法" class="headerlink" title="线程安全的实现方法"></a>线程安全的实现方法</h3><h4 id="互斥同步"><a href="#互斥同步" class="headerlink" title="互斥同步"></a>互斥同步</h4><ul>
+<li>保证共享数据在同一时刻只被一个（使用信号量的条件下是一些）线程使用</li>
+<li>是一种悲观的同步策略</li>
+<li>在Java中使用<code>synchronized</code>关键字进行同步。</li>
+</ul>
+<h4 id="非阻塞同步"><a href="#非阻塞同步" class="headerlink" title="非阻塞同步"></a>非阻塞同步</h4><ul>
+<li>基于冲突检测的乐观并发策略，即先进行操作，如果没有其它线程竞争，那么操作成功；反之，再采取其它补偿措施（最常见的措施是不断重试，直到成功为止），需要硬件保证操作和冲突检测两个步骤具备原子性。</li>
+<li>CAS指令：当且仅当内存值和预期值相等时，使用新值更新内存值，否则不更新。</li>
+<li>ABA问题：在某线程获取变量值时是A，在检查之前被改为了B，然后又恢复了A，检查时会认为该变量没有修改过。多数情况下该问题不影响程序的并发，如需解决，改为使用互斥同步可能更有效。</li>
+</ul>
+<h4 id="无同步方案"><a href="#无同步方案" class="headerlink" title="无同步方案"></a>无同步方案</h4><ul>
+<li>可重入代码：可以在代码执行的任何时刻中断它，转而去执行另外一段代码（包括递归调用它本身），在中断返回后，原来的程序不会出现任何错误。</li>
+<li>线程本地存储：把使用共享数据的代码放入同一线程中。</li>
+</ul>
+<h3 id="锁优化"><a href="#锁优化" class="headerlink" title="锁优化"></a>锁优化</h3><h4 id="自旋锁"><a href="#自旋锁" class="headerlink" title="自旋锁"></a>自旋锁</h4><ul>
+<li>让请求锁的线程进行短暂的等待，看锁是否很快就被释放。</li>
+<li>避免了线程切换开销，但是等待时间过长会浪费CPU资源</li>
+<li>自适应自旋锁：是否自旋、自旋时间不再确定，由前一次在同一个对象上的自旋锁时间和拥有者的状态决定。</li>
+</ul>
+<h4 id="锁消除"><a href="#锁消除" class="headerlink" title="锁消除"></a>锁消除</h4><ul>
+<li>对一些代码上要求同步，但是被检测到不可能存在共享数据竞争的锁进行消除。判定依据来源于逃逸分析。</li>
+<li>一些线程同步代码是内嵌的Java内部的，可以通过锁消除进行优化。</li>
+</ul>
+<h4 id="锁粗化"><a href="#锁粗化" class="headerlink" title="锁粗化"></a>锁粗化</h4><ul>
+<li>如果有连续的对同一个对象加锁，则虚拟机会把加锁同步的范围扩大至整个操作序列外部，以减少加锁解锁带来的性能损耗。</li>
+</ul>
+<h4 id="轻量级锁"><a href="#轻量级锁" class="headerlink" title="轻量级锁"></a>轻量级锁</h4><ul>
+<li>使用CAS操作和对象的Mark Word实现的锁机制。</li>
+<li>前提是绝大部分的锁在同步周期内是不存在竞争的，因此CAS操作避免了使用互斥量的开销。但是如果存在锁竞争，轻量级锁比传统的互斥同步还多出CAS操作的消耗。</li>
+</ul>
+<h4 id="偏向锁"><a href="#偏向锁" class="headerlink" title="偏向锁"></a>偏向锁</h4><ul>
+<li>该种锁偏向于第一个获得它的线程，在接下来的执行过程中，如果该锁没有被其它线程获取，则持有偏向锁的线程将永远不会进行同步。一旦有其它线程获取该锁，偏向模式即结束，转变为传统的互斥同步。</li>
+</ul>
+</div></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="mailto:undefined">SinLapis</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="http://sinlapis.github.io/2019/06/23/深入理解Java虚拟机笔记0x03/">http://sinlapis.github.io/2019/06/23/深入理解Java虚拟机笔记0x03/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/笔记/">笔记</a><a class="post-meta__tags" href="/tags/Java/">Java</a></div><nav id="pagination"><div class="prev-post pull-left"><a href="/2019/06/25/Java编程思想笔记0x00/"><i class="fa fa-chevron-left">  </i><span>Java编程思想笔记0x00</span></a></div><div class="next-post pull-right"><a href="/2019/06/23/深入理解Java虚拟机笔记0x02/"><span>深入理解Java虚拟机笔记0x02</span><i class="fa fa-chevron-right"></i></a></div></nav></div></div><footer><div class="layout" id="footer"><div class="copyright">&copy;2017 - 2021 By SinLapis</div><div class="framework-info"><span>Driven - </span><a href="http://hexo.io"><span>Hexo</span></a><span class="footer-separator">|</span><span>Theme - </span><a href="https://github.com/Molunerfinn/hexo-theme-melody"><span>Melody</span></a></div><div class="busuanzi"><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><span id="busuanzi_container_page_pv"><i class="fa fa-file-o"></i><span id="busuanzi_value_page_pv"></span><span></span></span></div></div></footer><i class="fa fa-arrow-up" id="go-up" aria-hidden="true"></i><script src="https://cdn.jsdelivr.net/npm/animejs@latest/anime.min.js"></script><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@latest/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-ui-pack@latest/velocity.ui.min.js"></script><script src="/js/utils.js?version=1.6.1"></script><script src="/js/fancybox.js?version=1.6.1"></script><script src="/js/sidebar.js?version=1.6.1"></script><script src="/js/copy.js?version=1.6.1"></script><script src="/js/fireworks.js?version=1.6.1"></script><script src="/js/transition.js?version=1.6.1"></script><script src="/js/scroll.js?version=1.6.1"></script><script src="/js/head.js?version=1.6.1"></script><script>if(/Android|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent)) {
+  $('#nav').addClass('is-mobile')
+  $('footer').addClass('is-mobile')
+}</script></body></html>

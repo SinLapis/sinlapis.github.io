@@ -1,0 +1,156 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta name="generator" content="Hexo 3.9.0"><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta name="description" content="使用K3s搭建Kubernetes集群"><meta name="keywords" content="Kubernetes,k8s,docker,k3s"><meta name="author" content="SinLapis"><meta name="copyright" content="SinLapis"><title>使用K3s搭建Kubernetes集群 | SinLapis的博客</title><link rel="shortcut icon" href="/images/87235d96-63d9-443d-a4fa-8093fac33ada_200x200.png"><link rel="stylesheet" href="/css/index.css?version=1.6.1"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@latest/css/font-awesome.min.css?version=1.6.1"><link rel="dns-prefetch" href="https://cdn.staticfile.org"><link rel="dns-prefetch" href="https://cdn.bootcss.com"><link rel="dns-prefetch" href="https://creativecommons.org"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  }
+} </script><link rel="stylesheet" href="/css/prism.css" type="text/css"></head><body><i class="fa fa-arrow-right" id="toggle-sidebar" aria-hidden="true"></i><div id="sidebar"><div class="toggle-sidebar-info text-center"><span data-toggle="Toggle article">Toggle site</span><hr></div><div class="sidebar-toc"><div class="sidebar-toc__title">Catalog</div><div class="sidebar-toc__progress"><span class="progress-notice">You've read</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar"></div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#使用K3s搭建Kubernetes集群"><span class="toc-number">1.</span> <span class="toc-text">使用K3s搭建Kubernetes集群</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Docker安装"><span class="toc-number">1.1.</span> <span class="toc-text">Docker安装</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#rancher安装"><span class="toc-number">1.2.</span> <span class="toc-text">rancher安装</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#k3s安装"><span class="toc-number">1.3.</span> <span class="toc-text">k3s安装</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#容器执行测试"><span class="toc-number">1.4.</span> <span class="toc-text">容器执行测试</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#添加节点"><span class="toc-number">1.5.</span> <span class="toc-text">添加节点</span></a></li></ol></li></ol></div></div><div class="author-info hide"><div class="author-info__avatar text-center"><img src="/images/3774d809.jpg"></div><div class="author-info__name text-center">SinLapis</div><div class="author-info__description text-center"></div><hr><div class="author-info-articles"><a class="author-info-articles__archives article-meta" href="/archives"><span class="pull-left">Articles</span><span class="pull-right">103</span></a><a class="author-info-articles__tags article-meta" href="/tags"><span class="pull-left">Tags</span><span class="pull-right">70</span></a><a class="author-info-articles__categories article-meta" href="/categories"><span class="pull-left">Categories</span><span class="pull-right">20</span></a></div><hr><div class="author-info-links"><div class="author-info-links__title text-center">Links</div><a class="author-info-links__name text-center" href="http://chace.in/">chace</a></div></div></div><div id="content-outer"><div class="no-bg" id="top-container"><div id="page-header"><span class="pull-left"> <a id="site-name" href="/">SinLapis的博客</a></span><i class="fa fa-bars toggle-menu pull-right" aria-hidden="true"></i><span class="pull-right menus"><a class="site-page" href="/">Home</a><a class="site-page" href="/ACGBlog">ACG</a><a class="site-page" href="/archives">Archives</a><a class="site-page" href="/tags">Tags</a><a class="site-page" href="/categories">Categories</a></span></div><div id="post-info"><div id="post-title">使用K3s搭建Kubernetes集群</div><div id="post-meta"><time class="post-meta__date"><i class="fa fa-calendar" aria-hidden="true"></i> 2020-01-09</time><span class="post-meta__separator">|</span><i class="fa fa-inbox post-meta__icon" aria-hidden="true"></i><a class="post-meta__categories" href="/categories/Kubernetes/">Kubernetes</a></div></div></div><div class="layout" id="content-inner"><article id="post"><div class="article-container" id="post-content"><h1 id="使用K3s搭建Kubernetes集群"><a href="#使用K3s搭建Kubernetes集群" class="headerlink" title="使用K3s搭建Kubernetes集群"></a>使用K3s搭建Kubernetes集群</h1><p>主要参考<a href="https://blog.ilemonrain.com/docker/rancher-with-k3s.html" target="_blank" rel="noopener">你的第一次轻量级K8S体验 —— 记一次Rancher 2.2 + K3S集成部署过程</a></p>
+<p>需要至少2台机器。</p>
+<p>当前各软件版本为：</p>
+<table>
+<thead>
+<tr>
+<th>软件名</th>
+<th>版本</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Docker</td>
+<td>18.09.9</td>
+</tr>
+<tr>
+<td>K3s</td>
+<td>v1.17.0+k3s.1</td>
+</tr>
+<tr>
+<td>rancher</td>
+<td>v2.3.3</td>
+</tr>
+</tbody>
+</table>
+<h2 id="Docker安装"><a href="#Docker安装" class="headerlink" title="Docker安装"></a>Docker安装</h2><p>直接参考<a href="https://docs.docker.com/install/linux/docker-ce/ubuntu/" target="_blank" rel="noopener">官方文档</a></p>
+<blockquote>
+<p>安装依赖使<code>apt</code>可以使用HTTPS的仓库</p>
+<pre class=" language-shell"><code class="language-shell">apt install -y \
+    apt-transport-https \
+    ca-certificates \
+    curl \
+    gnupg-agent \
+    software-properties-common
+</code></pre>
+<p>添加Docker官方的GPG密钥</p>
+<pre class=" language-shell"><code class="language-shell">curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+</code></pre>
+<p>添加Docker稳定版仓库</p>
+<pre class=" language-shell"><code class="language-shell">add-apt-repository \
+   "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
+   $(lsb_release -cs) \
+   stable"
+</code></pre>
+<p>更新<code>apt</code>索引</p>
+<pre class=" language-shell"><code class="language-shell">apt update
+</code></pre>
+<p>安装Docker</p>
+<pre class=" language-shell"><code class="language-shell">apt-get install -y docker-ce docker-ce-cli containerd.io
+</code></pre>
+</blockquote>
+<p>配置registry</p>
+<pre class=" language-shell"><code class="language-shell">docker pull registry:2
+docker run -d -p 5000:5000 --restart=always --name registry \
+    -v /var/data:/var/lib/registry registry:2
+</code></pre>
+<p>修改Docker配置<code>/etc/docker/daemon.json</code></p>
+<pre class=" language-json"><code class="language-json"><span class="token punctuation">{</span>
+      <span class="token property">"insecure-registries"</span> <span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">"192.168.226.11:5000"</span><span class="token punctuation">]</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h2 id="rancher安装"><a href="#rancher安装" class="headerlink" title="rancher安装"></a>rancher安装</h2><p>选择一台安装rancher server，这台不安装k3s，好像会有冲突。</p>
+<pre class=" language-shell"><code class="language-shell">docker run -d -v /data/docker/rancher-server/var/lib/rancher/:/var/lib/rancher/ --restart=unless-stopped --name rancher-server -p 80:80 -p 443:443 rancher/rancher:stable
+</code></pre>
+<p>之后访问<code>http://192.168.226.10/</code>（改成自己的ip）进行初始化部署。设定密码和地址后，可选切换语言。</p>
+<p>选择<code>添加集群 -&gt; 导入</code>，输入集群名，然后点击<code>创建</code>。保存最后一条指令，记得在<code>kubectl</code>前添加<code>k3s</code>。</p>
+<h2 id="k3s安装"><a href="#k3s安装" class="headerlink" title="k3s安装"></a>k3s安装</h2><p>到<a href="https://github.com/rancher/k3s/releases" target="_blank" rel="noopener">k3s - Releases</a>下载<code>k3s</code>文件（约50MB的那个），上传至<code>/usr/local/bin/</code>，并执行下面指令</p>
+<pre class=" language-shell"><code class="language-shell">chmod +x /usr/local/bin/k3s
+</code></pre>
+<p>下载<code>pause</code>镜像</p>
+<pre class=" language-shell"><code class="language-shell">docker pull kubernetes/pause:latest
+docker tag kubernetes/pause:latest k8s.gcr.io/pause
+</code></pre>
+<p>执行官方安装脚本</p>
+<pre class=" language-shell"><code class="language-shell">curl -sfL https://get.k3s.io | sh -
+</code></pre>
+<p>配置容器引擎使用Docker</p>
+<pre class=" language-shell"><code class="language-shell">vim /etc/systemd/system/multi-user.target.wants/k3s.service
+</code></pre>
+<p>在文件中<code>ExecStart</code>字段最后一个<code>\</code>后添加一行，并填入<code>--docker</code>，类似下面</p>
+<pre class=" language-ini"><code class="language-ini"><span class="token constant">ExecStart</span><span class="token attr-value"><span class="token punctuation">=</span>/usr/local/bin/k3s \</span>
+    server \
+    --docker
+</code></pre>
+<p>保存配置并重启<code>k3s</code></p>
+<pre class=" language-shell"><code class="language-shell">systemctl daemon-reload
+systemctl restart k3s
+</code></pre>
+<p>执行之前保存的指令，注意不要直接使用下面的样例，主机地址和<code>yaml</code>文件名要使用刚才生成的。</p>
+<pre class=" language-shell"><code class="language-shell">curl --insecure -sfL https://192.168.226.11/v3/import/nb4hcqpzsvggwhcsfgpj5vjss8s2wsqbhv82d72s68hx8cf6gfzhsj.yaml | k3s kubectl apply -f -
+</code></pre>
+<p>稍等一会界面就会出现节点状态。</p>
+<h2 id="容器执行测试"><a href="#容器执行测试" class="headerlink" title="容器执行测试"></a>容器执行测试</h2><p>参考<a href="https://kubernetes.io/docs/tasks/job/automated-tasks-with-cron-jobs/" target="_blank" rel="noopener">Kubernetes官方文档</a></p>
+<p>先准备一个镜像</p>
+<pre class=" language-shell"><code class="language-shell">docker pull busybox
+docker tag busybox:latest 192.168.226.11:5000/busybox:latest
+docker push 192.168.226.11:5000/busybox:latest
+</code></pre>
+<p>假设现在我们从私有仓库拉取一个镜像并执行。</p>
+<p>创建<code>job.yaml</code>文件</p>
+<pre class=" language-yaml"><code class="language-yaml"><span class="token key atrule">apiVersion</span><span class="token punctuation">:</span> batch/v1beta1
+<span class="token key atrule">kind</span><span class="token punctuation">:</span> CronJob
+<span class="token key atrule">metadata</span><span class="token punctuation">:</span>
+  <span class="token key atrule">name</span><span class="token punctuation">:</span> hello
+<span class="token key atrule">spec</span><span class="token punctuation">:</span>
+  <span class="token key atrule">schedule</span><span class="token punctuation">:</span> <span class="token string">"*/1 * * * *"</span>
+  <span class="token key atrule">jobTemplate</span><span class="token punctuation">:</span>
+    <span class="token key atrule">spec</span><span class="token punctuation">:</span>
+      <span class="token key atrule">template</span><span class="token punctuation">:</span>
+        <span class="token key atrule">spec</span><span class="token punctuation">:</span>
+          <span class="token key atrule">containers</span><span class="token punctuation">:</span>
+          <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> hello
+            <span class="token key atrule">image</span><span class="token punctuation">:</span> 192.168.226.11<span class="token punctuation">:</span>5000/busybox
+            <span class="token key atrule">args</span><span class="token punctuation">:</span>
+            <span class="token punctuation">-</span> /bin/sh
+            <span class="token punctuation">-</span> <span class="token punctuation">-</span>c
+            <span class="token punctuation">-</span> date; echo Hello from the Kubernetes cluster
+          <span class="token key atrule">restartPolicy</span><span class="token punctuation">:</span> OnFailure
+</code></pre>
+<p>创建<code>Job</code></p>
+<pre class=" language-shell"><code class="language-shell">k3s kubectl create -f job.yaml
+</code></pre>
+<p>查看<code>Job</code>状态</p>
+<pre class=" language-shell"><code class="language-shell">kubectl get cronjob hello
+</code></pre>
+<p>查看<code>Job</code>创建的<code>Pod</code></p>
+<pre class=" language-shell"><code class="language-shell">kubectl get jobs
+</code></pre>
+<p>选择上面的一个已完成的<code>pod</code>的id，例如<code>hello-1578545280</code>。获取这个<code>pod</code>的输出</p>
+<pre class=" language-shell"><code class="language-shell">pods=$(kubectl get pods --selector=job-name=hello-1578545280 --output=jsonpath={.items[*].metadata.name})
+kubectl logs $pods
+</code></pre>
+<h2 id="添加节点"><a href="#添加节点" class="headerlink" title="添加节点"></a>添加节点</h2><p>新节点同样先安装Docker。安装k3s按如下步骤。</p>
+<p>查看主节点的<code>node-token</code></p>
+<pre class=" language-shell"><code class="language-shell">cat /var/lib/rancher/k3s/server/node-token
+</code></pre>
+<p>在新节点上安装并启动为普通节点，注意ip地址和token改成自己的。</p>
+<pre class=" language-shell"><code class="language-shell">curl -sfL https://get.k3s.io | K3S_URL=https://192.168.226.11:6443 K3S_TOKEN=K105933dce21eca704fb3913c26976e0c13c36878fc0c846a0780915c12fccdd78e::server:1a8e2a73e1247868ccb5b3ce0b3cbc7e sh -
+</code></pre>
+<p>同样需要配置容器引擎使用Docker</p>
+<pre class=" language-shell"><code class="language-shell">vim /etc/systemd/system/multi-user.target.wants/k3s-agent.service 
+</code></pre>
+<p>修改方式和主节点一样，然后重启<code>k3s-agent</code>，在<code>rancher</code>界面即可看到新加入的节点。</p>
+</div></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="mailto:undefined">SinLapis</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="http://sinlapis.github.io/2020/01/09/使用K3s搭建Kubernetes集群/">http://sinlapis.github.io/2020/01/09/使用K3s搭建Kubernetes集群/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Kubernetes/">Kubernetes</a><a class="post-meta__tags" href="/tags/k8s/">k8s</a><a class="post-meta__tags" href="/tags/docker/">docker</a><a class="post-meta__tags" href="/tags/k3s/">k3s</a></div><nav id="pagination"><div class="prev-post pull-left"><a href="/2020/01/10/使用K8s和Kafka实现工作队列的并行处理/"><i class="fa fa-chevron-left">  </i><span>使用K8s和Kafka实现工作队列的并行处理</span></a></div><div class="next-post pull-right"><a href="/2019/12/31/microk8s部署多节点k8s集群/"><span>microk8s部署多节点k8s集群</span><i class="fa fa-chevron-right"></i></a></div></nav></div></div><footer><div class="layout" id="footer"><div class="copyright">&copy;2017 - 2021 By SinLapis</div><div class="framework-info"><span>Driven - </span><a href="http://hexo.io"><span>Hexo</span></a><span class="footer-separator">|</span><span>Theme - </span><a href="https://github.com/Molunerfinn/hexo-theme-melody"><span>Melody</span></a></div><div class="busuanzi"><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><span id="busuanzi_container_page_pv"><i class="fa fa-file-o"></i><span id="busuanzi_value_page_pv"></span><span></span></span></div></div></footer><i class="fa fa-arrow-up" id="go-up" aria-hidden="true"></i><script src="https://cdn.jsdelivr.net/npm/animejs@latest/anime.min.js"></script><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@latest/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-ui-pack@latest/velocity.ui.min.js"></script><script src="/js/utils.js?version=1.6.1"></script><script src="/js/fancybox.js?version=1.6.1"></script><script src="/js/sidebar.js?version=1.6.1"></script><script src="/js/copy.js?version=1.6.1"></script><script src="/js/fireworks.js?version=1.6.1"></script><script src="/js/transition.js?version=1.6.1"></script><script src="/js/scroll.js?version=1.6.1"></script><script src="/js/head.js?version=1.6.1"></script><script>if(/Android|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent)) {
+  $('#nav').addClass('is-mobile')
+  $('footer').addClass('is-mobile')
+}</script></body></html>

@@ -1,0 +1,508 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta name="generator" content="Hexo 3.9.0"><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta name="description" content><meta name="keywords" content><meta name="author" content="SinLapis"><meta name="copyright" content="SinLapis"><title>SinLapis的博客</title><link rel="shortcut icon" href="/images/87235d96-63d9-443d-a4fa-8093fac33ada_200x200.png"><link rel="stylesheet" href="/css/index.css?version=1.6.1"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@latest/css/font-awesome.min.css?version=1.6.1"><link rel="dns-prefetch" href="https://cdn.staticfile.org"><link rel="dns-prefetch" href="https://cdn.bootcss.com"><link rel="dns-prefetch" href="https://creativecommons.org"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  }
+} </script><link rel="stylesheet" href="/css/prism.css" type="text/css"></head><body><i class="fa fa-arrow-right" id="toggle-sidebar" aria-hidden="true"></i><div id="sidebar"><div class="author-info"><div class="author-info__avatar text-center"><img src="/images/3774d809.jpg"></div><div class="author-info__name text-center">SinLapis</div><div class="author-info__description text-center"></div><hr><div class="author-info-articles"><a class="author-info-articles__archives article-meta" href="/archives"><span class="pull-left">Articles</span><span class="pull-right">103</span></a><a class="author-info-articles__tags article-meta" href="/tags"><span class="pull-left">Tags</span><span class="pull-right">70</span></a><a class="author-info-articles__categories article-meta" href="/categories"><span class="pull-left">Categories</span><span class="pull-right">20</span></a></div><hr><div class="author-info-links"><div class="author-info-links__title text-center">Links</div><a class="author-info-links__name text-center" href="http://chace.in/">chace</a></div></div></div><nav class="no-bg" id="nav"><div id="page-header"><span class="pull-left"> <a id="site-name" href="/">SinLapis的博客</a></span><i class="fa fa-bars toggle-menu pull-right" aria-hidden="true"></i><span class="pull-right menus"><a class="site-page" href="/">Home</a><a class="site-page" href="/ACGBlog">ACG</a><a class="site-page" href="/archives">Archives</a><a class="site-page" href="/tags">Tags</a><a class="site-page" href="/categories">Categories</a></span></div><div id="site-info"><div id="site-title">SinLapis的博客</div><div id="site-sub-title"></div></div></nav><div id="content-outer"><div class="layout" id="content-inner"><div class="recent-post-item article-container"><a class="article-title" href="/2019/06/20/深入理解Java虚拟机笔记0x01/">深入理解Java虚拟机笔记0x01</a><time class="post-meta__date"><i class="fa fa-calendar" aria-hidden="true"></i> 2019-06-20</time><span class="article-meta"><span class="article-meta__separator">|</span><i class="fa fa-inbox article-meta__icon" aria-hidden="true"></i><a class="article-meta__categories" href="/categories/Java/">Java</a></span><span class="article-meta tags"><span class="article-meta__separator">|</span><i class="fa fa-tag article-meta__icon" aria-hidden="true"></i><a class="article-meta__tags" href="/tags/笔记/">笔记</a><span class="article-meta__link">-</span><i class="fa fa-tag article-meta__icon" aria-hidden="true"></i><a class="article-meta__tags" href="/tags/Java/">Java</a></span><div class="content"><h1 id="类文件结构"><a href="#类文件结构" class="headerlink" title="类文件结构"></a>类文件结构</h1><h2 id="魔数"><a href="#魔数" class="headerlink" title="魔数"></a>魔数</h2><ul>
+<li><code>0xCAFEBABE</code>，用于表示文件类型，4字节。</li>
+</ul>
+<h2 id="Class文件版本"><a href="#Class文件版本" class="headerlink" title="Class文件版本"></a>Class文件版本</h2><ul>
+<li>4字节，高版本能够兼容低版本，但是不能运行更新版本的Class文件。</li>
+</ul>
+<h2 id="常量池"><a href="#常量池" class="headerlink" title="常量池"></a>常量池</h2><ul>
+<li>入口有表示常量池容量计数值。</li>
+<li>主要包含字面量和符号引用。</li>
+<li>字面量：接近Java语言层面的常量概念，例如文本字符串，声明为final的常量值等。</li>
+<li>符号引用：包括类和接口的全限定名（含包名以及类名）、字段的名称和描述符、方法的名称和描述符。</li>
+</ul>
+<h2 id="访问标志"><a href="#访问标志" class="headerlink" title="访问标志"></a>访问标志</h2><ul>
+<li>用于标识该Class是类还是接口、是否为public、是否为abstract、是类的话是否为final等。</li>
+</ul>
+<h2 id="类索引、父类索引与接口索引集合"><a href="#类索引、父类索引与接口索引集合" class="headerlink" title="类索引、父类索引与接口索引集合"></a>类索引、父类索引与接口索引集合</h2><ul>
+<li>用于确定类的继承关系。</li>
+</ul>
+<h2 id="字段表集合"><a href="#字段表集合" class="headerlink" title="字段表集合"></a>字段表集合</h2><ul>
+<li>用于描述接口或者类中声明的变量，包括类级变量以及实例级变量，但是不包括方法内部声明的局部变量。</li>
+<li>字段描述信息包括：字段作用域（public、private、protected）、可变性（final）、并发可见性（volatile，是否强制从主内存读写）、可否被序列化（transient）、字段数据类型（基本类型、对象、数组）。</li>
+</ul>
+<h2 id="方法表集合"><a href="#方法表集合" class="headerlink" title="方法表集合"></a>方法表集合</h2><ul>
+<li>类似字段表，同样包含类访问标志、名称索引、描述符索引、属性表集合等。</li>
+<li>方法中的代码在属性表集合中。</li>
+</ul>
+<h2 id="属性表集合"><a href="#属性表集合" class="headerlink" title="属性表集合"></a>属性表集合</h2><h3 id="Code属性"><a href="#Code属性" class="headerlink" title="Code属性"></a>Code属性</h3><ul>
+<li>Class文件中最重要的一个属性，主要包括方法编译后的字节码。</li>
+<li>异常表也在Code属性中，表示确定的代码范围（开始行数到结束行数）如果出现了某些异常要跳转到到位置。</li>
+</ul>
+<h2 id="字节码"><a href="#字节码" class="headerlink" title="字节码"></a>字节码</h2><h3 id="支持的数据类型"><a href="#支持的数据类型" class="headerlink" title="支持的数据类型"></a>支持的数据类型</h3><ul>
+<li>byte、short、int、long、float、double、char、reference</li>
+</ul>
+<h3 id="指令类型"><a href="#指令类型" class="headerlink" title="指令类型"></a>指令类型</h3><ul>
+<li>加载和存储指令：常量读进操作栈、局部变量表读进操作栈、操作栈写入局部变量表</li>
+<li>运算指令：加法、减法、乘法、除法、求余、取反、位移、按位与、按位或、按位异或、自增、比较</li>
+<li>类型转换指令</li>
+<li>对象创建与访问指令：创建类实例、创建数组、访问类与实例、加载数组元素、写回数组元素、取数组长度</li>
+<li>操作数栈管理指令：出栈、复制栈顶元素并入栈、交换栈顶两个元素</li>
+<li>控制转移指令：条件分支、复合条件分支、无条件分支</li>
+<li>方法调用和返回指令</li>
+<li>异常处理指令</li>
+<li>同步指令</li>
+</ul>
+</div><hr></div><div class="recent-post-item article-container"><a class="article-title" href="/2019/06/19/深入理解Java虚拟机笔记0x00/">深入理解Java虚拟机笔记0x00</a><time class="post-meta__date"><i class="fa fa-calendar" aria-hidden="true"></i> 2019-06-19</time><span class="article-meta"><span class="article-meta__separator">|</span><i class="fa fa-inbox article-meta__icon" aria-hidden="true"></i><a class="article-meta__categories" href="/categories/Java/">Java</a></span><span class="article-meta tags"><span class="article-meta__separator">|</span><i class="fa fa-tag article-meta__icon" aria-hidden="true"></i><a class="article-meta__tags" href="/tags/笔记/">笔记</a><span class="article-meta__link">-</span><i class="fa fa-tag article-meta__icon" aria-hidden="true"></i><a class="article-meta__tags" href="/tags/Java/">Java</a></span><div class="content"><h1 id="JVM内存模型"><a href="#JVM内存模型" class="headerlink" title="JVM内存模型"></a>JVM内存模型</h1><ul>
+<li>程序计数器：线程私有，用于表示当前执行的字节码地址。</li>
+<li>虚拟机栈：线程私有，方法执行时创建一个栈帧，存储局部变量表、操作数栈、动态链接、方法出口等，服务于字节码。</li>
+<li>本地方法栈：同虚拟机栈，但为本地方法服务。</li>
+</ul>
+<blockquote>
+<p>本地方法：由Java调用非Java代码接口。</p>
+</blockquote>
+<ul>
+<li>堆：存放对象实例。</li>
+<li>方法区：已加载类的信息、常量、静态变量、即时编译后的代码。其中包括运行常量池。</li>
+</ul>
+<h1 id="对象"><a href="#对象" class="headerlink" title="对象"></a>对象</h1><h2 id="创建对象步骤"><a href="#创建对象步骤" class="headerlink" title="创建对象步骤"></a>创建对象步骤</h2><ol>
+<li>检查类的符号引用，若没有则进行类加载过程。</li>
+<li>分配内存。</li>
+<li>内存空间初始化（不含对象头）。</li>
+<li>配置对象头。</li>
+<li>执行构造函数。</li>
+</ol>
+<h2 id="对象的内存分配"><a href="#对象的内存分配" class="headerlink" title="对象的内存分配"></a>对象的内存分配</h2><p>包括对象头，实例数据，对齐填充</p>
+<h2 id="对象头"><a href="#对象头" class="headerlink" title="对象头"></a>对象头</h2><ul>
+<li>存储自身运行时数据，例如HashCode、GC分代年龄、锁状态等。</li>
+<li>类型指针。</li>
+<li>如果为数组，则还要有用于记录数组长度等块。</li>
+</ul>
+<h2 id="对象等访问定位"><a href="#对象等访问定位" class="headerlink" title="对象等访问定位"></a>对象等访问定位</h2><p>通过栈 -&gt; reference -&gt; 堆来操作对象，可以通过句柄或者直接指针访问。</p>
+<h1 id="Java-GC"><a href="#Java-GC" class="headerlink" title="Java GC"></a>Java GC</h1><h2 id="存活对象判断"><a href="#存活对象判断" class="headerlink" title="存活对象判断"></a>存活对象判断</h2><h3 id="引用计数算法"><a href="#引用计数算法" class="headerlink" title="引用计数算法"></a>引用计数算法</h3><ul>
+<li>为对象添加引用计数器，每次产生引用加1，引用失效减1。</li>
+<li>缺点：难以解决对象之间循环引用的问题。</li>
+</ul>
+<h3 id="可达性分析算法"><a href="#可达性分析算法" class="headerlink" title="可达性分析算法"></a>可达性分析算法</h3><ul>
+<li>从GC Root节点沿引用链向下搜索，当从GC Root到某对象不可达时则该对象应该被回收。</li>
+</ul>
+<h2 id="垃圾收集算法"><a href="#垃圾收集算法" class="headerlink" title="垃圾收集算法"></a>垃圾收集算法</h2><ul>
+<li>标记 - 清除算法：先通过可达性分析标记需要回收的对象，完成后统一回收所用被标记的对象。</li>
+<li>复制算法：将内存划分为两块，每次只用其中一块。用尽时，将存活的对象复制到另外一块上，然后将该块内存全部清理。主要用于新生代的内存回收。缺点是会浪费部分内存。</li>
+<li>标记 - 整理算法：标记步骤同标记 - 清除算法，整理则是将存活对象向内存的一端移动，然后清掉边界外的内存。</li>
+<li>分代收集：根据对象存活周期的不同，将村村划分为几块。一般是把Java堆分成新生代和老年代。</li>
+</ul>
+<h2 id="垃圾收集器"><a href="#垃圾收集器" class="headerlink" title="垃圾收集器"></a>垃圾收集器</h2><h3 id="Serial收集器"><a href="#Serial收集器" class="headerlink" title="Serial收集器"></a>Serial收集器</h3><ul>
+<li>单线程，STW 100ms以内。作用于新生代时采用复制算法，作用于老年代时使用标记 - 整理算法。</li>
+</ul>
+<h3 id="ParNew收集器"><a href="#ParNew收集器" class="headerlink" title="ParNew收集器"></a>ParNew收集器</h3><ul>
+<li>Serial收集器的多线程版</li>
+</ul>
+<h3 id="Parallel-Scavenge收集器"><a href="#Parallel-Scavenge收集器" class="headerlink" title="Parallel Scavenge收集器"></a>Parallel Scavenge收集器</h3><ul>
+<li>同ParNew收集器，回收新生代，目标为达到可控制的吞吐量。</li>
+</ul>
+<h3 id="CMS收集器"><a href="#CMS收集器" class="headerlink" title="CMS收集器"></a>CMS收集器</h3><ul>
+<li>采用标记 - 清除算法。</li>
+<li>步骤：<ol>
+<li>初始标记，STW</li>
+<li>并发标记，与其他线程同步运行</li>
+<li>重新标记，STW</li>
+<li>并发清除</li>
+</ol>
+</li>
+<li>缺点：<ol>
+<li>并发阶段会占用CPU资源而导致吞吐量下降</li>
+<li>无法处理浮动垃圾（并发清除时产生的垃圾）</li>
+<li>标记 - 清除带来的内存碎片问题</li>
+</ol>
+</li>
+</ul>
+<h3 id="G1收集器"><a href="#G1收集器" class="headerlink" title="G1收集器"></a>G1收集器</h3><ul>
+<li>采用标记 - 整理算法。</li>
+<li>优势：<ol>
+<li>利用多CPU、多核，缩短STW</li>
+<li>分代收集</li>
+<li>使用复制算法减少碎片产生</li>
+<li>可预测停顿</li>
+</ol>
+</li>
+<li>G1收集器将堆划分成大小相同堆多个Region，新生代和老年代不再物理隔离。跟踪Region中垃圾价值大小，维护优先列表，优先回收价值最大的Region。</li>
+<li>步骤：<ol>
+<li>初始标记，STW</li>
+<li>并发标记</li>
+<li>最终标记，STW</li>
+<li>筛选回收，STW</li>
+</ol>
+</li>
+</ul>
+<h2 id="内存分配与回收策略"><a href="#内存分配与回收策略" class="headerlink" title="内存分配与回收策略"></a>内存分配与回收策略</h2><ol>
+<li>对象优先在Eden分配，若Eden区没有足够空间则出发minor GC</li>
+<li>大对象直接进入老年代</li>
+<li>长期存活对象进入老年代</li>
+<li>动态的对象年龄判定：如果Survivor区相同年龄所有对象大小的总和大于Survivor区的一半，则年龄大于或等于该年龄的对象就可以直接进入老年代</li>
+<li>空间分配担保<ul>
+<li>老年代最大可用连续空间是否大于新生代所有对象空间，是则进行minor GC安全。</li>
+<li>老年代最大可用连续空间是否大于历次晋升到老年代对象的平均大小，如果大于，则minor GC有风险，可能会再次出发full GC，反之若小于，或者设置不允许冒险，则直接进行full GC。</li>
+</ul>
+</li>
+</ol>
+</div><hr></div><div class="recent-post-item article-container"><a class="article-title" href="/2017/12/25/记录：在CentOS下安装VirtualBox/">记录：在CentOS下安装VirtualBox</a><time class="post-meta__date"><i class="fa fa-calendar" aria-hidden="true"></i> 2017-12-25</time><span class="article-meta"><span class="article-meta__separator">|</span><i class="fa fa-inbox article-meta__icon" aria-hidden="true"></i><a class="article-meta__categories" href="/categories/Linux/">Linux</a></span><span class="article-meta tags"><span class="article-meta__separator">|</span><i class="fa fa-tag article-meta__icon" aria-hidden="true"></i><a class="article-meta__tags" href="/tags/Linux/">Linux</a></span><div class="content"><ul>
+<li>安装<code>kernel-devel</code>，注意和系统内核版本对应。查看系统内核版本：</li>
+</ul>
+<pre class=" language-shell"><code class="language-shell">
+uname -r
+
+</code></pre>
+<ul>
+<li>安装其他依赖：</li>
+</ul>
+<pre class=" language-shell"><code class="language-shell">
+yum install -y SDL gcc make perl
+
+</code></pre>
+<ul>
+<li>到官网上下载CentOS对应的rpm安装包，下载并安装即可。</li>
+</ul>
+</div><hr></div><div class="recent-post-item article-container"><a class="article-title" href="/2017/12/25/记录：mysql在windows-centos下的安装/">记录：MySQL在Windows/CentOS下的安装</a><time class="post-meta__date"><i class="fa fa-calendar" aria-hidden="true"></i> 2017-12-25</time><span class="article-meta"><span class="article-meta__separator">|</span><i class="fa fa-inbox article-meta__icon" aria-hidden="true"></i><a class="article-meta__categories" href="/categories/Database/">Database</a></span><span class="article-meta tags"><span class="article-meta__separator">|</span><i class="fa fa-tag article-meta__icon" aria-hidden="true"></i><a class="article-meta__tags" href="/tags/MySQL/">MySQL</a><span class="article-meta__link">-</span><i class="fa fa-tag article-meta__icon" aria-hidden="true"></i><a class="article-meta__tags" href="/tags/CentOS/">CentOS</a><span class="article-meta__link">-</span><i class="fa fa-tag article-meta__icon" aria-hidden="true"></i><a class="article-meta__tags" href="/tags/Database/">Database</a><span class="article-meta__link">-</span><i class="fa fa-tag article-meta__icon" aria-hidden="true"></i><a class="article-meta__tags" href="/tags/Windows/">Windows</a></span><div class="content"><h2 id="Windows-7下安装MySQL"><a href="#Windows-7下安装MySQL" class="headerlink" title="Windows 7下安装MySQL"></a>Windows 7下安装MySQL</h2><ul>
+<li><p><a href="https://www.microsoft.com/zh-cn/download/details.aspx?id=17718" target="_blank" rel="noopener">www.microsoft.com</a>下载并安装<code>.NET Framework 4.0</code></p>
+</li>
+<li><p><a href="https://www.microsoft.com/en-us/download/details.aspx?id=30653" target="_blank" rel="noopener">www.microsoft.com</a>下载并安装<code>.NET Framework 4.5</code></p>
+</li>
+<li><p><a href="https://www.microsoft.com/en-us/download/details.aspx?id=40784" target="_blank" rel="noopener">www.microsoft.com</a>下载并安装VC++ 2013运行库。注意，需要安装32位，64位可选。</p>
+</li>
+<li><p><a href="https://www.microsoft.com/zh-CN/download/details.aspx?id=48145" target="_blank" rel="noopener">www.microsoft.com</a>下载并安装VC++ 2015运行库。</p>
+</li>
+<li><p><a href="https://dev.mysql.com/downloads/windows/" target="_blank" rel="noopener">dev.mysql.com</a>下载并安装对应Windows的<code>MySQL Installer</code></p>
+</li>
+</ul>
+</div><hr></div><div class="recent-post-item article-container"><a class="article-title" href="/2017/12/24/记录：给centos-rhel服务器安装GNOME以及VNC，实现图形远程控制服务器/">记录：给centos/rhel服务器安装GNOME以及VNC，实现界面远程控制服务器</a><time class="post-meta__date"><i class="fa fa-calendar" aria-hidden="true"></i> 2017-12-24</time><span class="article-meta"><span class="article-meta__separator">|</span><i class="fa fa-inbox article-meta__icon" aria-hidden="true"></i><a class="article-meta__categories" href="/categories/Linux/">Linux</a></span><span class="article-meta tags"><span class="article-meta__separator">|</span><i class="fa fa-tag article-meta__icon" aria-hidden="true"></i><a class="article-meta__tags" href="/tags/Linux/">Linux</a></span><div class="content"><h2 id="服务器部分（CentOS-7）"><a href="#服务器部分（CentOS-7）" class="headerlink" title="服务器部分（CentOS 7）"></a>服务器部分（CentOS 7）</h2><ul>
+<li>安装GNOME：</li>
+</ul>
+<pre class=" language-shell"><code class="language-shell">
+yum groupinstall -y "GNOME Desktop"
+
+</code></pre>
+<ul>
+<li>安装VNC</li>
+</ul>
+<pre class=" language-shell"><code class="language-shell">
+yum install vnc-server vnc*
+
+</code></pre>
+<ul>
+<li>修改<code>/etc/sysconfig/vncservers</code>：</li>
+</ul>
+<pre class=" language-config"><code class="language-config">
+VNCSERVERS="1:root"
+VNCSERVERARGS[1]="-geometry 1024x768 -alwaysshared -depth 24"
+
+</code></pre>
+<ul>
+<li>添加/修改<code>/root/.vnc/xstartup</code></li>
+</ul>
+<pre class=" language-config"><code class="language-config">
+#!/bin/sh
+unset SESSION_MANAGER
+[ -x /etc/vnc/xstartup ] && exec /etc/vnc/xstartup
+[ -r $HOME/.Xresources ] && xrdb $HOME/.Xresources
+xsetroot -solid grey vncconfig -iconic &
+gnome-session &
+
+</code></pre>
+<ul>
+<li><p>终端输入<code>vncpasswd</code>并根据提示设置密码。</p>
+</li>
+<li><p>终端输入<code>vncserver</code>以启动vncserver。</p>
+</li>
+<li><p>防火墙开启端口<code>5901</code>、<code>6001</code>：</p>
+</li>
+</ul>
+<pre class=" language-shell"><code class="language-shell">
+iptables -A INPUT -p tcp --dport 3836 -j ACCEPT
+iptables -A INPUT -p tcp --sport 3836 -j ACCEPT
+iptables -A INPUT -p tcp --dport 9996 -j ACCEPT
+iptables -A INPUT -p tcp --sport 9996 -j ACCEPT
+
+iptables-save
+
+</code></pre>
+<h2 id="客户端部分（Windows）"><a href="#客户端部分（Windows）" class="headerlink" title="客户端部分（Windows）"></a>客户端部分（Windows）</h2><ul>
+<li><p>下载<code>VNC-Viewer</code>并安装。</p>
+</li>
+<li><p>建立连接，输入<code>&lt;ip&gt;:1</code>，其中<code>&lt;ip&gt;</code>为装有VNC的服务器地址，按回车后输入密码即可。</p>
+</li>
+</ul>
+</div><hr></div><div class="recent-post-item article-container"><a class="article-title" href="/2017/12/24/记录：rhel中yum换centos源/">记录：rhel中yum换centos源</a><time class="post-meta__date"><i class="fa fa-calendar" aria-hidden="true"></i> 2017-12-24</time><span class="article-meta"><span class="article-meta__separator">|</span><i class="fa fa-inbox article-meta__icon" aria-hidden="true"></i><a class="article-meta__categories" href="/categories/Linux/">Linux</a></span><span class="article-meta tags"><span class="article-meta__separator">|</span><i class="fa fa-tag article-meta__icon" aria-hidden="true"></i><a class="article-meta__tags" href="/tags/Linux/">Linux</a></span><div class="content"><ul>
+<li>删除原来的yum</li>
+</ul>
+<pre class=" language-shell"><code class="language-shell">rpm -qa | grep yum | xargs rpm -e --nodeps
+</code></pre>
+<ul>
+<li><p>使用<code>curl</code>或<code>wget</code>从<code>http://mirrors.163.com/centos/7/os/x86_64/</code>下载yum及其依赖安装包，包括<code>yum</code>、<code>yum-metadata-parser</code>、<code>yum-plugin-fastestmirror</code>、<code>python-urlgrabber</code>并安装。如果出现冲突则使用<code>rpm -i --force --nodeps</code>强制安装。有可能需要升级<code>rpm</code>，同样下载安装包并强制安装。</p>
+</li>
+<li><p>从<code>http://mirrors.163.com</code>的centos帮助文档中获取对应的repo文件，放入<code>/etc/yum.d.repo/</code>,然后执行：</p>
+</li>
+</ul>
+<pre class=" language-shell"><code class="language-shell">
+yum clean all
+yum makecache
+
+</code></pre>
+</div><hr></div><div class="recent-post-item article-container"><a class="article-title" href="/2017/10/28/MongoDB笔记0x05/">MongoDB笔记0x05</a><time class="post-meta__date"><i class="fa fa-calendar" aria-hidden="true"></i> 2017-10-28</time><span class="article-meta"><span class="article-meta__separator">|</span><i class="fa fa-inbox article-meta__icon" aria-hidden="true"></i><a class="article-meta__categories" href="/categories/Database/">Database</a></span><span class="article-meta tags"><span class="article-meta__separator">|</span><i class="fa fa-tag article-meta__icon" aria-hidden="true"></i><a class="article-meta__tags" href="/tags/MongoDB/">MongoDB</a></span><div class="content"><h2 id="4-4-where查询"><a href="#4-4-where查询" class="headerlink" title="4.4 $where查询"></a>4.4 $where查询</h2><p><code>$where</code>可以进行任何的查询。比较常用的是比较文档中两个键的值是否相等。但是如果非必要，务必不要使用<code>$where</code>进行查询。因为<code>$where</code>查询要比常规查询慢很多，<code>$where</code>查询会把每个文档从BSON转换为JavaScript对象，然后再进行查询，而且<code>$where</code>不能使用索引。如果必须使用<code>$where</code>，也尽量先用常规查询进行过滤再使用<code>$where</code>来查询。</p>
+<h2 id="4-5-游标"><a href="#4-5-游标" class="headerlink" title="4.5 游标"></a>4.5 游标</h2><p>游标可以保存一次查询的结果并提供逐条查看结果。例如：</p>
+<pre class=" language-js"><code class="language-js">
+<span class="token keyword">var</span> cursor <span class="token operator">=</span> db<span class="token punctuation">.</span>foo<span class="token punctuation">.</span><span class="token function">find</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+</code></pre>
+<p>此时游标仅是保存了查询的构造，而并没有向服务器发起查询。在执行：</p>
+<pre class=" language-js"><code class="language-js">
+cursor<span class="token punctuation">.</span><span class="token function">hasNext</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+</code></pre>
+<p>后，查询请求才会到达服务器，返回查询结果。接下来的<code>cursor.next()</code>以及<code>cursor.hasNext()</code>均是在本地执行的。</p>
+<p>针对返回结果的限制的方法有<code>limit</code>、<code>skip</code>、<code>sort</code>。<code>limit</code>可以限制返回结果数量，即最多返回指定数量的文档；<code>skip</code>可以略过指定数量的文档，如果结果收少于指定数量则不返回结果；<code>sort</code>可以按照指定的键值大小进行文档的排序，例如：</p>
+<pre class=" language-js"><code class="language-js">
+db<span class="token punctuation">.</span>c<span class="token punctuation">.</span><span class="token function">find</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">sort</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+  username<span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+  age<span class="token punctuation">:</span> <span class="token operator">-</span><span class="token number">1</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span>
+
+</code></pre>
+<p>这表示针对<code>username</code>进行升序排列，针对<code>age</code>斤西瓜降序排列。这三种方法可以组合使用，链式写法即可。</p>
+<p>此外，<code>sort</code>如果对类型不一致的键值进行排序时是有指定类型循序的：（1）最小值；（2）null；（3）数字（整型、长整型、双精度）；（4）字符串；（5）对象/文档；（6）数组；（7）二进制数据（8）对象ID；（9）布尔型；（10）日期型；（11）时间戳；（12）正则表达式；（13）最大值。</p>
+<p>如果需要排序的结果集的大小超过32M，MongoDB就会报错，拒绝对过多的数据进行排序。</p>
+<p>使用<code>skip</code>跳过大量的文档会变得很慢，因为这些需要略过的文档也需要被找出，然后再抛弃这些文档。</p>
+<p>高级查询选项：如<code>find({&quot;foo&quot;: &quot;bar&quot;}).sort({&quot;x&quot;: 1})</code>在shell或者其它驱动程序中并不是直接发出<code>{&quot;foo&quot;: &quot;bar&quot;}</code>这样的查询请求，而是将它们封装进更大的查询文档中，像这样：</p>
+<pre class=" language-js"><code class="language-js">
+<span class="token punctuation">{</span>
+  <span class="token string">"$query"</span><span class="token punctuation">:</span> <span class="token punctuation">{</span><span class="token string">"foo"</span><span class="token punctuation">:</span> <span class="token string">"bar"</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token string">"$orderby"</span><span class="token punctuation">:</span> <span class="token punctuation">{</span><span class="token string">"x"</span><span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+</code></pre>
+<p>此外还有一些其他的辅助查询操作，例如<code>$maxscan</code>（指定本次查询中扫描文档的上限）、<code>$min</code>（文档必须与索引的键完全匹配，并指定索引扫描的下边界）、<code>$max</code>（文档必须与索引的键完全匹配，并指定索引扫描的下边界）等。</p>
+<p>像前文所说，MongoDB中文档是顺序存储的，如果对某个文档进行修改而使其体积变大，MongoDB会将其移动到所有文档后面存储。由于游标同样是向后查询文档，如果在前面修改了某个文档导致其变大被移动到了后面，游标向后移动时会再次查询到该文档。解决这个问题需要对查询结果进行快照，这样查询就在<code>_id</code>索引上遍历执行，保证每个文档只返回一次。使用快照会使查询变慢，所以应该只在必要的时候使用快照。</p>
+<p>游标的生命周期：在服务端，游标占用内存等资源。当游标遍历了所有结果或者客户端发来信息要求终止，数据库会释放游标占用的资源。当然，还有一些其他情况会使得游标被删除，例如如果客户端的游标已经不在作用域内时，客户端会发出一个特殊的消息要求服务端销毁游标，或者10分钟内某个游标没有使用的话也会删除。</p>
+<h2 id="4-6-数据库命令"><a href="#4-6-数据库命令" class="headerlink" title="4.6 数据库命令"></a>4.6 数据库命令</h2><p>数据库命令，例如<code>drop</code>，其实是一种特殊的查询，只不过服务端收到这类“查询”会进行特殊的逻辑处理。</p>
+<h1 id="5-索引"><a href="#5-索引" class="headerlink" title="5 索引"></a>5 索引</h1><h2 id="5-1-索引简介"><a href="#5-1-索引简介" class="headerlink" title="5.1 索引简介"></a>5.1 索引简介</h2><p>索引可以根据给定字段组织数据，让MongoDB能够根据这些字段快速找到指定的文档。例如，为<code>username</code>创建索引：</p>
+<pre class=" language-js"><code class="language-js">
+db<span class="token punctuation">.</span>users<span class="token punctuation">.</span><span class="token function">ensureIndex</span><span class="token punctuation">(</span><span class="token punctuation">{</span><span class="token string">"username"</span><span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+</code></pre>
+<p>建立索引所耗时间根据机器性能以及文档整体大小的不同而不同。虽然建立索引之后查询几乎会瞬间完成，但是其他操作，包括插入、更新、删除等将会消耗更多时间，因为这些操作会修改集合的结构，从而导致需要修改建立的索引。因此，MongoDB也限制每个集合上最多有64个索引，一般来说，一个特定的集合上不应该有两个以上的索引。挑选合适的字段建立索引非常重要。如果某个字段是常用的查询字段，那么在这个字段上建立索引是一个好选择，反之则没有必要建立索引。</p>
+<p>索引的值是按照一定的顺序排列的，因此索引键对文档进行排序非常快。但是如果查询时没有首先使用索引键进行排序时，索引并不会发挥作用。不过可以针对多个字段建立复合索引。建立复合索引时优先考虑需要排序的键，将其放在首位索引键。</p>
+<p>索引的排序方式并不重要，因为MongoDB可以在索引的任意方向进行便遍历。</p>
+<p>有一些查询操作完全无法使用索引，例如<code>$where</code>、<code>$exists</code>、<code>$nin</code>查询只能进行全表扫描，而<code>$ne</code>、<code>$not</code>多数情况下也会进行全表扫描。</p>
+<p><code>$or</code>查询实际上是两次查询，最后合并结果，这样的效率必然不如一次查询的效率高，因此尽可能使用<code>$in</code>代替。此外，MongoDB一次查询只能使用一个索引/复合索引，但是由于<code>$or</code>是两次独立的查询，所以它可以使用多个索引。</p>
+<p>MongoDB可以针对嵌套文档的键建立索引，和建立普通的索引类似。例如文档：</p>
+<pre class=" language-json"><code class="language-json">
+<span class="token punctuation">{</span>
+  <span class="token property">"username"</span><span class="token operator">:</span> <span class="token string">"sid"</span><span class="token punctuation">,</span>
+  <span class="token property">"loc"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">"ip"</span><span class="token operator">:</span> <span class="token string">"1.2.3.4"</span><span class="token punctuation">,</span>
+    <span class="token property">"city"</span><span class="token operator">:</span> <span class="token string">"Springfield"</span><span class="token punctuation">,</span>
+    <span class="token property">"state"</span><span class="token operator">:</span> <span class="token string">"NY"</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+</code></pre>
+<p>给<code>loc.city</code>建立索引：</p>
+<pre class=" language-js"><code class="language-js">
+db<span class="token punctuation">.</span>users<span class="token punctuation">.</span><span class="token function">ensureIndex</span><span class="token punctuation">(</span><span class="token punctuation">{</span><span class="token string">"loc.city"</span><span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+</code></pre>
+<p>即可。但是注意和子文档<code>loc</code>的索引进行区分。如果建立的索引是子文档的索引，那么只有如下的查询才会使用子文档索引：</p>
+<pre class=" language-js"><code class="language-js">
+db<span class="token punctuation">.</span>users<span class="token punctuation">.</span><span class="token function">find</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+  <span class="token string">"loc"</span><span class="token punctuation">:</span> <span class="token punctuation">{</span>
+    <span class="token string">"ip"</span><span class="token punctuation">:</span> <span class="token string">"123.234.111.222"</span><span class="token punctuation">,</span>
+    <span class="token string">"city"</span><span class="token punctuation">:</span> <span class="token string">"Shelbycille"</span><span class="token punctuation">,</span>
+    <span class="token string">"state"</span><span class="token punctuation">:</span> <span class="token string">"NY"</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+</code></pre>
+<p>即必须与子文档字段顺序完全匹配的子文档查询才能使用子文档索引，而：</p>
+<pre class=" language-js"><code class="language-js">
+db<span class="token punctuation">.</span>users<span class="token punctuation">.</span><span class="token function">find</span><span class="token punctuation">(</span><span class="token punctuation">{</span><span class="token string">"loc.city"</span><span class="token punctuation">:</span> <span class="token string">"Shelbycille"</span><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+</code></pre>
+<p>才会使用子文档的键的索引。</p>
+<p>同样可以给数组元素建立索引，但是不能给数组本身建立索引。给数组元素建立索引即给数组的每一个元素建立索引，因此数组索引的代价要高于单值索引的代价。并且，一个索引中的数组字段最多只允许有一个，以防止多个数组建立索引之后索引条目爆炸式增长。</p>
+<p>多键索引：在索引中，如果某个键是数组，那么这个索引会被标记为多键索引。多键索引会比非多键慢一些，因为可能会有多个索引条目指向同一个文档，因此MongoDB在返回结果集时需要先去重。</p>
+<p>索引基数：就是指某个字段对应不同值的数量。例如性别可能只有两种取值，这种字段的基数就比较低；像用户名、住址这类字段可能每个值和其他的都不一样，这类字段的基数就很高；也有介于两者之间的，例如年龄。通常情况下，一个字段的基数越高，那么对这个字段建立的索引越有价值，因为这个索引可以快速将查询范围缩小到一个比较小的结果集，以供下一步操作快速完成。因此建立索引应该选择基数高的字段，或者在复合索引中将基数高的字段提前。</p>
+<h2 id="5-2-使用explain-和hint"><a href="#5-2-使用explain-和hint" class="headerlink" title="5.2 使用explain()和hint()"></a>5.2 使用explain()和hint()</h2><p><code>explain()</code>能够提供大量与查询相关的信息，其中返回的一些字段有助于发现查询速度慢的原因。以下列举一些字段：</p>
+<p>（1）<code>cursor</code>：表示游标的类型。可以看出本次查询是否使用了索引以及使用的什么索引。</p>
+<p>（2）<code>isMultiKey</code>：是否使用了多键索引。</p>
+<p>（3）<code>n</code>：本次查询返回的文档数量。</p>
+<p>（4）<code>nscannedObjects</code>：MongoDB按照索引指针去磁盘上查找文档的次数。如果查询包含的查询条件不是索引的一部分，或者要求返回的内容不在索引字段内，MongoDB就会从磁盘中读取原文档。</p>
+<p>（5）<code>nscanned</code>：如果使用了索引，这个字段表示查找过的索引条目，如果没有使用索引，那么这个字段表示查找的文档数量。</p>
+<p>（6）<code>scanAndOrder</code>：MongoDB是否对内存中的结果进行了排序。</p>
+<p>（7）<code>indexOnly</code>：MongoDB是否只是用了索引就完成了此次查询，即包括查找字段以及返回的结果集都包含在索引中，又称覆盖索引。</p>
+<p>（8）<code>nYields</code>：查询暂停次数，如果有写入请求，查询会周期性释放锁，以供写入执行。</p>
+<p>（9）<code>millis</code>：查询所耗毫秒数。</p>
+<p>（10）<code>indexBounds</code>：这个字段描述了索引的使用情况，给出了索引的遍历范围。</p>
+<p><code>hint()</code>可以指定查询使用的索引。</p>
+<p>查询优化器：与关系型数据库不同，当有多个索引可能适合本次查询时，MongoDB的查询优化器会并行执行这些查询，最早返回100个结果的索引就是“胜者”，并且这个索引会被缓存，在接下来的这个查询都会使用这个索引。如果建立了新的索引或者每执行1000次查询后，查询优化器就会重新评估查询计划。<code>explain()</code>返回的<code>allPlans</code>字段表示了本次查询尝试的每个查询计划。</p>
+<h2 id="5-3-何时不应该使用索引"><a href="#5-3-何时不应该使用索引" class="headerlink" title="5.3 何时不应该使用索引"></a>5.3 何时不应该使用索引</h2><p>如果数据集较小时，索引会十分高效。但是当结果集在原集合中所占比例越大，索引查找的速度就越慢。因为使用索引需要进行两次查找，最坏情况下索引查找的时间是全表查找的两倍。一般来说，当查询需返回30%的文档或更多时，就需要对比索引查找和全表查找的速度。</p>
+<h2 id="5-4-索引类型"><a href="#5-4-索引类型" class="headerlink" title="5.4 索引类型"></a>5.4 索引类型</h2><p>唯一索引：唯一索引可以确保集合的每一个文档的指定键都有唯一值。例如：</p>
+<pre class=" language-js"><code class="language-js">
+db<span class="token punctuation">.</span>users<span class="token punctuation">.</span><span class="token function">ensureIndex</span><span class="token punctuation">(</span><span class="token punctuation">{</span><span class="token string">"username"</span><span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token punctuation">{</span><span class="token string">"unique"</span><span class="token punctuation">:</span> <span class="token boolean">true</span><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+</code></pre>
+<p>这样可以防止有重复键的插入。但是如果有第一个没有该键的文档插入时，该键将被创建，值会置为<code>null</code>，如果继续插入缺少该键的文档就会报错。</p>
+<p>进行索引的所有字段都应当小于1024字节，否则这个条目将不会出现在索引中。如果唯一索引的字段超过8KB，唯一索引将会失效。</p>
+<p>可以创建复合的唯一索引，复合唯一索引中，单个键的值可以重复，但是所有键的值的组合必须在集合中是唯一的。</p>
+<p>稀疏索引：区别与关系型数据库中的稀疏索引，这里的稀疏索引是指如果文档包含指定字段，则为这些文档建立索引。如果和唯一索引一起使用，则这些字段的值必须唯一。</p>
+<h2 id="5-5-索引管理"><a href="#5-5-索引管理" class="headerlink" title="5.5 索引管理"></a>5.5 索引管理</h2><p>索引的元信息保存在<code>system.indexes</code>中，可以通过<code>db.collectionName.getIndexes()</code>来查看集合的索引。</p>
+<p>索引的标识形如<code>keyname1_dir1_keyname2_dir2_..._keynameN_dirN</code>，索引标识也是有长度限制的。</p>
+<p>如果需要删除索引，可以使用<code>dropIndex</code>。</p>
+</div><hr></div><div class="recent-post-item article-container"><a class="article-title" href="/2017/10/27/MongoDB笔记0x04/">MongoDB笔记0x04</a><time class="post-meta__date"><i class="fa fa-calendar" aria-hidden="true"></i> 2017-10-27</time><span class="article-meta"><span class="article-meta__separator">|</span><i class="fa fa-inbox article-meta__icon" aria-hidden="true"></i><a class="article-meta__categories" href="/categories/Database/">Database</a></span><span class="article-meta tags"><span class="article-meta__separator">|</span><i class="fa fa-tag article-meta__icon" aria-hidden="true"></i><a class="article-meta__tags" href="/tags/MongoDB/">MongoDB</a></span><div class="content"><h1 id="4-查询"><a href="#4-查询" class="headerlink" title="4 查询"></a>4 查询</h1><h2 id="4-1-find"><a href="#4-1-find" class="headerlink" title="4.1 find"></a>4.1 find</h2><p>在MongoDB中，使用<code>find()</code>来进行查询操作。第一个参数是查询条件，类型为文档，其中包括希望返回结果满足的键值对的要求。如果有对个键值对，将视为“与”进行查询。</p>
+<p><code>find()</code>的第二个参数为希望返回/不返回的键，类型为文档，键即文档的键，值为1则返回该键值对，值为0则不返回该键值对。<code>_id</code>默认是返回的，如果不希望返回<code>_id</code>，可以使用<code>&quot;_id&quot;: 0</code>。</p>
+<h2 id="4-2-查询条件"><a href="#4-2-查询条件" class="headerlink" title="4.2 查询条件"></a>4.2 查询条件</h2><p>除了精确查询以外，还可以使用<code>$lt</code>、<code>$lte</code>、<code>$gt</code>、<code>$gte</code>来进行范围查询，它们分别表示<code>&lt;</code>、<code>&lt;=</code>、<code>&gt;</code>、<code>&gt;=</code>。例如：</p>
+<pre class=" language-json"><code class="language-json">
+<span class="token punctuation">{</span>
+  <span class="token property">"age"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">"$gt"</span><span class="token operator">:</span> <span class="token number">18</span><span class="token punctuation">,</span>
+    <span class="token property">"$lt"</span><span class="token operator">:</span> <span class="token number">30</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+</code></pre>
+<p>上述查询条件表示查找键名<code>&quot;age&quot;</code>值大于18小于30的文档。另外，<code>$ne</code>表示不相等。</p>
+<p>关于<code>$in</code>、<code>$nin</code>：如果希望能查找某个键对应的多个值，可以使用<code>$in</code>。<code>$in</code>的参数为一个数组，数组中的值可以为任何类型，MongoDB会查找所有该键的值在数组中的文档。<code>$nin</code>则相反，会返回所有该键的值不在数组中的文档。</p>
+<p>关于<code>$or</code>：<code>$or</code>可以进行不同键的“或”查询。和<code>$in</code>类似，其参数为一个数组，不过数组中的值均为文档类型。文档中即普通的查询条件。</p>
+<p><code>$not</code>：<code>$not</code>会返回所有不符合参数中查询条件的文档。和<code>$and</code>、<code>$or</code>都被称为“元操作符”。</p>
+<p><code>null</code>值：如果查询时设置值为<code>null</code>，则查询不仅会返回对应键值为<code>null</code>的文档，还会返回没有对应键的文档。如果不希望返回这些缺少键的文档，可以使用<code>$exist</code>来判断键值对是否存在。</p>
+<p>正则表达式：进行匹配的值可以是正则表达式，所有含有匹配正则表达式的对应键值的文档都会被返回。使用正则表达式进行查询之前最好在shell中进行正则表达式的验证来防止出现问题。</p>
+<p>数组查询：如果有一个文档：</p>
+<pre class=" language-json"><code class="language-json">
+<span class="token punctuation">{</span>
+  <span class="token property">"fruit"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">"apple"</span><span class="token punctuation">,</span> <span class="token string">"banana"</span><span class="token punctuation">,</span> <span class="token string">"peach"</span><span class="token punctuation">]</span>
+<span class="token punctuation">}</span>
+
+</code></pre>
+<p>如果查询条件如下：</p>
+<pre class=" language-json"><code class="language-json">
+<span class="token punctuation">{</span>
+  <span class="token property">"fruit"</span><span class="token operator">:</span> <span class="token string">"apple"</span>
+<span class="token punctuation">}</span>
+
+</code></pre>
+<p>则之前的文档会成功匹配。即如上的查询条件意味着MongoDB会查找数组内部的值。但是如果查询条件如下：</p>
+<pre class=" language-json"><code class="language-json">
+<span class="token punctuation">{</span>
+  <span class="token property">"fruit"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">"apple"</span><span class="token punctuation">,</span> <span class="token string">"banana"</span><span class="token punctuation">]</span>
+<span class="token punctuation">}</span>
+
+</code></pre>
+<p>或</p>
+<pre class=" language-json"><code class="language-json">
+<span class="token punctuation">{</span>
+  <span class="token property">"fruit"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">"banana"</span><span class="token punctuation">,</span> <span class="token string">"apple"</span><span class="token punctuation">,</span> <span class="token string">"peach"</span><span class="token punctuation">]</span>
+<span class="token punctuation">}</span>
+
+</code></pre>
+<p>都不会匹配所提供的文档。即值如果是数组的话会进行精确匹配，无论是缺项或者是乱序都不会匹配。</p>
+<p><code>$all</code>：<code>$all</code>可以接受一个数组作为查询参数，只要对应键的数组中包含该数组内所有值的文档就会作为结果返回。其中<code>$all</code>的数组参数的顺序是无关紧要的。</p>
+<p><code>$slice</code>：<code>$slice</code>可以限制返回的文档数。为正值时返回前面指定数目的文档，为负值时返回后面指定数目的文档。<code>$slice</code>还可以指定偏移，例如：</p>
+<pre class=" language-json"><code class="language-json">
+<span class="token punctuation">{</span>
+  <span class="token property">"comments"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">"$slice"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token number">23</span><span class="token punctuation">,</span> <span class="token number">10</span><span class="token punctuation">]</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+</code></pre>
+<p>表示从第24个元素开始，返回10个文档，不足则全部返回。</p>
+<p>数组和范围查询相互作用：例如文档：</p>
+<pre class=" language-json"><code class="language-json">
+<span class="token punctuation">[</span>
+  <span class="token punctuation">{</span><span class="token property">"x"</span><span class="token operator">:</span> <span class="token number">5</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">{</span><span class="token property">"x"</span><span class="token operator">:</span> <span class="token number">15</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">{</span><span class="token property">"x"</span><span class="token operator">:</span> <span class="token number">25</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">{</span><span class="token property">"x"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token number">5</span><span class="token punctuation">,</span> <span class="token number">25</span><span class="token punctuation">]</span><span class="token punctuation">}</span>
+<span class="token punctuation">]</span>
+
+</code></pre>
+<p>如果查询条件为：</p>
+<pre class=" language-json"><code class="language-json">
+<span class="token punctuation">{</span>
+  <span class="token property">"x"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">"$gt"</span><span class="token operator">:</span> <span class="token number">10</span><span class="token punctuation">,</span>
+    <span class="token property">"$lt"</span><span class="token operator">:</span> <span class="token number">20</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+</code></pre>
+<p>则结果会返回：</p>
+<pre class=" language-json"><code class="language-json">
+<span class="token punctuation">[</span>
+  <span class="token punctuation">{</span><span class="token property">"x"</span><span class="token operator">:</span> <span class="token number">15</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">{</span><span class="token property">"x"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token number">5</span><span class="token punctuation">,</span> <span class="token number">25</span><span class="token punctuation">]</span><span class="token punctuation">}</span>
+<span class="token punctuation">]</span>
+
+</code></pre>
+<p>匹配<code>{&quot;x&quot;: [5, 25]}</code>的原因是<code>5</code>小于<code>20</code>且<code>25</code>大于<code>10</code>。</p>
+<p>查询内嵌文档：如果直接进行查询的话需要内嵌文档完全一致（即和数组查询一样是精确匹配），而且不能针对内嵌文档进行范围等条件查询。使用<code>$elemMatch</code>来满足进行内嵌文档的查询。例如：</p>
+<pre class=" language-json"><code class="language-json">
+<span class="token punctuation">{</span>
+  <span class="token property">"comments"</span><span class="token operator">:</span><span class="token punctuation">{</span>
+    <span class="token property">"$elemMatch"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+      <span class="token property">"author"</span><span class="token operator">:</span> <span class="token string">"Joe"</span><span class="token punctuation">,</span>
+      <span class="token property">"score"</span><span class="token operator">:</span> <span class="token punctuation">{</span><span class="token property">"$gte"</span><span class="token operator">:</span> <span class="token number">5</span><span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+</code></pre>
+<p>可以查到评论中Joe 大于等于5分的评论。</p>
+</div><hr></div><div class="recent-post-item article-container"><a class="article-title" href="/2017/10/24/MongoDB笔记0x03/">MongoDB笔记0x03</a><time class="post-meta__date"><i class="fa fa-calendar" aria-hidden="true"></i> 2017-10-24</time><span class="article-meta"><span class="article-meta__separator">|</span><i class="fa fa-inbox article-meta__icon" aria-hidden="true"></i><a class="article-meta__categories" href="/categories/Database/">Database</a></span><span class="article-meta tags"><span class="article-meta__separator">|</span><i class="fa fa-tag article-meta__icon" aria-hidden="true"></i><a class="article-meta__tags" href="/tags/MongoDB/">MongoDB</a></span><div class="content"><h1 id="3-3-更新文档"><a href="#3-3-更新文档" class="headerlink" title="3.3 更新文档"></a>3.3 更新文档</h1><p>更新<code>update()</code>可以接收两个参数，一个是查询条件，即需要修改哪个文档；另一个是需修改的内容。更新操作时不可分割的。如果有两个更新同时发生，则请求先到达服务器的先执行。系统则会保留最后的更新。<code>update</code>的第三个参数是<code>upsert</code>，类型为布尔值，为<code>true</code>则在查询过程中若没有找到符合条件的文档时会进行创建。第四个参数是是否修改查询得到的全部文档，默认为<code>false</code>，即只修改查询得到的第一个文档。</p>
+<p>默认情况下，<code>update</code>中需修改的内容会被认为是替换原有文档，但是如果希望仅针对文档中的某键值修改的话，可以使用修改器，例如：</p>
+<pre class=" language-js"><code class="language-js">
+db<span class="token punctuation">.</span>analytics<span class="token punctuation">.</span><span class="token function">update</span><span class="token punctuation">(</span>
+  <span class="token punctuation">{</span><span class="token string">"url"</span><span class="token punctuation">:</span> <span class="token string">"www.example.com"</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">{</span><span class="token string">"$inc"</span><span class="token punctuation">:</span> <span class="token punctuation">{</span><span class="token string">"pageviews"</span><span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">}</span><span class="token punctuation">}</span>
+<span class="token punctuation">)</span>
+
+</code></pre>
+<p>不同的修改器修改文档的速度是不同的。例如只修改值的<code>$inc</code>修改器修改速度很快，因为不需要改变文档大小。但是可以修改文档大小的——例如<code>$set</code>——就会比较慢，由于MongoDB是给每个文档固定长度的存储空间，如果文档变大进而不能再原先位置存储，还需要移动的磁盘上的其他位置。文档有一个填充因子的参数，用于文档大小的增长。如果一个文档多次因变大而在磁盘上移动，则该文档的填充因子同样会增长。</p>
+<p>一个修改操作中不能含有多个修改器，例如在某个修改请求中同时含有<code>$inc</code>和<code>$set</code>，这个请求就是非法的。</p>
+<p>为防止多个线程/进程修改同一个文档而导致竞态，MongoDB提供了一个<code>findAndModify</code>方法，其查找和修改是原子操作，不会出现竞态。<code>findAndModify</code>不仅可以用于<code>update</code>，也可以用于<code>remove</code>。</p>
+<p>写入安全：分为应答式写入和非应答式写入。应答式写入是指客户端提出写入请求后等待服务端返回写入结果，非应答式写入则相反。</p>
+</div><hr></div><div class="recent-post-item article-container"><a class="article-title" href="/2017/10/23/MongoDB笔记0x02/">MongoDB笔记0x02</a><time class="post-meta__date"><i class="fa fa-calendar" aria-hidden="true"></i> 2017-10-23</time><span class="article-meta"><span class="article-meta__separator">|</span><i class="fa fa-inbox article-meta__icon" aria-hidden="true"></i><a class="article-meta__categories" href="/categories/Database/">Database</a></span><span class="article-meta tags"><span class="article-meta__separator">|</span><i class="fa fa-tag article-meta__icon" aria-hidden="true"></i><a class="article-meta__tags" href="/tags/MongoDB/">MongoDB</a></span><div class="content"><h2 id="2-7-MongoDB-shell-的使用"><a href="#2-7-MongoDB-shell-的使用" class="headerlink" title="2.7 MongoDB shell 的使用"></a>2.7 MongoDB shell 的使用</h2><p>由于使用了V8引擎，MongoDB shell支持运行JavaScript代码，并且如果在启动MongoDB客户端时在<code>mongo</code>后面添加js文件，即可在shell可交互之前运行指定的js代码。如果有些js文件需要频繁运行，可以把这部分JavaScript代码写入一个名为<code>.mongorc.js</code>的文件，并放在用户主目录下；这时MongoDB shell运行时就会先执行<code>.mongorc.js</code>。</p>
+<p><code>mongorc.js</code>中，可以：</p>
+<p>（1）创建需要的全局变量；<br>（2）简化过长的名字，为其起一个别名；<br>（3）重写内置函数；<br>（4）移除比较危险的函数，例如<code>dropDatabase</code>以及<code>deleteIndexes</code>,让它们不能执行，防止误操作。这条是比较常用的。</p>
+<p>shell中的提示是可以定制的，例如在查询过程中显示时间以及显示当前使用的Da名。</p>
+<p>如果在shell中希望修改之前已经输入的行，可以在<code>.mongorc.js</code>中添加一行：</p>
+<pre class=" language-js"><code class="language-js">
+EDITOR <span class="token operator">=</span> <span class="token string">"/usr/bin/vi"</span>
+
+</code></pre>
+<p>如此，需要修改某个变量时可以输入<code>edit post</code>即可修改<code>post</code>变量。</p>
+<p>shell与集合命名：如果集合名中包含JavaScript的保留字或者不允许的字符，将不能使用<code>db.collectionName</code>的形式来访问集合，需要使用函数<code>db.getCollection()</code>来代替，也可以使用类似于<code>db[&#39;collectionName&#39;]</code>来访问。</p>
+<h2 id="2-8-服务器端脚本"><a href="#2-8-服务器端脚本" class="headerlink" title="2.8 服务器端脚本"></a>2.8 服务器端脚本</h2><p>在服务器上执行脚本务必注意安全性问题。如果配置不当，很容易遭受注入攻击。例如：</p>
+<pre class=" language-js"><code class="language-js">
+func <span class="token operator">=</span> <span class="token string">"function() { print('Hello, '"</span> <span class="token operator">+</span> name <span class="token operator">+</span> <span class="token string">"); }"</span>
+
+</code></pre>
+<p>此时用户如果传入的<code>name</code>为：</p>
+<pre class=" language-js"><code class="language-js">
+name <span class="token operator">=</span> <span class="token string">"'); db.dropDatabase(); print('"</span>
+
+</code></pre>
+<p>这样和原脚本中拼接起来是合法的JavaScript代码时，就造成了注入攻击，导致数据库被删除。防范注入攻击主要是确保不要将用户输入的内容直接传递给mongod，例如应对上述的注入攻击可以使用作用域，以下为python的例子：</p>
+<pre class=" language-python"><code class="language-python">
+func <span class="token operator">=</span> pymongo<span class="token punctuation">.</span>code<span class="token punctuation">.</span>Code<span class="token punctuation">(</span><span class="token string">"function() { print('Hello, ' + username + '!'); }"</span><span class="token punctuation">,</span> <span class="token punctuation">{</span><span class="token string">"username"</span><span class="token punctuation">:</span> name<span class="token punctuation">}</span><span class="token punctuation">)</span>
+
+</code></pre>
+<p>如此再输入之前的内容，则输出结果会变为：</p>
+<pre><code>
+Hello, &#39;); db.dropDatabase(); print(&#39;!
+
+</code></pre><h1 id="3-创建、更新和删除文档"><a href="#3-创建、更新和删除文档" class="headerlink" title="3 创建、更新和删除文档"></a>3 创建、更新和删除文档</h1><h2 id="3-1-插入并保存文档"><a href="#3-1-插入并保存文档" class="headerlink" title="3.1 插入并保存文档"></a>3.1 插入并保存文档</h2><p>批量插入：除了使用<code>insert</code>插入单条数据，还可以使用<code>batchInsert</code>进行批量插入，它接受一个文档数组。MongoDB接受的最长消息为48MB，如果超过48MB，多数的驱动程序会将插入请求拆分成多个。如果在插入的过程中某个文档插入错误，则这个文档之前的文档均插入成功，之后的文档均插入失败。可以设置<code>continueOnError</code>参数，跳过插入有误的文档，继续进行插入。所有的驱动程序均支持该参数，但shell不支持。</p>
+<p>插入校验：插入文档时，会进行基本的数据校验，例如检查有没有<code>_id</code>字段，没有则会自动生成一个；会检查文档的大小，单个文档的大小不能超过16M，以防止不良的设计模式，保持性能的一致；会检查有误非utf-8字符存在等等。但尽管如此，向MongoDB中插入非法数据是十分容易的，所以应当只允许信任源连接数据库是必要的。</p>
+<h2 id="3-2-删除文档"><a href="#3-2-删除文档" class="headerlink" title="3.2 删除文档"></a>3.2 删除文档</h2><p>使用<code>remove()</code>进行文档删除时，会删除集合中的所有文档，但不会删除集合本身，以及集合的元信息。<code>remove()</code>也可以接受一个条件参数，来删除指定的文档。删除时永久性的，不可撤销，也不可恢复。</p>
+<p>使用<code>drop()</code>的删除速度要远远超过<code>remove()</code>，但是如此之后集合也会被删除，也不能指定条件。</p>
+</div><hr></div><nav id="pagination"><div class="pagination"><a class="extend prev" rel="prev" href="/page/8/"><i class="fa fa-chevron-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><span class="page-number current">9</span><a class="page-number" href="/page/10/">10</a><a class="page-number" href="/page/11/">11</a><a class="extend next" rel="next" href="/page/10/"><i class="fa fa-chevron-right"></i></a></div></nav></div></div><footer><div class="layout" id="footer"><div class="copyright">&copy;2017 - 2021 By SinLapis</div><div class="framework-info"><span>Driven - </span><a href="http://hexo.io"><span>Hexo</span></a><span class="footer-separator">|</span><span>Theme - </span><a href="https://github.com/Molunerfinn/hexo-theme-melody"><span>Melody</span></a></div><div class="busuanzi"><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><span id="busuanzi_container_site_uv"><i class="fa fa-user"></i><span id="busuanzi_value_site_uv"></span><span></span></span><span class="footer-separator">|</span><span id="busuanzi_container_site_pv"><i class="fa fa-eye"></i><span id="busuanzi_value_site_pv"></span><span></span></span></div></div></footer><i class="fa fa-arrow-up" id="go-up" aria-hidden="true"></i><script src="https://cdn.jsdelivr.net/npm/animejs@latest/anime.min.js"></script><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@latest/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-ui-pack@latest/velocity.ui.min.js"></script><script src="/js/utils.js?version=1.6.1"></script><script src="/js/fancybox.js?version=1.6.1"></script><script src="/js/sidebar.js?version=1.6.1"></script><script src="/js/copy.js?version=1.6.1"></script><script src="/js/fireworks.js?version=1.6.1"></script><script src="/js/transition.js?version=1.6.1"></script><script src="/js/scroll.js?version=1.6.1"></script><script src="/js/head.js?version=1.6.1"></script><script>if(/Android|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent)) {
+  $('#nav').addClass('is-mobile')
+  $('footer').addClass('is-mobile')
+}</script></body></html>

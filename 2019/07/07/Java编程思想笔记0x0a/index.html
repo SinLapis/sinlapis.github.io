@@ -1,0 +1,216 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta name="generator" content="Hexo 3.9.0"><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta name="description" content="Java编程思想笔记0x0a"><meta name="keywords" content="笔记,Java"><meta name="author" content="SinLapis"><meta name="copyright" content="SinLapis"><title>Java编程思想笔记0x0a | SinLapis的博客</title><link rel="shortcut icon" href="/images/87235d96-63d9-443d-a4fa-8093fac33ada_200x200.png"><link rel="stylesheet" href="/css/index.css?version=1.6.1"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@latest/css/font-awesome.min.css?version=1.6.1"><link rel="dns-prefetch" href="https://cdn.staticfile.org"><link rel="dns-prefetch" href="https://cdn.bootcss.com"><link rel="dns-prefetch" href="https://creativecommons.org"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  }
+} </script><link rel="stylesheet" href="/css/prism.css" type="text/css"></head><body><i class="fa fa-arrow-right" id="toggle-sidebar" aria-hidden="true"></i><div id="sidebar"><div class="toggle-sidebar-info text-center"><span data-toggle="Toggle article">Toggle site</span><hr></div><div class="sidebar-toc"><div class="sidebar-toc__title">Catalog</div><div class="sidebar-toc__progress"><span class="progress-notice">You've read</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar"></div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#容器深入研究"><span class="toc-number">1.</span> <span class="toc-text">容器深入研究</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Collection的功能方法"><span class="toc-number">1.1.</span> <span class="toc-text">Collection的功能方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#可选操作"><span class="toc-number">1.2.</span> <span class="toc-text">可选操作</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Set与存储顺序"><span class="toc-number">1.3.</span> <span class="toc-text">Set与存储顺序</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Set"><span class="toc-number">1.3.1.</span> <span class="toc-text">Set</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#HashSet"><span class="toc-number">1.3.2.</span> <span class="toc-text">HashSet</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#TreeSet"><span class="toc-number">1.3.3.</span> <span class="toc-text">TreeSet</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#LinkedHashSet"><span class="toc-number">1.3.4.</span> <span class="toc-text">LinkedHashSet</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#SortedSet"><span class="toc-number">1.3.5.</span> <span class="toc-text">SortedSet</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#队列"><span class="toc-number">1.4.</span> <span class="toc-text">队列</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#LinkedList"><span class="toc-number">1.4.1.</span> <span class="toc-text">LinkedList</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#优先级队列"><span class="toc-number">1.4.2.</span> <span class="toc-text">优先级队列</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Map"><span class="toc-number">1.5.</span> <span class="toc-text">Map</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Map的各种实现"><span class="toc-number">1.5.1.</span> <span class="toc-text">Map的各种实现</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#散列"><span class="toc-number">1.5.2.</span> <span class="toc-text">散列</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#容器的选择"><span class="toc-number">1.6.</span> <span class="toc-text">容器的选择</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#List"><span class="toc-number">1.6.1.</span> <span class="toc-text">List</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Set-1"><span class="toc-number">1.6.2.</span> <span class="toc-text">Set</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Map-1"><span class="toc-number">1.6.3.</span> <span class="toc-text">Map</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#实用方法"><span class="toc-number">1.7.</span> <span class="toc-text">实用方法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#同步控制"><span class="toc-number">1.7.1.</span> <span class="toc-text">同步控制</span></a></li></ol></li></ol></li></ol></div></div><div class="author-info hide"><div class="author-info__avatar text-center"><img src="/images/3774d809.jpg"></div><div class="author-info__name text-center">SinLapis</div><div class="author-info__description text-center"></div><hr><div class="author-info-articles"><a class="author-info-articles__archives article-meta" href="/archives"><span class="pull-left">Articles</span><span class="pull-right">103</span></a><a class="author-info-articles__tags article-meta" href="/tags"><span class="pull-left">Tags</span><span class="pull-right">70</span></a><a class="author-info-articles__categories article-meta" href="/categories"><span class="pull-left">Categories</span><span class="pull-right">20</span></a></div><hr><div class="author-info-links"><div class="author-info-links__title text-center">Links</div><a class="author-info-links__name text-center" href="http://chace.in/">chace</a></div></div></div><div id="content-outer"><div class="no-bg" id="top-container"><div id="page-header"><span class="pull-left"> <a id="site-name" href="/">SinLapis的博客</a></span><i class="fa fa-bars toggle-menu pull-right" aria-hidden="true"></i><span class="pull-right menus"><a class="site-page" href="/">Home</a><a class="site-page" href="/ACGBlog">ACG</a><a class="site-page" href="/archives">Archives</a><a class="site-page" href="/tags">Tags</a><a class="site-page" href="/categories">Categories</a></span></div><div id="post-info"><div id="post-title">Java编程思想笔记0x0a</div><div id="post-meta"><time class="post-meta__date"><i class="fa fa-calendar" aria-hidden="true"></i> 2019-07-07</time><span class="post-meta__separator">|</span><i class="fa fa-inbox post-meta__icon" aria-hidden="true"></i><a class="post-meta__categories" href="/categories/Java/">Java</a></div></div></div><div class="layout" id="content-inner"><article id="post"><div class="article-container" id="post-content"><h1 id="容器深入研究"><a href="#容器深入研究" class="headerlink" title="容器深入研究"></a>容器深入研究</h1><h2 id="Collection的功能方法"><a href="#Collection的功能方法" class="headerlink" title="Collection的功能方法"></a>Collection的功能方法</h2><table>
+<thead>
+<tr>
+<th>方法</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>boolean add(T)</code></td>
+<td>添加元素，如果类型不为<code>T</code>则返回<code>false</code>。可选</td>
+</tr>
+<tr>
+<td><code>boolean addAll(Collection&lt;? extends T&gt;)</code></td>
+<td>添加所有元素，只要添加了元素就返回<code>true</code>。可选</td>
+</tr>
+<tr>
+<td><code>void clear()</code></td>
+<td>移除所有元素。可选</td>
+</tr>
+<tr>
+<td><code>boolean contains(T)</code></td>
+<td>如果容器包含该元素，则返回<code>true</code></td>
+</tr>
+<tr>
+<td><code>boolean containsAll(Collection&lt;?&gt;)</code></td>
+<td>如果容器中包含所有元素，则返回<code>true</code></td>
+</tr>
+<tr>
+<td><code>boolean isEmpty()</code></td>
+<td>容器中没有元素返回<code>true</code></td>
+</tr>
+<tr>
+<td><code>Iterator&lt;T&gt; iterator()</code></td>
+<td>返回一个可以遍历容器所有元素的<code>Iterator&lt;T&gt;</code></td>
+</tr>
+<tr>
+<td><code>boolean remove(Object)</code></td>
+<td>如果元素在容器中，则移除一个该元素的实例。如果发生了移除则返回<code>true</code>。可选</td>
+</tr>
+<tr>
+<td><code>boolean removeAll(Collection&lt;?&gt;)</code></td>
+<td>移除参数中所有的元素，如果发生了移除就返回<code>true</code>。可选</td>
+</tr>
+<tr>
+<td><code>boolean retainAll(Collection&lt;?&gt;)</code></td>
+<td>只保存参数中的元素，只要<code>Collection</code>发生了改变就返回<code>true</code></td>
+</tr>
+<tr>
+<td><code>int size()</code></td>
+<td>返回容器中元素的数目</td>
+</tr>
+<tr>
+<td><code>Object[] toArray()</code></td>
+<td>返回包含容器中所有元素的数组</td>
+</tr>
+<tr>
+<td><code>&lt;T&gt; T[] toArray(T[] a)</code></td>
+<td>返回包含容器中所有元素的数组，数组类型与参数类型一致</td>
+</tr>
+</tbody>
+</table>
+<h2 id="可选操作"><a href="#可选操作" class="headerlink" title="可选操作"></a>可选操作</h2><ul>
+<li><p>在<code>Collection</code>方法中，一些方法是可选的，这意味着继承<code>Collection</code>时这些方法可以不进行覆盖。此时导出类对象调用该方法时会出现<code>UnsupportedOperationException</code>。<code>Collection</code>的可选方法实现如下:</p>
+<pre class=" language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">boolean</span> <span class="token function">add</span><span class="token punctuation">(</span>E e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">UnsupportedOperationException</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>可见，如果导出类不实现可选方法，那么该方法会调用<code>Collection</code>中的实现，即抛出一个<code>UnsupportedOperationException</code>异常。</p>
+</li>
+</ul>
+<h2 id="Set与存储顺序"><a href="#Set与存储顺序" class="headerlink" title="Set与存储顺序"></a>Set与存储顺序</h2><h3 id="Set"><a href="#Set" class="headerlink" title="Set"></a>Set</h3><ul>
+<li>存入<code>Set</code>的每个元素都必须是唯一的，因为<code>Set</code>不保存重复元素。加入<code>Set</code>的元素必须定义<code>equals()</code>方法一确保对象的唯一性。<code>Set</code>和<code>Collection</code>有完全一样的接口。<code>Set</code>不保证维护元素的次序。</li>
+</ul>
+<h3 id="HashSet"><a href="#HashSet" class="headerlink" title="HashSet"></a>HashSet</h3><ul>
+<li>为快速查找而设计的<code>Set</code>，存入<code>HashSet</code>的元素必须定义<code>hashCode()</code>。<code>HashSet</code>存储元素的顺序是按照底层哈希桶号从小到大排序，如果桶号相同就按照放入桶的先后顺序。</li>
+</ul>
+<h3 id="TreeSet"><a href="#TreeSet" class="headerlink" title="TreeSet"></a>TreeSet</h3><ul>
+<li>保持次序的<code>Set</code>，底层为树结构。使用它可以从<code>Set</code>中提取有序的序列。元素必须实现<code>Comparable</code>接口</li>
+</ul>
+<h3 id="LinkedHashSet"><a href="#LinkedHashSet" class="headerlink" title="LinkedHashSet"></a>LinkedHashSet</h3><ul>
+<li>具有<code>HashSet</code>的查询速度，且内部使用链表维护元素的顺序（插入的顺序）。</li>
+</ul>
+<h3 id="SortedSet"><a href="#SortedSet" class="headerlink" title="SortedSet"></a>SortedSet</h3><ul>
+<li>可以保证其中的元素处于排序状态，并提供一些附加功能</li>
+</ul>
+<h2 id="队列"><a href="#队列" class="headerlink" title="队列"></a>队列</h2><h3 id="LinkedList"><a href="#LinkedList" class="headerlink" title="LinkedList"></a>LinkedList</h3><ul>
+<li>队列的基本实现。</li>
+</ul>
+<h3 id="优先级队列"><a href="#优先级队列" class="headerlink" title="优先级队列"></a>优先级队列</h3><ul>
+<li><code>PriorityQueue</code>：按照元素从小到大排列。</li>
+</ul>
+<h2 id="Map"><a href="#Map" class="headerlink" title="Map"></a>Map</h2><h3 id="Map的各种实现"><a href="#Map的各种实现" class="headerlink" title="Map的各种实现"></a>Map的各种实现</h3><ul>
+<li><code>HashMap</code>：<code>Map</code>基于散列表的实现。插入和查询键值对的开销是固定的，可以通过构造器设置容量和负载因子，以调整容器性能</li>
+</ul>
+<blockquote>
+<p>负载因子：如果容器持有元素超过一定比例会进行扩容，此时作为底层实现的旧数组会被更大容量的新数组取代。这个比例就是负载因子。</p>
+</blockquote>
+<ul>
+<li><code>LinkedHashMap</code>：类似于<code>HashMap</code>，但是迭代遍历时，取得键值对的顺序是插入顺序，或者是最近最少使用（LRU）次序。仅比<code>HashMap</code>慢一点，而在迭代访问时反而更快，因为其使用链表维护内部次序。</li>
+<li><code>TreeMap</code>：基于红黑树的实现。查看键或者键值对时，它们会被排序。<code>TreeMap</code>的特点在于，所得到的结果是经过排序的（按元素大小排序）。<code>TreeMap</code>是唯一带有<code>subMap()</code>方法的<code>Map</code>，它可以返回一棵子树。</li>
+<li><code>WeakHashMap</code>：弱键映射，允许释放映射所指向的对象，这是为解决某类特殊问题而设计的。如果映射之外没有引用指向某个键，则此键可以被垃圾回收。</li>
+<li><code>ConcurrentHashMap</code>：一种线程安全的<code>Map</code>，它不涉及同步加锁。</li>
+<li><code>IdentityHashMap</code>：使用<code>==</code>代替<code>equals()</code>对键进行比较的散列映射，专为解决特殊问题而设计的。</li>
+</ul>
+<h3 id="散列"><a href="#散列" class="headerlink" title="散列"></a>散列</h3><ul>
+<li><code>HashMap</code>使用了散列码作为键的搜索。在Java中，<code>hashCode()</code>是根类<code>Object</code>的方法，因此所有Java对象都能产生散列码。使用<code>hashCode()</code>进行查询能够显著地提高性能。</li>
+<li>默认的<code>Object#equals()</code>只是比较对象地址，如果需要某个自定义的类作为键使用，需要重载<code>hashCode()</code>和<code>equals()</code>。</li>
+</ul>
+<h2 id="容器的选择"><a href="#容器的选择" class="headerlink" title="容器的选择"></a>容器的选择</h2><h3 id="List"><a href="#List" class="headerlink" title="List"></a>List</h3><ul>
+<li><code>ArrayList</code>应该作为默认选择，只有当程序的性能因为经常从表中间进行插入和删除而变差的时候，才去选择<code>LinkedList</code>。如果使用的是固定数量的元素，也可以直接使用数组。</li>
+</ul>
+<h3 id="Set-1"><a href="#Set-1" class="headerlink" title="Set"></a>Set</h3><ul>
+<li><code>HashSet</code>的性能基本上总是比<code>TreeSet</code>好，特别是在添加和查询元素时。当需要对元素进行排序，或者需要对元素进行迭代时才会需要<code>TreeSet</code>。</li>
+</ul>
+<h3 id="Map-1"><a href="#Map-1" class="headerlink" title="Map"></a>Map</h3><ul>
+<li>类似于<code>Set</code>的结果，<code>TreeMap</code>比<code>HashMap</code>要慢。</li>
+</ul>
+<h2 id="实用方法"><a href="#实用方法" class="headerlink" title="实用方法"></a>实用方法</h2><table>
+<thead>
+<tr>
+<th>方法</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>max(Collection)</code>, <code>min(Collection)</code></td>
+<td>返回参数<code>Collection</code>中最大或者最小的元素，采用<code>Collection</code>中内置的自然比较法</td>
+</tr>
+<tr>
+<td><code>max(Collection, Comparator)</code>, <code>min(Collection, Comparator)</code></td>
+<td>返回参数<code>Collection</code>中最大或最小的元素，采用参数中的<code>Comparator</code>进行比较</td>
+</tr>
+<tr>
+<td><code>indexOfSubList(List source, List target)</code></td>
+<td>返回<code>target</code>在<code>source</code>中第一次出现的位置，或者在找不到时返回<code>-1</code></td>
+</tr>
+<tr>
+<td><code>lastIndexOfSubList(List source, List target)</code></td>
+<td>返回<code>target</code>在<code>source</code>中最后一次出现的位置，或者在找不到时返回<code>-1</code></td>
+</tr>
+<tr>
+<td><code>replaceAll(List&lt;T&gt;, T oldVal, T newVal)</code></td>
+<td>使用<code>newVal</code>替换所有<code>oldVal</code></td>
+</tr>
+<tr>
+<td><code>reverse(List)</code></td>
+<td>逆转所有元素的次序</td>
+</tr>
+<tr>
+<td><code>reverseOrder()</code>, <code>reverseOrder(Comparator&lt;T&gt;)</code></td>
+<td>返回一个<code>Comparator</code>，它可以以逆转实现了<code>Comparator&lt;T&gt;</code>的对象集合的自然顺序。第二个版本可以逆转所提供的<code>Comparator</code>的顺序</td>
+</tr>
+<tr>
+<td><code>rotate(List, int distance)</code></td>
+<td>所有元素向后移动<code>distance</code>个位置，将末尾的元素循环到前面来</td>
+</tr>
+<tr>
+<td><code>shuffle(List)</code>, <code>shuffle(List, Random)</code></td>
+<td>随机改变指定列表顺序。第一种形式提供其自己的随机机制，第二种则来源于参数<code>Random</code>对象</td>
+</tr>
+<tr>
+<td><code>sort(List&lt;T&gt;)</code>, <code>sort(List&lt;T&gt;, Comparator&lt;? super T&gt; c)</code></td>
+<td>使用<code>List&lt;T&gt;</code>中的自然顺序排序。第二种形式允许提供用于排序的<code>Comparator</code></td>
+</tr>
+<tr>
+<td><code>copy(List&lt;? super T&gt; dest, List&lt;? extends T&gt; src)</code></td>
+<td>将<code>src</code>中的元素复制到<code>dest</code></td>
+</tr>
+<tr>
+<td><code>swap(List, int i, int j)</code></td>
+<td>交换<code>list</code>中位置<code>i</code>与位置<code>j</code>的元素，通常比手动实现要快</td>
+</tr>
+<tr>
+<td><code>fill(LIst&lt;? super T&gt;, T x)</code></td>
+<td>用对象<code>x</code>替换<code>list</code>中的所有元素</td>
+</tr>
+<tr>
+<td><code>disjoint(Collection, Collection)</code></td>
+<td>当两个集合没有重复元素时返回<code>true</code></td>
+</tr>
+<tr>
+<td><code>frequency(Collection, Object x)</code></td>
+<td>返回<code>Collection</code>中<code>x</code>出现的次数</td>
+</tr>
+<tr>
+<td><code>emptyList()</code>, <code>emptyMap()</code>, <code>emptySet()</code></td>
+<td>返回不可变且为泛型的<code>List</code>、<code>Map</code>、<code>Set</code></td>
+</tr>
+<tr>
+<td><code>singleton(T x)</code>, <code>singletonList(T x)</code>, <code>singletonMap(K key, V value)</code></td>
+<td>产生不可变的<code>Set&lt;T&gt;</code>、<code>List&lt;T&gt;</code>、<code>Map&lt;K, V&gt;</code>。</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>在比较字符串而使用<code>max()</code>、<code>min()</code>、<code>sort()</code>等方法时，使用参数<code>String.CASE_INSENSITIVE_ORDER</code>可以忽略大小写。</li>
+</ul>
+<h3 id="同步控制"><a href="#同步控制" class="headerlink" title="同步控制"></a>同步控制</h3><ul>
+<li><code>Collections.synchonizedCollection()</code>可以传入一个新生成的容器，返回的是有同步功能的版本。类似的还有<code>Collections.synchonizedList()</code>、<code>Collections.synchonizedSet()</code>、<code>Collections.synchonizedMap()</code>等。</li>
+<li>快速报错：Java容器的一种保护机制，能够防止多个进程同时修改同一个容器的内容。它会探查容器上的任何除了当前进程进行的操作以外的所有变化，一旦发现其它进行修改了容器，就立刻抛出<code>ConcurrentModificationException</code>异常。</li>
+</ul>
+</div></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="mailto:undefined">SinLapis</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="http://sinlapis.github.io/2019/07/07/Java编程思想笔记0x0a/">http://sinlapis.github.io/2019/07/07/Java编程思想笔记0x0a/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/笔记/">笔记</a><a class="post-meta__tags" href="/tags/Java/">Java</a></div><nav id="pagination"><div class="prev-post pull-left"><a href="/2019/07/08/DNS与BIND笔记0x00/"><i class="fa fa-chevron-left">  </i><span>DNS与BIND笔记0x00</span></a></div><div class="next-post pull-right"><a href="/2019/07/07/Java编程思想笔记0x09/"><span>Java编程思想笔记0x09</span><i class="fa fa-chevron-right"></i></a></div></nav></div></div><footer><div class="layout" id="footer"><div class="copyright">&copy;2017 - 2021 By SinLapis</div><div class="framework-info"><span>Driven - </span><a href="http://hexo.io"><span>Hexo</span></a><span class="footer-separator">|</span><span>Theme - </span><a href="https://github.com/Molunerfinn/hexo-theme-melody"><span>Melody</span></a></div><div class="busuanzi"><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><span id="busuanzi_container_page_pv"><i class="fa fa-file-o"></i><span id="busuanzi_value_page_pv"></span><span></span></span></div></div></footer><i class="fa fa-arrow-up" id="go-up" aria-hidden="true"></i><script src="https://cdn.jsdelivr.net/npm/animejs@latest/anime.min.js"></script><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@latest/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-ui-pack@latest/velocity.ui.min.js"></script><script src="/js/utils.js?version=1.6.1"></script><script src="/js/fancybox.js?version=1.6.1"></script><script src="/js/sidebar.js?version=1.6.1"></script><script src="/js/copy.js?version=1.6.1"></script><script src="/js/fireworks.js?version=1.6.1"></script><script src="/js/transition.js?version=1.6.1"></script><script src="/js/scroll.js?version=1.6.1"></script><script src="/js/head.js?version=1.6.1"></script><script>if(/Android|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent)) {
+  $('#nav').addClass('is-mobile')
+  $('footer').addClass('is-mobile')
+}</script></body></html>

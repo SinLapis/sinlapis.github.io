@@ -1,0 +1,91 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta name="generator" content="Hexo 3.9.0"><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta name="description" content="Java编程思想笔记0x00"><meta name="keywords" content="笔记,Java"><meta name="author" content="SinLapis"><meta name="copyright" content="SinLapis"><title>Java编程思想笔记0x00 | SinLapis的博客</title><link rel="shortcut icon" href="/images/87235d96-63d9-443d-a4fa-8093fac33ada_200x200.png"><link rel="stylesheet" href="/css/index.css?version=1.6.1"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@latest/css/font-awesome.min.css?version=1.6.1"><link rel="dns-prefetch" href="https://cdn.staticfile.org"><link rel="dns-prefetch" href="https://cdn.bootcss.com"><link rel="dns-prefetch" href="https://creativecommons.org"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  }
+} </script><link rel="stylesheet" href="/css/prism.css" type="text/css"></head><body><i class="fa fa-arrow-right" id="toggle-sidebar" aria-hidden="true"></i><div id="sidebar"><div class="toggle-sidebar-info text-center"><span data-toggle="Toggle article">Toggle site</span><hr></div><div class="sidebar-toc"><div class="sidebar-toc__title">Catalog</div><div class="sidebar-toc__progress"><span class="progress-notice">You've read</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar"></div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#对象"><span class="toc-number">1.</span> <span class="toc-text">对象</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#面向对象的程序设计方式"><span class="toc-number">1.1.</span> <span class="toc-text">面向对象的程序设计方式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#封装"><span class="toc-number">1.2.</span> <span class="toc-text">封装</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#继承"><span class="toc-number">1.3.</span> <span class="toc-text">继承</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#多态"><span class="toc-number">1.4.</span> <span class="toc-text">多态</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#基本类型"><span class="toc-number">1.5.</span> <span class="toc-text">基本类型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#static"><span class="toc-number">1.6.</span> <span class="toc-text">static</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#初始化与清理"><span class="toc-number">2.</span> <span class="toc-text">初始化与清理</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#构造器"><span class="toc-number">2.1.</span> <span class="toc-text">构造器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#重载"><span class="toc-number">2.2.</span> <span class="toc-text">重载</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#初始化"><span class="toc-number">2.3.</span> <span class="toc-text">初始化</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#可变参数列表"><span class="toc-number">2.4.</span> <span class="toc-text">可变参数列表</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#访问权限控制"><span class="toc-number">3.</span> <span class="toc-text">访问权限控制</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#代码组织"><span class="toc-number">3.1.</span> <span class="toc-text">代码组织</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#访问权限"><span class="toc-number">3.2.</span> <span class="toc-text">访问权限</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#复用类"><span class="toc-number">4.</span> <span class="toc-text">复用类</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#组合"><span class="toc-number">4.1.</span> <span class="toc-text">组合</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#继承-1"><span class="toc-number">4.2.</span> <span class="toc-text">继承</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#代理"><span class="toc-number">4.3.</span> <span class="toc-text">代理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#final"><span class="toc-number">4.4.</span> <span class="toc-text">final</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#多态-1"><span class="toc-number">5.</span> <span class="toc-text">多态</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#接口"><span class="toc-number">6.</span> <span class="toc-text">接口</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#抽象类"><span class="toc-number">6.1.</span> <span class="toc-text">抽象类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#接口-1"><span class="toc-number">6.2.</span> <span class="toc-text">接口</span></a></li></ol></li></ol></div></div><div class="author-info hide"><div class="author-info__avatar text-center"><img src="/images/3774d809.jpg"></div><div class="author-info__name text-center">SinLapis</div><div class="author-info__description text-center"></div><hr><div class="author-info-articles"><a class="author-info-articles__archives article-meta" href="/archives"><span class="pull-left">Articles</span><span class="pull-right">103</span></a><a class="author-info-articles__tags article-meta" href="/tags"><span class="pull-left">Tags</span><span class="pull-right">70</span></a><a class="author-info-articles__categories article-meta" href="/categories"><span class="pull-left">Categories</span><span class="pull-right">20</span></a></div><hr><div class="author-info-links"><div class="author-info-links__title text-center">Links</div><a class="author-info-links__name text-center" href="http://chace.in/">chace</a></div></div></div><div id="content-outer"><div class="no-bg" id="top-container"><div id="page-header"><span class="pull-left"> <a id="site-name" href="/">SinLapis的博客</a></span><i class="fa fa-bars toggle-menu pull-right" aria-hidden="true"></i><span class="pull-right menus"><a class="site-page" href="/">Home</a><a class="site-page" href="/ACGBlog">ACG</a><a class="site-page" href="/archives">Archives</a><a class="site-page" href="/tags">Tags</a><a class="site-page" href="/categories">Categories</a></span></div><div id="post-info"><div id="post-title">Java编程思想笔记0x00</div><div id="post-meta"><time class="post-meta__date"><i class="fa fa-calendar" aria-hidden="true"></i> 2019-06-25</time><span class="post-meta__separator">|</span><i class="fa fa-inbox post-meta__icon" aria-hidden="true"></i><a class="post-meta__categories" href="/categories/Java/">Java</a></div></div></div><div class="layout" id="content-inner"><article id="post"><div class="article-container" id="post-content"><h1 id="对象"><a href="#对象" class="headerlink" title="对象"></a>对象</h1><h2 id="面向对象的程序设计方式"><a href="#面向对象的程序设计方式" class="headerlink" title="面向对象的程序设计方式"></a>面向对象的程序设计方式</h2><ol>
+<li>万物皆对象</li>
+<li>程序是对象的集合，它们通过发送消息来告知彼此要做的。</li>
+<li>每个对象都有自己的、由其他对象所构成的存储</li>
+<li>每个对象都有其类型</li>
+<li>某一特定类型的所有对象都可以接受同样的消息</li>
+</ol>
+<h2 id="封装"><a href="#封装" class="headerlink" title="封装"></a>封装</h2><ul>
+<li>只向客户端程序员暴露必须的部分，而隐藏其它部分</li>
+<li>原因：<ol>
+<li>让客户端程序员无法触及他们不应该触及的部分，关注对他们来说关键的东西。</li>
+<li>允许库设计者可以改变类内部的工作方式而不必担心会影响到客户端程序员。</li>
+</ol>
+</li>
+</ul>
+<h2 id="继承"><a href="#继承" class="headerlink" title="继承"></a>继承</h2><ul>
+<li>继承使用基类型和导出类型的概念表示了类型间的相似性。</li>
+</ul>
+<h2 id="多态"><a href="#多态" class="headerlink" title="多态"></a>多态</h2><ul>
+<li>后期绑定：当向对象发送消息时，被调用代码直到运行时才能确定。编译器确保被调用方法存在，并对调用参数和返回值执行类型检查，但并不知道被执行的确切代码。</li>
+<li>向上转型：在程序执行过程中，把导出类看做其基类的过程。</li>
+</ul>
+<h2 id="基本类型"><a href="#基本类型" class="headerlink" title="基本类型"></a>基本类型</h2><ul>
+<li>基本类型的创建：创建一个并非是引用的“自动”变量，这个变量直接存储值并置于堆栈中。</li>
+<li>基本类型占用的存储空间不随机器硬件架构变化而变化</li>
+<li>所有的数值类型都有正负号</li>
+</ul>
+<h2 id="static"><a href="#static" class="headerlink" title="static"></a>static</h2><ul>
+<li>当声明一个事物是<code>static</code>时，就意味着这个域或方法不会与包含它的那个类的任何对象实例关联在一起。即使从未创建过某个类的任何对象，也可以调用其<code>static</code>方法或访问其<code>staic</code>域。</li>
+<li>在<code>static</code>内部不能调用非静态方法。</li>
+</ul>
+<h1 id="初始化与清理"><a href="#初始化与清理" class="headerlink" title="初始化与清理"></a>初始化与清理</h1><h2 id="构造器"><a href="#构造器" class="headerlink" title="构造器"></a>构造器</h2><ul>
+<li>构造器是一种特殊类型的方法，因为它没有返回值。这与返回值为空是不同的。<code>new</code>表达式返回了对象的引用，但这并不是构造器的返回值。</li>
+<li>构造器中对变量的初始化会覆盖该变量在定义时的初始化</li>
+<li>如果类中没有构造器，那么编译器会自动创建一个默认的构造器，但是如果已经定义类一个构造器，无论是否有参数，编译器就不再创建默认构造器。</li>
+</ul>
+<h2 id="重载"><a href="#重载" class="headerlink" title="重载"></a>重载</h2><ul>
+<li>如果传入的数据类型小于方法中声明的形式参数类型，实际数据的类型就会提升。但是<code>char</code>型略有不同，如果无法找到恰好接受<code>char</code>型的方法，就会把<code>char</code>直接提升到<code>int</code>型。</li>
+</ul>
+<h2 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h2><ul>
+<li>静态初始化只在必要的时候进行。如果不创建对象，或者不访问静态域，那么就不会进行静态初始化。</li>
+<li>初始化的顺序是先静态对象，后其它对象。</li>
+</ul>
+<h2 id="可变参数列表"><a href="#可变参数列表" class="headerlink" title="可变参数列表"></a>可变参数列表</h2><ul>
+<li>可以使用类似<code>Object... args</code>的参数形式来代替显示的声明数组。</li>
+</ul>
+<h1 id="访问权限控制"><a href="#访问权限控制" class="headerlink" title="访问权限控制"></a>访问权限控制</h1><h2 id="代码组织"><a href="#代码组织" class="headerlink" title="代码组织"></a>代码组织</h2><ul>
+<li>一个Java源文件称为编译单元。一个编译单元中只能有一个public类，且该类的名称需与文件名称相同（包括大小写，不包括文件名后缀）。</li>
+<li>类库中会有一组类文件，每个文件都由一个public类和任意数量的非public类组成，因此每个文件都由一个构件。如果希望这些构件从属于同一个群组，可以使用关键字<code>package</code>。</li>
+</ul>
+<h2 id="访问权限"><a href="#访问权限" class="headerlink" title="访问权限"></a>访问权限</h2><ul>
+<li>包访问权限：是默认的访问权限，意味着当前包中的所有其它类对该成员都有访问权限。</li>
+<li>默认包：如果没有给Java文件设置任何包名称，则编译器会把处于相同目录下的Java文件看作是属于该目录下的默认包之中。</li>
+<li><code>public</code>：由<code>public</code>修饰的成员对任何类都是可用的。</li>
+<li><code>private</code>：由<code>private</code>修饰的成员，除了包含该成员的类以外，其它任何类都无法访问这个成员。</li>
+<li>如果使用<code>privatge</code>修饰构造器，那么将无法通过通常手段进行对象的创建，并且会阻碍对此类的继承。</li>
+<li><code>protected</code>：由<code>protected</code>修饰的成员仅支持当前类、继承类以及相同包的其它类访问（即提供包访问权限）</li>
+</ul>
+<h1 id="复用类"><a href="#复用类" class="headerlink" title="复用类"></a>复用类</h1><h2 id="组合"><a href="#组合" class="headerlink" title="组合"></a>组合</h2><h2 id="继承-1"><a href="#继承-1" class="headerlink" title="继承"></a>继承</h2><ul>
+<li>继承中的构建：在继承中，构建过程是从基类流向导出类的，因此基类在导出类构造器可以访问它之前就已经完成了初始化。即使导出类没有显式创建构造器，编译器也会自动创建一个默认的构造器，该构造器将调用基类的构造器。但是如果基类设置了有参构造器，那么在导出类中如果不显示声明调用基类的某个构造器，在创建过程中将会默认调用基类的无参构造器，如果基类没有声明无参构造器则编译不会通过。</li>
+</ul>
+<h2 id="代理"><a href="#代理" class="headerlink" title="代理"></a>代理</h2><ul>
+<li>将一个成员对象置于要构造的类中，同时在新类中暴露该类所有的成员方法。</li>
+</ul>
+<h2 id="final"><a href="#final" class="headerlink" title="final"></a>final</h2><ul>
+<li>使用<code>final</code>修饰的基本类型变量值不能改变，如果是引用类型变量则引用值不能改变，但是引用指向的对象自身是可以改变的。此外，使用<code>final</code>修饰的变量必须初始化（可以在声明时初始化或者在构造器中初始化）。</li>
+<li>一个既是<code>static</code>又是<code>final</code>的变量只能占据一段不能改变的存储空间，并且必须在声明时初始化。</li>
+<li>只有想要明确禁止覆盖方法时，才将方法设为final。</li>
+</ul>
+<h1 id="多态-1"><a href="#多态-1" class="headerlink" title="多态"></a>多态</h1><ul>
+<li>协变返回类型：在导出类中的被覆盖方法可以返回基类方法的返回类型的某种导出类。</li>
+</ul>
+<h1 id="接口"><a href="#接口" class="headerlink" title="接口"></a>接口</h1><h2 id="抽象类"><a href="#抽象类" class="headerlink" title="抽象类"></a>抽象类</h2><ul>
+<li>抽象类和抽象方法可以使类的抽象性明确起来，并且可以明确传达类的使用方法。此外，抽象类还是有用的重构工具。</li>
+</ul>
+<h2 id="接口-1"><a href="#接口-1" class="headerlink" title="接口"></a>接口</h2><ul>
+<li>当组合接口时，如果存在两个方法重名、参数列表或返回值不一致，那么会产生冲突。</li>
+</ul>
+</div></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="mailto:undefined">SinLapis</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="http://sinlapis.github.io/2019/06/25/Java编程思想笔记0x00/">http://sinlapis.github.io/2019/06/25/Java编程思想笔记0x00/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/笔记/">笔记</a><a class="post-meta__tags" href="/tags/Java/">Java</a></div><nav id="pagination"><div class="prev-post pull-left"><a href="/2019/06/26/Java编程思想笔记0x01/"><i class="fa fa-chevron-left">  </i><span>Java编程思想笔记0x01</span></a></div><div class="next-post pull-right"><a href="/2019/06/23/深入理解Java虚拟机笔记0x03/"><span>深入理解Java虚拟机笔记0x03</span><i class="fa fa-chevron-right"></i></a></div></nav></div></div><footer><div class="layout" id="footer"><div class="copyright">&copy;2017 - 2021 By SinLapis</div><div class="framework-info"><span>Driven - </span><a href="http://hexo.io"><span>Hexo</span></a><span class="footer-separator">|</span><span>Theme - </span><a href="https://github.com/Molunerfinn/hexo-theme-melody"><span>Melody</span></a></div><div class="busuanzi"><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><span id="busuanzi_container_page_pv"><i class="fa fa-file-o"></i><span id="busuanzi_value_page_pv"></span><span></span></span></div></div></footer><i class="fa fa-arrow-up" id="go-up" aria-hidden="true"></i><script src="https://cdn.jsdelivr.net/npm/animejs@latest/anime.min.js"></script><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@latest/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-ui-pack@latest/velocity.ui.min.js"></script><script src="/js/utils.js?version=1.6.1"></script><script src="/js/fancybox.js?version=1.6.1"></script><script src="/js/sidebar.js?version=1.6.1"></script><script src="/js/copy.js?version=1.6.1"></script><script src="/js/fireworks.js?version=1.6.1"></script><script src="/js/transition.js?version=1.6.1"></script><script src="/js/scroll.js?version=1.6.1"></script><script src="/js/head.js?version=1.6.1"></script><script>if(/Android|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent)) {
+  $('#nav').addClass('is-mobile')
+  $('footer').addClass('is-mobile')
+}</script></body></html>

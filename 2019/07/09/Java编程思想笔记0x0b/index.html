@@ -1,0 +1,290 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta name="generator" content="Hexo 3.9.0"><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta name="description" content="Java编程思想笔记0x0b"><meta name="keywords" content="笔记,Java"><meta name="author" content="SinLapis"><meta name="copyright" content="SinLapis"><title>Java编程思想笔记0x0b | SinLapis的博客</title><link rel="shortcut icon" href="/images/87235d96-63d9-443d-a4fa-8093fac33ada_200x200.png"><link rel="stylesheet" href="/css/index.css?version=1.6.1"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@latest/css/font-awesome.min.css?version=1.6.1"><link rel="dns-prefetch" href="https://cdn.staticfile.org"><link rel="dns-prefetch" href="https://cdn.bootcss.com"><link rel="dns-prefetch" href="https://creativecommons.org"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  }
+} </script><link rel="stylesheet" href="/css/prism.css" type="text/css"></head><body><i class="fa fa-arrow-right" id="toggle-sidebar" aria-hidden="true"></i><div id="sidebar"><div class="toggle-sidebar-info text-center"><span data-toggle="Toggle article">Toggle site</span><hr></div><div class="sidebar-toc"><div class="sidebar-toc__title">Catalog</div><div class="sidebar-toc__progress"><span class="progress-notice">You've read</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar"></div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Java-I-O-系统（一）"><span class="toc-number">1.</span> <span class="toc-text">Java I/O 系统（一）</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#File"><span class="toc-number">1.1.</span> <span class="toc-text">File</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#输入和输出"><span class="toc-number">1.2.</span> <span class="toc-text">输入和输出</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#InputStream类型"><span class="toc-number">1.2.1.</span> <span class="toc-text">InputStream类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#OutputStream类型"><span class="toc-number">1.2.2.</span> <span class="toc-text">OutputStream类型</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#添加属性和有用的接口"><span class="toc-number">1.3.</span> <span class="toc-text">添加属性和有用的接口</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#FilterInputStream"><span class="toc-number">1.3.1.</span> <span class="toc-text">FilterInputStream</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#FilterOutputStream"><span class="toc-number">1.3.2.</span> <span class="toc-text">FilterOutputStream</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Reader和Writer"><span class="toc-number">1.4.</span> <span class="toc-text">Reader和Writer</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#数据的来源与去处"><span class="toc-number">1.4.1.</span> <span class="toc-text">数据的来源与去处</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#更改流的行为"><span class="toc-number">1.4.2.</span> <span class="toc-text">更改流的行为</span></a></li></ol></li></ol></li></ol></div></div><div class="author-info hide"><div class="author-info__avatar text-center"><img src="/images/3774d809.jpg"></div><div class="author-info__name text-center">SinLapis</div><div class="author-info__description text-center"></div><hr><div class="author-info-articles"><a class="author-info-articles__archives article-meta" href="/archives"><span class="pull-left">Articles</span><span class="pull-right">103</span></a><a class="author-info-articles__tags article-meta" href="/tags"><span class="pull-left">Tags</span><span class="pull-right">70</span></a><a class="author-info-articles__categories article-meta" href="/categories"><span class="pull-left">Categories</span><span class="pull-right">20</span></a></div><hr><div class="author-info-links"><div class="author-info-links__title text-center">Links</div><a class="author-info-links__name text-center" href="http://chace.in/">chace</a></div></div></div><div id="content-outer"><div class="no-bg" id="top-container"><div id="page-header"><span class="pull-left"> <a id="site-name" href="/">SinLapis的博客</a></span><i class="fa fa-bars toggle-menu pull-right" aria-hidden="true"></i><span class="pull-right menus"><a class="site-page" href="/">Home</a><a class="site-page" href="/ACGBlog">ACG</a><a class="site-page" href="/archives">Archives</a><a class="site-page" href="/tags">Tags</a><a class="site-page" href="/categories">Categories</a></span></div><div id="post-info"><div id="post-title">Java编程思想笔记0x0b</div><div id="post-meta"><time class="post-meta__date"><i class="fa fa-calendar" aria-hidden="true"></i> 2019-07-09</time><span class="post-meta__separator">|</span><i class="fa fa-inbox post-meta__icon" aria-hidden="true"></i><a class="post-meta__categories" href="/categories/Java/">Java</a></div></div></div><div class="layout" id="content-inner"><article id="post"><div class="article-container" id="post-content"><h1 id="Java-I-O-系统（一）"><a href="#Java-I-O-系统（一）" class="headerlink" title="Java I/O 系统（一）"></a>Java I/O 系统（一）</h1><h2 id="File"><a href="#File" class="headerlink" title="File"></a>File</h2><ul>
+<li><p><code>File</code>类既代表一个特定文件的名称，又能代表一个目录下的一组文件的名称。</p>
+<pre class=" language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Main</span> <span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        File path <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">File</span><span class="token punctuation">(</span><span class="token string">"."</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        String<span class="token punctuation">[</span><span class="token punctuation">]</span> list<span class="token punctuation">;</span>
+        <span class="token keyword">if</span><span class="token punctuation">(</span>args<span class="token punctuation">.</span>length <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">)</span>
+            list <span class="token operator">=</span> path<span class="token punctuation">.</span><span class="token function">list</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">else</span> 
+            list <span class="token operator">=</span> path<span class="token punctuation">.</span><span class="token function">list</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">DirFilter</span><span class="token punctuation">(</span>args<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        Arrays<span class="token punctuation">.</span><span class="token function">sort</span><span class="token punctuation">(</span>list<span class="token punctuation">,</span> String<span class="token punctuation">.</span>CASE_INSENSITIVE_ORDER<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">for</span><span class="token punctuation">(</span>String dirItem<span class="token operator">:</span> list<span class="token punctuation">)</span>
+            System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>dirItem<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">class</span> <span class="token class-name">DirFilter</span> <span class="token keyword">implements</span> <span class="token class-name">FilenameFilter</span> <span class="token punctuation">{</span>
+    <span class="token keyword">private</span> Pattern pattern<span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token function">DirFilter</span><span class="token punctuation">(</span>String regex<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        pattern <span class="token operator">=</span> Pattern<span class="token punctuation">.</span><span class="token function">compile</span><span class="token punctuation">(</span>regex<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> <span class="token keyword">boolean</span> <span class="token function">accept</span><span class="token punctuation">(</span>File dir<span class="token punctuation">,</span> String name<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> pattern<span class="token punctuation">.</span><span class="token function">matcher</span><span class="token punctuation">(</span>name<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">matches</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<ul>
+<li>上面代码中，<code>File#list()</code>可以接受一个<code>FilenameFilter</code>对象，用于过滤文件。此处使用了回调，重载了<code>accept()</code>方法并让<code>list()</code>调用。</li>
+</ul>
+<h2 id="输入和输出"><a href="#输入和输出" class="headerlink" title="输入和输出"></a>输入和输出</h2><h3 id="InputStream类型"><a href="#InputStream类型" class="headerlink" title="InputStream类型"></a>InputStream类型</h3><ul>
+<li><code>InputStream</code>的作用是用来表示那些从不同数据源产生的输入的类，包括：字节数组、<code>String</code>对象、文件、管道、由其他种类的流组成的序列等，每一种数据源都有相应的<code>InputStream</code>子类。</li>
+</ul>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>类</th>
+<th>功能</th>
+<th>构造器参数</th>
+<th>如何使用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ByteArrayInputStream</code></td>
+<td>允许将内存的缓冲区当做<code>InputStream</code>使用</td>
+<td>缓冲区，字节将从中取出</td>
+<td>作为一种数据源：将其与<code>FilterInputStream</code>对象相连以提供有用接口</td>
+</tr>
+<tr>
+<td><code>StringBufferInputStream</code></td>
+<td>将<code>String</code>转换成<code>InputStream</code>使用</td>
+<td>字符串，底层是实现使用<code>StringBuffer</code></td>
+<td>作为一种数据源：将其与<code>FilterInputStream</code>对象相连以提供有用接口</td>
+</tr>
+<tr>
+<td><code>FileInputStream</code></td>
+<td>用于从文件中读取信息</td>
+<td>字符串，表示文件名、文件或<code>FileDescriptor</code>对象</td>
+<td>作为一种数据源：将其与<code>FilterInputStream</code>对象相连以提供有用接口</td>
+</tr>
+<tr>
+<td><code>PipedInputStream</code></td>
+<td>产生用于写入相关<code>PipedOutputStream</code>的数据，实现管道化的概念</td>
+<td><code>PipedOutputStream</code></td>
+<td>作为一种数据源：将其与<code>FilterInputStream</code>对象相连以提供有用接口</td>
+</tr>
+<tr>
+<td><code>SequenceInputStream</code></td>
+<td>将两个或多个<code>InputStream</code>对象转换成单一<code>InputStream</code></td>
+<td>两个<code>InputSteam</code>对象或者一个容纳<code>InputStream</code>对象的容器<code>Enumeration</code></td>
+<td>作为多线程中数据源：将其与<code>FilterInputStream</code>对象相连以提供有用接口</td>
+</tr>
+<tr>
+<td><code>FilterInputStream</code></td>
+<td>抽象类，作为装饰器的接口。其中，装饰器为其它的<code>InputStream</code>类提供有用的功能</td>
+<td>-</td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
+<h3 id="OutputStream类型"><a href="#OutputStream类型" class="headerlink" title="OutputStream类型"></a>OutputStream类型</h3><ul>
+<li><code>OutputStream</code>类的类别决定了输出所要去往的目标：字节数组、文件或管道。</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>类</th>
+<th>功能</th>
+<th>构造器参数</th>
+<th>如何使用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ByteArrayOutputStream</code></td>
+<td>在内存中创建缓冲区，所有送往流的数据都要放置在此缓冲区。</td>
+<td>缓冲区初始化尺寸（可选）</td>
+<td>用于指定数据的目的地：将其与<code>FilterOutputStream</code>对象相连以提供有用接口</td>
+</tr>
+<tr>
+<td><code>FileOutputStream</code></td>
+<td>用于将信息写至文件</td>
+<td>字符串，表示文件名、文件或<code>FileDescriptor</code>对象</td>
+<td>用于指定数据的目的地：将其与<code>FilterOutputStream</code>对象相连以提供有用接口</td>
+</tr>
+<tr>
+<td><code>PipedOutputStream</code></td>
+<td>任何写入其中的信息都会自动作为相关<code>PipedInputStream</code>的输出。实现管道化的概念</td>
+<td><code>PipedInputStream</code></td>
+<td>用于指定多线程的数据的目的地：将其与<code>FilterOutputStream</code>对象相连以提供有用接口</td>
+</tr>
+<tr>
+<td><code>FilterOutputStream</code></td>
+<td>抽象类，作为装饰器的皆苦。其中，装饰器为其它<code>OutputStream</code>提供有用功能</td>
+<td>-</td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
+<h2 id="添加属性和有用的接口"><a href="#添加属性和有用的接口" class="headerlink" title="添加属性和有用的接口"></a>添加属性和有用的接口</h2><h3 id="FilterInputStream"><a href="#FilterInputStream" class="headerlink" title="FilterInputStream"></a>FilterInputStream</h3><table>
+<thead>
+<tr>
+<th>类</th>
+<th>功能</th>
+<th>构造器参数</th>
+<th>如何使用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>DataInputStream</code></td>
+<td>与<code>DataOutputStream</code>搭配使用，可以按照可移植方式从流读取基本数据类型（<code>int</code>、<code>char</code>、<code>long</code>等）</td>
+<td><code>InputStream</code></td>
+<td>包含用于读取基本类型数据的全部接口</td>
+</tr>
+<tr>
+<td><code>BufferedInputStream</code></td>
+<td>可以防止每次读取时都得进行实际写操作，代表使用缓冲区。</td>
+<td><code>InputStream</code>，可选指定缓冲区大小</td>
+<td>本质上不提供接口，只不过是向进程中添加缓冲区所必须的</td>
+</tr>
+<tr>
+<td><code>LineNumberInputStream</code></td>
+<td>跟踪输入流中的行号，可调用<code>getLineNumber()</code>和<code>setLineNumber(int)</code></td>
+<td><code>InputStream</code></td>
+<td>仅增加了行号，因此可能要与接口对象搭配使用</td>
+</tr>
+<tr>
+<td><code>PushbackInputStream</code></td>
+<td>能弹出一个字节的缓冲区，因此可以将读到的最后一个字符回退。</td>
+<td><code>InputStream</code></td>
+<td>通常作为编译器的扫描器</td>
+</tr>
+</tbody>
+</table>
+<h3 id="FilterOutputStream"><a href="#FilterOutputStream" class="headerlink" title="FilterOutputStream"></a>FilterOutputStream</h3><table>
+<thead>
+<tr>
+<th>类</th>
+<th>功能</th>
+<th>构造器参数</th>
+<th>如何使用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>DataOutputStream</code></td>
+<td>与<code>DataInputStream</code>搭配使用，可以按照可移植方式从流读取基本数据类型（<code>int</code>、<code>char</code>、<code>long</code>等）</td>
+<td><code>OutputStream</code></td>
+<td>包含用于写入基本类型数据的全部接口</td>
+</tr>
+<tr>
+<td><code>PrintStream</code></td>
+<td>用于产生格式化输出。其中<code>DataOutputStream</code>处理数据的存储，<code>PrintStream</code>处理显示</td>
+<td><code>OutputStream</code>，可选是否每次换行时清空缓冲区</td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>BufferedOutputStream</code></td>
+<td>可以防止每次读取时都得进行实际写操作，代表使用缓冲区。</td>
+<td><code>OutputStream</code>，可选指定缓冲区大小</td>
+<td>本质上不提供接口，只不过是向进程中添加缓冲区所必须的</td>
+</tr>
+</tbody>
+</table>
+<h2 id="Reader和Writer"><a href="#Reader和Writer" class="headerlink" title="Reader和Writer"></a>Reader和Writer</h2><ul>
+<li><code>InputStream</code>和<code>OutputStream</code>是面向字节形式的I/O，而<code>Reader</code>和<code>Writer</code>则提供兼容Unicode与面向字符的I/O功能。</li>
+</ul>
+<h3 id="数据的来源与去处"><a href="#数据的来源与去处" class="headerlink" title="数据的来源与去处"></a>数据的来源与去处</h3><table>
+<thead>
+<tr>
+<th><code>InputStream</code>和<code>OutputStream</code></th>
+<th><code>Reader</code>和<code>Writer</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>InputStream</code></td>
+<td><code>Reader</code>，适配器<code>InputStreamReader</code></td>
+</tr>
+<tr>
+<td><code>OutputStream</code></td>
+<td><code>Writer</code>， 适配器<code>OutputStreamWriter</code></td>
+</tr>
+<tr>
+<td><code>FileInputStream</code></td>
+<td><code>FileReader</code></td>
+</tr>
+<tr>
+<td><code>FileOutputStream</code></td>
+<td><code>FileWriter</code></td>
+</tr>
+<tr>
+<td>-</td>
+<td><code>StringReader</code></td>
+</tr>
+<tr>
+<td>-</td>
+<td><code>StringWriter</code></td>
+</tr>
+<tr>
+<td><code>ByteArrayInputStream</code></td>
+<td><code>CharArrayReader</code></td>
+</tr>
+<tr>
+<td><code>ByteArrayOutputStream</code></td>
+<td><code>CharArrayWriter</code></td>
+</tr>
+<tr>
+<td><code>PipedInputStream</code></td>
+<td><code>PipedReader</code></td>
+</tr>
+<tr>
+<td><code>PipedOutputStream</code></td>
+<td><code>PipedWriter</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="更改流的行为"><a href="#更改流的行为" class="headerlink" title="更改流的行为"></a>更改流的行为</h3><table>
+<thead>
+<tr>
+<th><code>FilterInputStream</code>和<code>FilterOutputStream</code></th>
+<th><code>FilterReader</code>和<code>FilterWriter</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>FilterInputStream</code></td>
+<td><code>FilterReader</code></td>
+</tr>
+<tr>
+<td><code>FilterOutputStream</code></td>
+<td><code>FilterWriter</code></td>
+</tr>
+<tr>
+<td><code>BufferedInputStream</code></td>
+<td><code>BufferedReader</code></td>
+</tr>
+<tr>
+<td><code>BufferedOutputStream</code></td>
+<td><code>BufferedWriter</code></td>
+</tr>
+<tr>
+<td><code>PrintStream</code></td>
+<td><code>PrintWriter</code></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>如果需要使用<code>readLine()</code>方法，就不应该使用<code>DataInputStream</code>，而用<code>BufferedReader</code>代替。</li>
+</ul>
+<blockquote>
+<p><code>DataInputStream#readLine()</code>方法已被废弃，因为它无法正确地将字节转换为字符。</p>
+</blockquote>
+</div></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="mailto:undefined">SinLapis</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="http://sinlapis.github.io/2019/07/09/Java编程思想笔记0x0b/">http://sinlapis.github.io/2019/07/09/Java编程思想笔记0x0b/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/笔记/">笔记</a><a class="post-meta__tags" href="/tags/Java/">Java</a></div><nav id="pagination"><div class="prev-post pull-left"><a href="/2019/07/11/Java编程思想笔记0x0c/"><i class="fa fa-chevron-left">  </i><span>Java编程思想笔记0x0c</span></a></div><div class="next-post pull-right"><a href="/2019/07/08/DNS与BIND笔记0x00/"><span>DNS与BIND笔记0x00</span><i class="fa fa-chevron-right"></i></a></div></nav></div></div><footer><div class="layout" id="footer"><div class="copyright">&copy;2017 - 2021 By SinLapis</div><div class="framework-info"><span>Driven - </span><a href="http://hexo.io"><span>Hexo</span></a><span class="footer-separator">|</span><span>Theme - </span><a href="https://github.com/Molunerfinn/hexo-theme-melody"><span>Melody</span></a></div><div class="busuanzi"><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><span id="busuanzi_container_page_pv"><i class="fa fa-file-o"></i><span id="busuanzi_value_page_pv"></span><span></span></span></div></div></footer><i class="fa fa-arrow-up" id="go-up" aria-hidden="true"></i><script src="https://cdn.jsdelivr.net/npm/animejs@latest/anime.min.js"></script><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@latest/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-ui-pack@latest/velocity.ui.min.js"></script><script src="/js/utils.js?version=1.6.1"></script><script src="/js/fancybox.js?version=1.6.1"></script><script src="/js/sidebar.js?version=1.6.1"></script><script src="/js/copy.js?version=1.6.1"></script><script src="/js/fireworks.js?version=1.6.1"></script><script src="/js/transition.js?version=1.6.1"></script><script src="/js/scroll.js?version=1.6.1"></script><script src="/js/head.js?version=1.6.1"></script><script>if(/Android|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent)) {
+  $('#nav').addClass('is-mobile')
+  $('footer').addClass('is-mobile')
+}</script></body></html>

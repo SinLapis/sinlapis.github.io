@@ -1,0 +1,105 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta name="generator" content="Hexo 3.9.0"><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta name="description" content="MySQL技术内幕笔记0x01"><meta name="keywords" content="MySQL,InnoDB,表,视图"><meta name="author" content="SinLapis"><meta name="copyright" content="SinLapis"><title>MySQL技术内幕笔记0x01 | SinLapis的博客</title><link rel="shortcut icon" href="/images/87235d96-63d9-443d-a4fa-8093fac33ada_200x200.png"><link rel="stylesheet" href="/css/index.css?version=1.6.1"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@latest/css/font-awesome.min.css?version=1.6.1"><link rel="dns-prefetch" href="https://cdn.staticfile.org"><link rel="dns-prefetch" href="https://cdn.bootcss.com"><link rel="dns-prefetch" href="https://creativecommons.org"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  }
+} </script><link rel="stylesheet" href="/css/prism.css" type="text/css"></head><body><i class="fa fa-arrow-right" id="toggle-sidebar" aria-hidden="true"></i><div id="sidebar"><div class="toggle-sidebar-info text-center"><span data-toggle="Toggle article">Toggle site</span><hr></div><div class="sidebar-toc"><div class="sidebar-toc__title">Catalog</div><div class="sidebar-toc__progress"><span class="progress-notice">You've read</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar"></div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#表（二）"><span class="toc-number">1.</span> <span class="toc-text">表（二）</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#视图"><span class="toc-number">1.1.</span> <span class="toc-text">视图</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#视图的作用"><span class="toc-number">1.1.1.</span> <span class="toc-text">视图的作用</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#分区表"><span class="toc-number">1.2.</span> <span class="toc-text">分区表</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#分区类型"><span class="toc-number">1.2.1.</span> <span class="toc-text">分区类型</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#range分区"><span class="toc-number">1.2.1.1.</span> <span class="toc-text">range分区</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#list分区"><span class="toc-number">1.2.1.2.</span> <span class="toc-text">list分区</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#hash分区"><span class="toc-number">1.2.1.3.</span> <span class="toc-text">hash分区</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#key分区"><span class="toc-number">1.2.1.4.</span> <span class="toc-text">key分区</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#columns分区"><span class="toc-number">1.2.1.5.</span> <span class="toc-text">columns分区</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#子分区"><span class="toc-number">1.2.2.</span> <span class="toc-text">子分区</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#分区中的null值"><span class="toc-number">1.2.3.</span> <span class="toc-text">分区中的null值</span></a></li></ol></li></ol></li></ol></div></div><div class="author-info hide"><div class="author-info__avatar text-center"><img src="/images/3774d809.jpg"></div><div class="author-info__name text-center">SinLapis</div><div class="author-info__description text-center"></div><hr><div class="author-info-articles"><a class="author-info-articles__archives article-meta" href="/archives"><span class="pull-left">Articles</span><span class="pull-right">103</span></a><a class="author-info-articles__tags article-meta" href="/tags"><span class="pull-left">Tags</span><span class="pull-right">70</span></a><a class="author-info-articles__categories article-meta" href="/categories"><span class="pull-left">Categories</span><span class="pull-right">20</span></a></div><hr><div class="author-info-links"><div class="author-info-links__title text-center">Links</div><a class="author-info-links__name text-center" href="http://chace.in/">chace</a></div></div></div><div id="content-outer"><div class="no-bg" id="top-container"><div id="page-header"><span class="pull-left"> <a id="site-name" href="/">SinLapis的博客</a></span><i class="fa fa-bars toggle-menu pull-right" aria-hidden="true"></i><span class="pull-right menus"><a class="site-page" href="/">Home</a><a class="site-page" href="/ACGBlog">ACG</a><a class="site-page" href="/archives">Archives</a><a class="site-page" href="/tags">Tags</a><a class="site-page" href="/categories">Categories</a></span></div><div id="post-info"><div id="post-title">MySQL技术内幕笔记0x01</div><div id="post-meta"><time class="post-meta__date"><i class="fa fa-calendar" aria-hidden="true"></i> 2019-09-02</time><span class="post-meta__separator">|</span><i class="fa fa-inbox post-meta__icon" aria-hidden="true"></i><a class="post-meta__categories" href="/categories/数据库/">数据库</a></div></div></div><div class="layout" id="content-inner"><article id="post"><div class="article-container" id="post-content"><h1 id="表（二）"><a href="#表（二）" class="headerlink" title="表（二）"></a>表（二）</h1><h2 id="视图"><a href="#视图" class="headerlink" title="视图"></a>视图</h2><ul>
+<li>在MySQL数据库中，视图是一个命名的虚表，它由一个SQL查询来定义，可以当作表使用。与持久表不同的是，视图中的入局没有实际的物理存储。</li>
+</ul>
+<h3 id="视图的作用"><a href="#视图的作用" class="headerlink" title="视图的作用"></a>视图的作用</h3><ul>
+<li><p>视图的主要用途之一是被用作一个抽象装置，特别是对于一些应用程序，程序本身不需要关心基表的结构，只需要按照视图的定义来取数据或更新数据，因此，视图同时在一定程度上起到一个安全层的作用。</p>
+</li>
+<li><p>用户可以对某些视图进行更新操作，一般称可以进行更新操作的视图为可更新视图。如果加上with check option选项，MySQL数据库会对更新视图插入的数据进行检查，对于不满足视图定义条件的插入会抛出一个异常，不允许视图中数据更新。</p>
+</li>
+</ul>
+<h2 id="分区表"><a href="#分区表" class="headerlink" title="分区表"></a>分区表</h2><ul>
+<li>分区的过程是将一个表或索引分解为多个更小、更可管理的部分。就访问数据库而言，从逻辑上讲，只有一个表或一个索引，但是在物理上这个表或索引可能由数十个物理分区组成。每个分区都是独立的对象，可以独自处理，也可以作为一个更大的对象的一部分进行处理。</li>
+<li>水平分区是指将同一表中不同行的记录分配到不同的物理文件中，垂直分区是指将同一表中不同列的记录分配到不同的物理文件中。MySQL数据库支持的分区类型为水平分区，不支持垂直分区。</li>
+<li>局部分区索引是指一个分区中既存放了数据又存放了索引。与之相对的是全局分区，数据存放在各个分区中，但是所有数据的索引放在一个对象中。MySQL的分区是局部分区索引。</li>
+<li>分区主要用于数据库高可用性的管理。</li>
+<li>不论创建何种类型的分区，如果表中存在主键或唯一索引时，分区列必须是唯一索引的一个组成部分。如果建表时没有指定主键，唯一索引，可以指定任何一个列为分区列。</li>
+</ul>
+<h3 id="分区类型"><a href="#分区类型" class="headerlink" title="分区类型"></a>分区类型</h3><h4 id="range分区"><a href="#range分区" class="headerlink" title="range分区"></a>range分区</h4><ul>
+<li>基于属于一个给定连续区间的列值对行数据进行分区。</li>
+</ul>
+<pre class=" language-sql"><code class="language-sql"><span class="token keyword">create</span> <span class="token keyword">table</span> t <span class="token punctuation">(</span>
+id <span class="token keyword">int</span>
+<span class="token punctuation">)</span><span class="token keyword">engine</span><span class="token operator">=</span><span class="token keyword">innodb</span>
+<span class="token keyword">partition</span> <span class="token keyword">by</span> range<span class="token punctuation">(</span>id<span class="token punctuation">)</span> <span class="token punctuation">(</span>
+<span class="token keyword">partition</span> p0 <span class="token keyword">values</span> less than <span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+<span class="token keyword">partition</span> p1 <span class="token keyword">values</span> less than <span class="token punctuation">(</span><span class="token number">20</span><span class="token punctuation">)</span>
+<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<h4 id="list分区"><a href="#list分区" class="headerlink" title="list分区"></a>list分区</h4><ul>
+<li>同range分区，只是list分区面向的是离散值。如果插入的值不在分区定义中，MySQL数据库会抛出异常。</li>
+</ul>
+<pre class=" language-sql"><code class="language-sql"><span class="token keyword">create</span> <span class="token keyword">table</span> t <span class="token punctuation">(</span>
+<span class="token number">a</span> <span class="token keyword">int</span><span class="token punctuation">,</span>
+<span class="token number">b</span> <span class="token keyword">int</span>
+<span class="token punctuation">)</span><span class="token keyword">engine</span><span class="token operator">=</span><span class="token keyword">innodb</span>
+<span class="token keyword">partition</span> <span class="token keyword">by</span> list<span class="token punctuation">(</span><span class="token number">b</span><span class="token punctuation">)</span> <span class="token punctuation">(</span>
+<span class="token keyword">partition</span> p0 <span class="token keyword">values</span> <span class="token operator">in</span> <span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">,</span> <span class="token number">7</span><span class="token punctuation">,</span> <span class="token number">9</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+<span class="token keyword">partition</span> p1 <span class="token keyword">values</span> <span class="token operator">in</span> <span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">,</span> <span class="token number">6</span><span class="token punctuation">,</span> <span class="token number">8</span><span class="token punctuation">)</span>
+<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<h4 id="hash分区"><a href="#hash分区" class="headerlink" title="hash分区"></a>hash分区</h4><ul>
+<li>根据用户自定义的表达式的返回值来进行分区，返回值不能为负数。此外还需要指定分区数量。</li>
+</ul>
+<pre class=" language-sql"><code class="language-sql"><span class="token keyword">create</span> <span class="token keyword">table</span> t <span class="token punctuation">(</span>
+<span class="token number">a</span> <span class="token keyword">int</span><span class="token punctuation">,</span>
+<span class="token number">b</span> <span class="token keyword">datetime</span>
+<span class="token punctuation">)</span><span class="token keyword">engine</span><span class="token operator">=</span><span class="token keyword">innodb</span>
+<span class="token keyword">partition</span> <span class="token keyword">by</span> <span class="token keyword">hash</span> <span class="token punctuation">(</span>year<span class="token punctuation">(</span><span class="token number">b</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+partitions <span class="token number">4</span><span class="token punctuation">;</span>
+</code></pre>
+<h4 id="key分区"><a href="#key分区" class="headerlink" title="key分区"></a>key分区</h4><ul>
+<li>使用MySQL数据库提供的函数进行分区。</li>
+</ul>
+<pre class=" language-sql"><code class="language-sql"><span class="token keyword">create</span> <span class="token keyword">table</span> t <span class="token punctuation">(</span>
+<span class="token number">a</span> <span class="token keyword">int</span><span class="token punctuation">,</span>
+<span class="token number">b</span> <span class="token keyword">datetime</span>
+<span class="token punctuation">)</span><span class="token keyword">engine</span><span class="token operator">=</span><span class="token keyword">innodb</span>
+<span class="token keyword">partition</span> <span class="token keyword">by</span> <span class="token keyword">key</span><span class="token punctuation">(</span><span class="token number">b</span><span class="token punctuation">)</span>
+partitions <span class="token number">4</span><span class="token punctuation">;</span>
+</code></pre>
+<h4 id="columns分区"><a href="#columns分区" class="headerlink" title="columns分区"></a>columns分区</h4><ul>
+<li>可以直接使用非整型的数据进行分区，分区根据类型直接比较而得。支持的类型有所有整数类型（int、smallint、tinyint、bigint），日期类型（date、datetime），字符串类型（char、varchar、binary、varbinary）。</li>
+</ul>
+<pre class=" language-sql"><code class="language-sql"><span class="token keyword">create</span> <span class="token keyword">table</span> t <span class="token punctuation">(</span>
+<span class="token number">a</span> <span class="token keyword">int</span><span class="token punctuation">,</span>
+<span class="token number">b</span> <span class="token keyword">datetime</span>
+<span class="token punctuation">)</span><span class="token keyword">engine</span><span class="token operator">=</span><span class="token keyword">innodb</span>
+<span class="token keyword">partition</span> <span class="token keyword">by</span> range <span class="token keyword">columns</span><span class="token punctuation">(</span><span class="token number">b</span><span class="token punctuation">)</span> <span class="token punctuation">(</span>
+<span class="token keyword">partition</span> p0 <span class="token keyword">values</span> less than<span class="token punctuation">(</span><span class="token string">'2009-01-01'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+<span class="token keyword">partition</span> p1 <span class="token keyword">values</span> less than<span class="token punctuation">(</span><span class="token string">'2010-01-01'</span><span class="token punctuation">)</span>
+<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<h3 id="子分区"><a href="#子分区" class="headerlink" title="子分区"></a>子分区</h3><ul>
+<li>子分区是在分区的基础上再进行分区，有时也称这种分区为复合分区。MySQL数据库允许在range和list分区上再进行hash或key分区。</li>
+</ul>
+<pre class=" language-sql"><code class="language-sql"><span class="token keyword">create</span> <span class="token keyword">table</span> ts <span class="token punctuation">(</span>
+    <span class="token number">a</span> <span class="token keyword">int</span><span class="token punctuation">,</span> 
+    <span class="token number">b</span> <span class="token keyword">date</span>
+<span class="token punctuation">)</span><span class="token keyword">engine</span><span class="token operator">=</span><span class="token keyword">innodb</span>
+<span class="token keyword">partition</span> <span class="token keyword">by</span> range<span class="token punctuation">(</span>year<span class="token punctuation">(</span><span class="token number">b</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+subpartition <span class="token keyword">by</span> <span class="token keyword">hash</span><span class="token punctuation">(</span>to_days<span class="token punctuation">(</span><span class="token number">b</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+subpartitions <span class="token number">2</span> <span class="token punctuation">(</span>
+    <span class="token keyword">partition</span> p0 <span class="token keyword">values</span> less than <span class="token punctuation">(</span><span class="token number">1990</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token keyword">partition</span> p1 <span class="token keyword">values</span> less than <span class="token punctuation">(</span><span class="token number">2000</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token keyword">partition</span> p2 <span class="token keyword">values</span> less than maxvalue
+<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<h3 id="分区中的null值"><a href="#分区中的null值" class="headerlink" title="分区中的null值"></a>分区中的null值</h3><ul>
+<li>MySQL数据库总是认为null值小于任何一个非null值。</li>
+<li>对于range分区，如果向分区列插入了null值，则MySQL数据库会将该值放入最左边的分区。</li>
+<li>在list分区中使用null值，必须显式指定在哪个分区放入null值，否则会报错。</li>
+<li>hash和key分区的任何分区函数都会将含有null值的记录都返回0。</li>
+</ul>
+</div></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="mailto:undefined">SinLapis</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="http://sinlapis.github.io/2019/09/02/MySQL技术内幕笔记0x01/">http://sinlapis.github.io/2019/09/02/MySQL技术内幕笔记0x01/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/MySQL/">MySQL</a><a class="post-meta__tags" href="/tags/InnoDB/">InnoDB</a><a class="post-meta__tags" href="/tags/表/">表</a><a class="post-meta__tags" href="/tags/视图/">视图</a></div><nav id="pagination"><div class="prev-post pull-left"><a href="/2019/09/02/MySQL技术内幕笔记0x02/"><i class="fa fa-chevron-left">  </i><span>MySQL技术内幕笔记0x02</span></a></div><div class="next-post pull-right"><a href="/2019/08/28/尝试使用GitHub-Actions自动部署Hexo/"><span>尝试使用GitHub-Actions自动部署Hexo</span><i class="fa fa-chevron-right"></i></a></div></nav></div></div><footer><div class="layout" id="footer"><div class="copyright">&copy;2017 - 2021 By SinLapis</div><div class="framework-info"><span>Driven - </span><a href="http://hexo.io"><span>Hexo</span></a><span class="footer-separator">|</span><span>Theme - </span><a href="https://github.com/Molunerfinn/hexo-theme-melody"><span>Melody</span></a></div><div class="busuanzi"><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><span id="busuanzi_container_page_pv"><i class="fa fa-file-o"></i><span id="busuanzi_value_page_pv"></span><span></span></span></div></div></footer><i class="fa fa-arrow-up" id="go-up" aria-hidden="true"></i><script src="https://cdn.jsdelivr.net/npm/animejs@latest/anime.min.js"></script><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@latest/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-ui-pack@latest/velocity.ui.min.js"></script><script src="/js/utils.js?version=1.6.1"></script><script src="/js/fancybox.js?version=1.6.1"></script><script src="/js/sidebar.js?version=1.6.1"></script><script src="/js/copy.js?version=1.6.1"></script><script src="/js/fireworks.js?version=1.6.1"></script><script src="/js/transition.js?version=1.6.1"></script><script src="/js/scroll.js?version=1.6.1"></script><script src="/js/head.js?version=1.6.1"></script><script>if(/Android|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent)) {
+  $('#nav').addClass('is-mobile')
+  $('footer').addClass('is-mobile')
+}</script></body></html>

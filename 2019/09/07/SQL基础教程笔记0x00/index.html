@@ -1,0 +1,143 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta name="generator" content="Hexo 3.9.0"><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta name="description" content="SQL基础教程笔记0x00"><meta name="keywords" content="SQL"><meta name="author" content="SinLapis"><meta name="copyright" content="SinLapis"><title>SQL基础教程笔记0x00 | SinLapis的博客</title><link rel="shortcut icon" href="/images/87235d96-63d9-443d-a4fa-8093fac33ada_200x200.png"><link rel="stylesheet" href="/css/index.css?version=1.6.1"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@latest/css/font-awesome.min.css?version=1.6.1"><link rel="dns-prefetch" href="https://cdn.staticfile.org"><link rel="dns-prefetch" href="https://cdn.bootcss.com"><link rel="dns-prefetch" href="https://creativecommons.org"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  }
+} </script><link rel="stylesheet" href="/css/prism.css" type="text/css"></head><body><i class="fa fa-arrow-right" id="toggle-sidebar" aria-hidden="true"></i><div id="sidebar"><div class="toggle-sidebar-info text-center"><span data-toggle="Toggle article">Toggle site</span><hr></div><div class="sidebar-toc"><div class="sidebar-toc__title">Catalog</div><div class="sidebar-toc__progress"><span class="progress-notice">You've read</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar"></div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#查询基础"><span class="toc-number">1.</span> <span class="toc-text">查询基础</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#逻辑运算符"><span class="toc-number">1.1.</span> <span class="toc-text">逻辑运算符</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#含有NULL时的真值"><span class="toc-number">1.1.1.</span> <span class="toc-text">含有NULL时的真值</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#聚合与排序"><span class="toc-number">2.</span> <span class="toc-text">聚合与排序</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#为聚合结果指定条件"><span class="toc-number">2.1.</span> <span class="toc-text">为聚合结果指定条件</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#having子句"><span class="toc-number">2.1.1.</span> <span class="toc-text">having子句</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#复杂查询"><span class="toc-number">3.</span> <span class="toc-text">复杂查询</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#视图"><span class="toc-number">3.1.</span> <span class="toc-text">视图</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#视图的创建"><span class="toc-number">3.1.1.</span> <span class="toc-text">视图的创建</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#限制"><span class="toc-number">3.1.2.</span> <span class="toc-text">限制</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#子查询"><span class="toc-number">3.2.</span> <span class="toc-text">子查询</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#标量子查询"><span class="toc-number">3.2.1.</span> <span class="toc-text">标量子查询</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#关联子查询"><span class="toc-number">3.3.</span> <span class="toc-text">关联子查询</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#函数、谓词、case表达式"><span class="toc-number">4.</span> <span class="toc-text">函数、谓词、case表达式</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#谓词"><span class="toc-number">4.1.</span> <span class="toc-text">谓词</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#like"><span class="toc-number">4.1.1.</span> <span class="toc-text">like</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#between"><span class="toc-number">4.1.2.</span> <span class="toc-text">between</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#is-null、is-not-null"><span class="toc-number">4.1.3.</span> <span class="toc-text">is null、is not null</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#in"><span class="toc-number">4.1.4.</span> <span class="toc-text">in</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#使用子查询作为in的参数"><span class="toc-number">4.1.5.</span> <span class="toc-text">使用子查询作为in的参数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#exists"><span class="toc-number">4.1.6.</span> <span class="toc-text">exists</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#case表达式"><span class="toc-number">4.2.</span> <span class="toc-text">case表达式</span></a></li></ol></li></ol></div></div><div class="author-info hide"><div class="author-info__avatar text-center"><img src="/images/3774d809.jpg"></div><div class="author-info__name text-center">SinLapis</div><div class="author-info__description text-center"></div><hr><div class="author-info-articles"><a class="author-info-articles__archives article-meta" href="/archives"><span class="pull-left">Articles</span><span class="pull-right">103</span></a><a class="author-info-articles__tags article-meta" href="/tags"><span class="pull-left">Tags</span><span class="pull-right">70</span></a><a class="author-info-articles__categories article-meta" href="/categories"><span class="pull-left">Categories</span><span class="pull-right">20</span></a></div><hr><div class="author-info-links"><div class="author-info-links__title text-center">Links</div><a class="author-info-links__name text-center" href="http://chace.in/">chace</a></div></div></div><div id="content-outer"><div class="no-bg" id="top-container"><div id="page-header"><span class="pull-left"> <a id="site-name" href="/">SinLapis的博客</a></span><i class="fa fa-bars toggle-menu pull-right" aria-hidden="true"></i><span class="pull-right menus"><a class="site-page" href="/">Home</a><a class="site-page" href="/ACGBlog">ACG</a><a class="site-page" href="/archives">Archives</a><a class="site-page" href="/tags">Tags</a><a class="site-page" href="/categories">Categories</a></span></div><div id="post-info"><div id="post-title">SQL基础教程笔记0x00</div><div id="post-meta"><time class="post-meta__date"><i class="fa fa-calendar" aria-hidden="true"></i> 2019-09-07</time><span class="post-meta__separator">|</span><i class="fa fa-inbox post-meta__icon" aria-hidden="true"></i><a class="post-meta__categories" href="/categories/SQL/">SQL</a></div></div></div><div class="layout" id="content-inner"><article id="post"><div class="article-container" id="post-content"><h1 id="查询基础"><a href="#查询基础" class="headerlink" title="查询基础"></a>查询基础</h1><h2 id="逻辑运算符"><a href="#逻辑运算符" class="headerlink" title="逻辑运算符"></a>逻辑运算符</h2><h3 id="含有NULL时的真值"><a href="#含有NULL时的真值" class="headerlink" title="含有NULL时的真值"></a>含有NULL时的真值</h3><ul>
+<li>SQL中的逻辑运算是三值逻辑，即包括真、假、不确定。</li>
+</ul>
+<h1 id="聚合与排序"><a href="#聚合与排序" class="headerlink" title="聚合与排序"></a>聚合与排序</h1><h2 id="为聚合结果指定条件"><a href="#为聚合结果指定条件" class="headerlink" title="为聚合结果指定条件"></a>为聚合结果指定条件</h2><h3 id="having子句"><a href="#having子句" class="headerlink" title="having子句"></a>having子句</h3><ul>
+<li>having子句用于对集合指定条件过滤。having子句位于group by子句后面。</li>
+</ul>
+<pre class=" language-sql"><code class="language-sql"><span class="token keyword">select</span> <span class="token punctuation">`</span>product_type<span class="token punctuation">`</span><span class="token punctuation">,</span> <span class="token function">count</span><span class="token punctuation">(</span><span class="token operator">*</span><span class="token punctuation">)</span>
+<span class="token keyword">from</span> shop
+<span class="token keyword">group</span> <span class="token keyword">by</span> <span class="token punctuation">`</span>product_type<span class="token punctuation">`</span>
+<span class="token keyword">having</span> <span class="token function">count</span><span class="token punctuation">(</span><span class="token operator">*</span><span class="token punctuation">)</span> <span class="token operator">=</span> <span class="token number">2</span><span class="token punctuation">;</span>
+</code></pre>
+<ul>
+<li>having子句中能够使用的要素有：常数、聚合函数、group by子句中指定的列名（即聚合键）。</li>
+</ul>
+<h1 id="复杂查询"><a href="#复杂查询" class="headerlink" title="复杂查询"></a>复杂查询</h1><h2 id="视图"><a href="#视图" class="headerlink" title="视图"></a>视图</h2><h3 id="视图的创建"><a href="#视图的创建" class="headerlink" title="视图的创建"></a>视图的创建</h3><pre class=" language-sql"><code class="language-sql"><span class="token keyword">create</span> <span class="token keyword">view</span> shop_sum <span class="token punctuation">(</span><span class="token punctuation">`</span>product_type<span class="token punctuation">`</span><span class="token punctuation">,</span> <span class="token punctuation">`</span>cnt_product<span class="token punctuation">`</span><span class="token punctuation">)</span>
+<span class="token keyword">as</span>
+<span class="token keyword">select</span>  <span class="token punctuation">`</span>product_type<span class="token punctuation">`</span><span class="token punctuation">,</span> <span class="token function">count</span><span class="token punctuation">(</span><span class="token operator">*</span><span class="token punctuation">)</span>
+<span class="token keyword">from</span> shop
+<span class="token keyword">group</span> <span class="token keyword">by</span> <span class="token punctuation">`</span>product_type<span class="token punctuation">`</span><span class="token punctuation">;</span>
+</code></pre>
+<h3 id="限制"><a href="#限制" class="headerlink" title="限制"></a>限制</h3><ul>
+<li>定义视图时不能使用<code>order by</code>。</li>
+<li>对视图更新是有条件的：<ol>
+<li><code>select</code>子句中未使用<code>distinct</code>。</li>
+<li><code>from</code>子句中只有一张表。</li>
+<li>未使用<code>group by</code>子句。</li>
+<li>未使用<code>having</code>子句。</li>
+</ol>
+</li>
+</ul>
+<h2 id="子查询"><a href="#子查询" class="headerlink" title="子查询"></a>子查询</h2><ul>
+<li>子查询就是将用来定义视图的select子句直接用于from子句中。</li>
+</ul>
+<pre class=" language-sql"><code class="language-sql"><span class="token keyword">select</span> <span class="token punctuation">`</span>product_type<span class="token punctuation">`</span><span class="token punctuation">,</span> <span class="token punctuation">`</span>cnt_product<span class="token punctuation">`</span>
+<span class="token keyword">from</span> <span class="token punctuation">(</span>
+         <span class="token keyword">select</span> <span class="token punctuation">`</span>product_type<span class="token punctuation">`</span><span class="token punctuation">,</span> <span class="token function">count</span><span class="token punctuation">(</span><span class="token operator">*</span><span class="token punctuation">)</span> <span class="token keyword">as</span> <span class="token punctuation">`</span>cnt_product<span class="token punctuation">`</span>
+         <span class="token keyword">from</span> <span class="token punctuation">`</span>shop<span class="token punctuation">`</span>
+         <span class="token keyword">group</span> <span class="token keyword">by</span> <span class="token punctuation">`</span>product_type<span class="token punctuation">`</span>
+     <span class="token punctuation">)</span> <span class="token keyword">as</span> <span class="token punctuation">`</span>product_sum<span class="token punctuation">`</span><span class="token punctuation">;</span>
+</code></pre>
+<h3 id="标量子查询"><a href="#标量子查询" class="headerlink" title="标量子查询"></a>标量子查询</h3><ul>
+<li>标量子查询必须而且只能返回1行1列的结果。</li>
+</ul>
+<pre class=" language-sql"><code class="language-sql"><span class="token comment" spellcheck="true">/* where子句中无法使用聚合函数，可以使用标量子查询代替。*/</span>
+<span class="token keyword">select</span> <span class="token punctuation">`</span>product_id<span class="token punctuation">`</span><span class="token punctuation">,</span> <span class="token punctuation">`</span>product_name<span class="token punctuation">`</span><span class="token punctuation">,</span> <span class="token punctuation">`</span>sale_price<span class="token punctuation">`</span>
+<span class="token keyword">from</span> <span class="token punctuation">`</span>shop<span class="token punctuation">`</span>
+<span class="token keyword">where</span> sale_price <span class="token operator">></span> <span class="token punctuation">(</span>
+    <span class="token keyword">select</span> <span class="token function">avg</span><span class="token punctuation">(</span>sale_price<span class="token punctuation">)</span>
+    <span class="token keyword">from</span> <span class="token punctuation">`</span>shop<span class="token punctuation">`</span>
+    <span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<h2 id="关联子查询"><a href="#关联子查询" class="headerlink" title="关联子查询"></a>关联子查询</h2><ul>
+<li>在普通子查询中添加where子句，使其变为标量子查询。</li>
+</ul>
+<pre class=" language-sql"><code class="language-sql"><span class="token keyword">select</span> <span class="token punctuation">`</span>product_id<span class="token punctuation">`</span><span class="token punctuation">,</span> <span class="token punctuation">`</span>product_name<span class="token punctuation">`</span><span class="token punctuation">,</span> <span class="token punctuation">`</span>sale_price<span class="token punctuation">`</span>
+<span class="token keyword">from</span> <span class="token punctuation">`</span>shop<span class="token punctuation">`</span> <span class="token keyword">as</span> <span class="token punctuation">`</span>s1<span class="token punctuation">`</span>
+<span class="token keyword">where</span> sale_price <span class="token operator">></span> <span class="token punctuation">(</span>
+    <span class="token keyword">select</span> <span class="token function">avg</span><span class="token punctuation">(</span>sale_price<span class="token punctuation">)</span>
+    <span class="token keyword">from</span> <span class="token punctuation">`</span>shop<span class="token punctuation">`</span> <span class="token keyword">as</span> <span class="token punctuation">`</span>s2<span class="token punctuation">`</span>
+    <span class="token keyword">where</span> <span class="token punctuation">`</span>s1<span class="token punctuation">`</span><span class="token punctuation">.</span><span class="token punctuation">`</span>product_type<span class="token punctuation">`</span> <span class="token operator">=</span> <span class="token punctuation">`</span>s2<span class="token punctuation">`</span><span class="token punctuation">.</span><span class="token punctuation">`</span>product_type<span class="token punctuation">`</span>
+    <span class="token keyword">group</span> <span class="token keyword">by</span> <span class="token punctuation">`</span>product_type<span class="token punctuation">`</span>
+    <span class="token punctuation">)</span>
+<span class="token punctuation">;</span>
+</code></pre>
+<h1 id="函数、谓词、case表达式"><a href="#函数、谓词、case表达式" class="headerlink" title="函数、谓词、case表达式"></a>函数、谓词、case表达式</h1><h2 id="谓词"><a href="#谓词" class="headerlink" title="谓词"></a>谓词</h2><h3 id="like"><a href="#like" class="headerlink" title="like"></a>like</h3><ul>
+<li><code>%</code>代表0字符及以上的任意字符串，<code>_</code>代表任意一个字符。</li>
+</ul>
+<pre class=" language-sql"><code class="language-sql"><span class="token comment" spellcheck="true">/* pg */</span>
+<span class="token keyword">select</span> <span class="token operator">*</span>
+<span class="token keyword">from</span> test<span class="token punctuation">.</span>like_sample<span class="token punctuation">.</span>like_test
+<span class="token keyword">where</span> strcol <span class="token operator">like</span> <span class="token string">'abc%'</span><span class="token punctuation">;</span>
+
+<span class="token keyword">select</span> <span class="token operator">*</span>
+<span class="token keyword">from</span> test<span class="token punctuation">.</span>like_sample<span class="token punctuation">.</span>like_test
+<span class="token keyword">where</span> strcol <span class="token operator">like</span> <span class="token string">'abc__'</span><span class="token punctuation">;</span>
+</code></pre>
+<h3 id="between"><a href="#between" class="headerlink" title="between"></a>between</h3><ul>
+<li>范围查询，包括两个边界。</li>
+</ul>
+<pre class=" language-sql"><code class="language-sql"><span class="token keyword">select</span> <span class="token operator">*</span>
+<span class="token keyword">from</span> <span class="token punctuation">`</span>shop<span class="token punctuation">`</span>
+<span class="token keyword">where</span> sale_price <span class="token operator">between</span> <span class="token number">100</span> <span class="token operator">and</span> <span class="token number">1000</span><span class="token punctuation">;</span>
+</code></pre>
+<h3 id="is-null、is-not-null"><a href="#is-null、is-not-null" class="headerlink" title="is null、is not null"></a>is null、is not null</h3><ul>
+<li>判断是否为<code>null</code>。</li>
+</ul>
+<h3 id="in"><a href="#in" class="headerlink" title="in"></a>in</h3><ul>
+<li><code>or</code>的简便写法。</li>
+</ul>
+<pre class=" language-sql"><code class="language-sql"><span class="token keyword">select</span> <span class="token punctuation">`</span>product_name<span class="token punctuation">`</span><span class="token punctuation">,</span> <span class="token punctuation">`</span>purchase_price<span class="token punctuation">`</span>
+<span class="token keyword">from</span> <span class="token punctuation">`</span>shop<span class="token punctuation">`</span>
+<span class="token keyword">where</span> putchase_price <span class="token operator">in</span> <span class="token punctuation">(</span><span class="token number">320</span><span class="token punctuation">,</span> <span class="token number">500</span><span class="token punctuation">,</span> <span class="token number">5000</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<h3 id="使用子查询作为in的参数"><a href="#使用子查询作为in的参数" class="headerlink" title="使用子查询作为in的参数"></a>使用子查询作为in的参数</h3><pre class=" language-sql"><code class="language-sql"><span class="token keyword">select</span> <span class="token punctuation">`</span>product_name<span class="token punctuation">`</span><span class="token punctuation">,</span> <span class="token punctuation">`</span>sale_price<span class="token punctuation">`</span>
+<span class="token keyword">from</span> <span class="token punctuation">`</span>shop<span class="token punctuation">`</span>
+<span class="token keyword">where</span> <span class="token punctuation">`</span>product_id<span class="token punctuation">`</span> <span class="token operator">in</span> <span class="token punctuation">(</span>
+    <span class="token keyword">select</span> <span class="token punctuation">`</span>product_id<span class="token punctuation">`</span>
+    <span class="token keyword">from</span> <span class="token punctuation">`</span>all_shops<span class="token punctuation">`</span>
+    <span class="token keyword">where</span> <span class="token punctuation">`</span>shop_id<span class="token punctuation">`</span> <span class="token operator">=</span> <span class="token string">'000c'</span>
+<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<h3 id="exists"><a href="#exists" class="headerlink" title="exists"></a>exists</h3><ul>
+<li>判断是否存在满足条件的某种记录，存在则返回真，不存在则返回假。</li>
+</ul>
+<pre class=" language-sql"><code class="language-sql"><span class="token keyword">select</span> <span class="token punctuation">`</span>product_name<span class="token punctuation">`</span><span class="token punctuation">,</span> <span class="token punctuation">`</span>sale_price<span class="token punctuation">`</span>
+<span class="token keyword">from</span> <span class="token punctuation">`</span>product<span class="token punctuation">`</span> <span class="token keyword">as</span> p
+<span class="token keyword">where</span> <span class="token keyword">exists</span> <span class="token punctuation">(</span>
+    <span class="token keyword">select</span> <span class="token operator">*</span>
+    <span class="token keyword">from</span> shop_product <span class="token keyword">as</span> sp
+    <span class="token keyword">where</span> sp<span class="token punctuation">.</span>shop_id <span class="token operator">=</span> <span class="token string">'000c'</span>
+    <span class="token operator">and</span> sp<span class="token punctuation">.</span>product_id <span class="token operator">=</span> p<span class="token punctuation">.</span>product_id
+<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<h2 id="case表达式"><a href="#case表达式" class="headerlink" title="case表达式"></a>case表达式</h2><ul>
+<li>满足<code>when</code>子句就执行对应的<code>then</code>子句，否则到下一个<code>when</code>子句，直到没有<code>when</code>子句后执行<code>else</code>子句。</li>
+</ul>
+<pre class=" language-sql"><code class="language-sql"><span class="token keyword">select</span> <span class="token function">sum</span><span class="token punctuation">(</span>
+    <span class="token keyword">case</span> <span class="token keyword">when</span> <span class="token punctuation">`</span>product_type<span class="token punctuation">`</span> <span class="token operator">=</span> <span class="token string">'A'</span>
+    <span class="token keyword">then</span> <span class="token punctuation">`</span>sale_price<span class="token punctuation">`</span> <span class="token keyword">else</span> <span class="token number">0</span> <span class="token keyword">end</span>
+<span class="token punctuation">)</span> <span class="token keyword">as</span> <span class="token punctuation">`</span>sum_price_clothes<span class="token punctuation">`</span><span class="token punctuation">,</span>
+<span class="token function">sum</span><span class="token punctuation">(</span>
+    <span class="token keyword">case</span> <span class="token keyword">when</span> <span class="token punctuation">`</span>product_type<span class="token punctuation">`</span> <span class="token operator">=</span> <span class="token string">'b'</span>
+    <span class="token keyword">then</span> <span class="token punctuation">`</span>sale_price<span class="token punctuation">`</span> <span class="token keyword">else</span> <span class="token number">0</span> <span class="token keyword">end</span>
+<span class="token punctuation">)</span> <span class="token keyword">as</span> <span class="token punctuation">`</span>sum_price_kitchen<span class="token punctuation">`</span><span class="token punctuation">,</span>
+<span class="token function">sum</span><span class="token punctuation">(</span>
+    <span class="token keyword">case</span> <span class="token keyword">when</span> <span class="token punctuation">`</span>product_type<span class="token punctuation">`</span> <span class="token operator">=</span> <span class="token string">'C'</span>
+    <span class="token keyword">then</span> <span class="token punctuation">`</span>sale_price<span class="token punctuation">`</span> <span class="token keyword">else</span> <span class="token number">0</span> <span class="token keyword">end</span>
+<span class="token punctuation">)</span> <span class="token keyword">as</span> <span class="token punctuation">`</span>sum_price_office<span class="token punctuation">`</span>
+<span class="token keyword">from</span> <span class="token punctuation">`</span>product<span class="token punctuation">`</span><span class="token punctuation">;</span>
+</code></pre>
+</div></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="mailto:undefined">SinLapis</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="http://sinlapis.github.io/2019/09/07/SQL基础教程笔记0x00/">http://sinlapis.github.io/2019/09/07/SQL基础教程笔记0x00/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/SQL/">SQL</a></div><nav id="pagination"><div class="prev-post pull-left"><a href="/2019/09/08/SQL基础教程笔记0x01/"><i class="fa fa-chevron-left">  </i><span>SQL基础教程笔记0x01</span></a></div><div class="next-post pull-right"><a href="/2019/09/06/MySQL技术内幕笔记0x04/"><span>MySQL技术内幕笔记0x04</span><i class="fa fa-chevron-right"></i></a></div></nav></div></div><footer><div class="layout" id="footer"><div class="copyright">&copy;2017 - 2021 By SinLapis</div><div class="framework-info"><span>Driven - </span><a href="http://hexo.io"><span>Hexo</span></a><span class="footer-separator">|</span><span>Theme - </span><a href="https://github.com/Molunerfinn/hexo-theme-melody"><span>Melody</span></a></div><div class="busuanzi"><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><span id="busuanzi_container_page_pv"><i class="fa fa-file-o"></i><span id="busuanzi_value_page_pv"></span><span></span></span></div></div></footer><i class="fa fa-arrow-up" id="go-up" aria-hidden="true"></i><script src="https://cdn.jsdelivr.net/npm/animejs@latest/anime.min.js"></script><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@latest/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-ui-pack@latest/velocity.ui.min.js"></script><script src="/js/utils.js?version=1.6.1"></script><script src="/js/fancybox.js?version=1.6.1"></script><script src="/js/sidebar.js?version=1.6.1"></script><script src="/js/copy.js?version=1.6.1"></script><script src="/js/fireworks.js?version=1.6.1"></script><script src="/js/transition.js?version=1.6.1"></script><script src="/js/scroll.js?version=1.6.1"></script><script src="/js/head.js?version=1.6.1"></script><script>if(/Android|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent)) {
+  $('#nav').addClass('is-mobile')
+  $('footer').addClass('is-mobile')
+}</script></body></html>

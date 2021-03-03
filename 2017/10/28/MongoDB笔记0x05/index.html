@@ -1,0 +1,122 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta name="generator" content="Hexo 3.9.0"><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta name="description" content="MongoDB笔记0x05"><meta name="keywords" content="MongoDB"><meta name="author" content="SinLapis"><meta name="copyright" content="SinLapis"><title>MongoDB笔记0x05 | SinLapis的博客</title><link rel="shortcut icon" href="/images/87235d96-63d9-443d-a4fa-8093fac33ada_200x200.png"><link rel="stylesheet" href="/css/index.css?version=1.6.1"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@latest/css/font-awesome.min.css?version=1.6.1"><link rel="dns-prefetch" href="https://cdn.staticfile.org"><link rel="dns-prefetch" href="https://cdn.bootcss.com"><link rel="dns-prefetch" href="https://creativecommons.org"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  }
+} </script><link rel="stylesheet" href="/css/prism.css" type="text/css"></head><body><i class="fa fa-arrow-right" id="toggle-sidebar" aria-hidden="true"></i><div id="sidebar"><div class="toggle-sidebar-info text-center"><span data-toggle="Toggle article">Toggle site</span><hr></div><div class="sidebar-toc"><div class="sidebar-toc__title">Catalog</div><div class="sidebar-toc__progress"><span class="progress-notice">You've read</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar"></div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#4-4-where查询"><span class="toc-number">1.</span> <span class="toc-text">4.4 $where查询</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-5-游标"><span class="toc-number">2.</span> <span class="toc-text">4.5 游标</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-6-数据库命令"><span class="toc-number">3.</span> <span class="toc-text">4.6 数据库命令</span></a></li></ol><li class="toc-item toc-level-1"><a class="toc-link" href="#5-索引"><span class="toc-number"></span> <span class="toc-text">5 索引</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#5-1-索引简介"><span class="toc-number">1.</span> <span class="toc-text">5.1 索引简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-2-使用explain-和hint"><span class="toc-number">2.</span> <span class="toc-text">5.2 使用explain()和hint()</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-3-何时不应该使用索引"><span class="toc-number">3.</span> <span class="toc-text">5.3 何时不应该使用索引</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-4-索引类型"><span class="toc-number">4.</span> <span class="toc-text">5.4 索引类型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-5-索引管理"><span class="toc-number">5.</span> <span class="toc-text">5.5 索引管理</span></a></li></ol></li></div></div><div class="author-info hide"><div class="author-info__avatar text-center"><img src="/images/3774d809.jpg"></div><div class="author-info__name text-center">SinLapis</div><div class="author-info__description text-center"></div><hr><div class="author-info-articles"><a class="author-info-articles__archives article-meta" href="/archives"><span class="pull-left">Articles</span><span class="pull-right">103</span></a><a class="author-info-articles__tags article-meta" href="/tags"><span class="pull-left">Tags</span><span class="pull-right">70</span></a><a class="author-info-articles__categories article-meta" href="/categories"><span class="pull-left">Categories</span><span class="pull-right">20</span></a></div><hr><div class="author-info-links"><div class="author-info-links__title text-center">Links</div><a class="author-info-links__name text-center" href="http://chace.in/">chace</a></div></div></div><div id="content-outer"><div class="no-bg" id="top-container"><div id="page-header"><span class="pull-left"> <a id="site-name" href="/">SinLapis的博客</a></span><i class="fa fa-bars toggle-menu pull-right" aria-hidden="true"></i><span class="pull-right menus"><a class="site-page" href="/">Home</a><a class="site-page" href="/ACGBlog">ACG</a><a class="site-page" href="/archives">Archives</a><a class="site-page" href="/tags">Tags</a><a class="site-page" href="/categories">Categories</a></span></div><div id="post-info"><div id="post-title">MongoDB笔记0x05</div><div id="post-meta"><time class="post-meta__date"><i class="fa fa-calendar" aria-hidden="true"></i> 2017-10-28</time><span class="post-meta__separator">|</span><i class="fa fa-inbox post-meta__icon" aria-hidden="true"></i><a class="post-meta__categories" href="/categories/Database/">Database</a></div></div></div><div class="layout" id="content-inner"><article id="post"><div class="article-container" id="post-content"><h2 id="4-4-where查询"><a href="#4-4-where查询" class="headerlink" title="4.4 $where查询"></a>4.4 $where查询</h2><p><code>$where</code>可以进行任何的查询。比较常用的是比较文档中两个键的值是否相等。但是如果非必要，务必不要使用<code>$where</code>进行查询。因为<code>$where</code>查询要比常规查询慢很多，<code>$where</code>查询会把每个文档从BSON转换为JavaScript对象，然后再进行查询，而且<code>$where</code>不能使用索引。如果必须使用<code>$where</code>，也尽量先用常规查询进行过滤再使用<code>$where</code>来查询。</p>
+<h2 id="4-5-游标"><a href="#4-5-游标" class="headerlink" title="4.5 游标"></a>4.5 游标</h2><p>游标可以保存一次查询的结果并提供逐条查看结果。例如：</p>
+<pre class=" language-js"><code class="language-js">
+<span class="token keyword">var</span> cursor <span class="token operator">=</span> db<span class="token punctuation">.</span>foo<span class="token punctuation">.</span><span class="token function">find</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+</code></pre>
+<p>此时游标仅是保存了查询的构造，而并没有向服务器发起查询。在执行：</p>
+<pre class=" language-js"><code class="language-js">
+cursor<span class="token punctuation">.</span><span class="token function">hasNext</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+</code></pre>
+<p>后，查询请求才会到达服务器，返回查询结果。接下来的<code>cursor.next()</code>以及<code>cursor.hasNext()</code>均是在本地执行的。</p>
+<p>针对返回结果的限制的方法有<code>limit</code>、<code>skip</code>、<code>sort</code>。<code>limit</code>可以限制返回结果数量，即最多返回指定数量的文档；<code>skip</code>可以略过指定数量的文档，如果结果收少于指定数量则不返回结果；<code>sort</code>可以按照指定的键值大小进行文档的排序，例如：</p>
+<pre class=" language-js"><code class="language-js">
+db<span class="token punctuation">.</span>c<span class="token punctuation">.</span><span class="token function">find</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">sort</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+  username<span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+  age<span class="token punctuation">:</span> <span class="token operator">-</span><span class="token number">1</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span>
+
+</code></pre>
+<p>这表示针对<code>username</code>进行升序排列，针对<code>age</code>斤西瓜降序排列。这三种方法可以组合使用，链式写法即可。</p>
+<p>此外，<code>sort</code>如果对类型不一致的键值进行排序时是有指定类型循序的：（1）最小值；（2）null；（3）数字（整型、长整型、双精度）；（4）字符串；（5）对象/文档；（6）数组；（7）二进制数据（8）对象ID；（9）布尔型；（10）日期型；（11）时间戳；（12）正则表达式；（13）最大值。</p>
+<p>如果需要排序的结果集的大小超过32M，MongoDB就会报错，拒绝对过多的数据进行排序。</p>
+<p>使用<code>skip</code>跳过大量的文档会变得很慢，因为这些需要略过的文档也需要被找出，然后再抛弃这些文档。</p>
+<p>高级查询选项：如<code>find({&quot;foo&quot;: &quot;bar&quot;}).sort({&quot;x&quot;: 1})</code>在shell或者其它驱动程序中并不是直接发出<code>{&quot;foo&quot;: &quot;bar&quot;}</code>这样的查询请求，而是将它们封装进更大的查询文档中，像这样：</p>
+<pre class=" language-js"><code class="language-js">
+<span class="token punctuation">{</span>
+  <span class="token string">"$query"</span><span class="token punctuation">:</span> <span class="token punctuation">{</span><span class="token string">"foo"</span><span class="token punctuation">:</span> <span class="token string">"bar"</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token string">"$orderby"</span><span class="token punctuation">:</span> <span class="token punctuation">{</span><span class="token string">"x"</span><span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+</code></pre>
+<p>此外还有一些其他的辅助查询操作，例如<code>$maxscan</code>（指定本次查询中扫描文档的上限）、<code>$min</code>（文档必须与索引的键完全匹配，并指定索引扫描的下边界）、<code>$max</code>（文档必须与索引的键完全匹配，并指定索引扫描的下边界）等。</p>
+<p>像前文所说，MongoDB中文档是顺序存储的，如果对某个文档进行修改而使其体积变大，MongoDB会将其移动到所有文档后面存储。由于游标同样是向后查询文档，如果在前面修改了某个文档导致其变大被移动到了后面，游标向后移动时会再次查询到该文档。解决这个问题需要对查询结果进行快照，这样查询就在<code>_id</code>索引上遍历执行，保证每个文档只返回一次。使用快照会使查询变慢，所以应该只在必要的时候使用快照。</p>
+<p>游标的生命周期：在服务端，游标占用内存等资源。当游标遍历了所有结果或者客户端发来信息要求终止，数据库会释放游标占用的资源。当然，还有一些其他情况会使得游标被删除，例如如果客户端的游标已经不在作用域内时，客户端会发出一个特殊的消息要求服务端销毁游标，或者10分钟内某个游标没有使用的话也会删除。</p>
+<h2 id="4-6-数据库命令"><a href="#4-6-数据库命令" class="headerlink" title="4.6 数据库命令"></a>4.6 数据库命令</h2><p>数据库命令，例如<code>drop</code>，其实是一种特殊的查询，只不过服务端收到这类“查询”会进行特殊的逻辑处理。</p>
+<h1 id="5-索引"><a href="#5-索引" class="headerlink" title="5 索引"></a>5 索引</h1><h2 id="5-1-索引简介"><a href="#5-1-索引简介" class="headerlink" title="5.1 索引简介"></a>5.1 索引简介</h2><p>索引可以根据给定字段组织数据，让MongoDB能够根据这些字段快速找到指定的文档。例如，为<code>username</code>创建索引：</p>
+<pre class=" language-js"><code class="language-js">
+db<span class="token punctuation">.</span>users<span class="token punctuation">.</span><span class="token function">ensureIndex</span><span class="token punctuation">(</span><span class="token punctuation">{</span><span class="token string">"username"</span><span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+</code></pre>
+<p>建立索引所耗时间根据机器性能以及文档整体大小的不同而不同。虽然建立索引之后查询几乎会瞬间完成，但是其他操作，包括插入、更新、删除等将会消耗更多时间，因为这些操作会修改集合的结构，从而导致需要修改建立的索引。因此，MongoDB也限制每个集合上最多有64个索引，一般来说，一个特定的集合上不应该有两个以上的索引。挑选合适的字段建立索引非常重要。如果某个字段是常用的查询字段，那么在这个字段上建立索引是一个好选择，反之则没有必要建立索引。</p>
+<p>索引的值是按照一定的顺序排列的，因此索引键对文档进行排序非常快。但是如果查询时没有首先使用索引键进行排序时，索引并不会发挥作用。不过可以针对多个字段建立复合索引。建立复合索引时优先考虑需要排序的键，将其放在首位索引键。</p>
+<p>索引的排序方式并不重要，因为MongoDB可以在索引的任意方向进行便遍历。</p>
+<p>有一些查询操作完全无法使用索引，例如<code>$where</code>、<code>$exists</code>、<code>$nin</code>查询只能进行全表扫描，而<code>$ne</code>、<code>$not</code>多数情况下也会进行全表扫描。</p>
+<p><code>$or</code>查询实际上是两次查询，最后合并结果，这样的效率必然不如一次查询的效率高，因此尽可能使用<code>$in</code>代替。此外，MongoDB一次查询只能使用一个索引/复合索引，但是由于<code>$or</code>是两次独立的查询，所以它可以使用多个索引。</p>
+<p>MongoDB可以针对嵌套文档的键建立索引，和建立普通的索引类似。例如文档：</p>
+<pre class=" language-json"><code class="language-json">
+<span class="token punctuation">{</span>
+  <span class="token property">"username"</span><span class="token operator">:</span> <span class="token string">"sid"</span><span class="token punctuation">,</span>
+  <span class="token property">"loc"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">"ip"</span><span class="token operator">:</span> <span class="token string">"1.2.3.4"</span><span class="token punctuation">,</span>
+    <span class="token property">"city"</span><span class="token operator">:</span> <span class="token string">"Springfield"</span><span class="token punctuation">,</span>
+    <span class="token property">"state"</span><span class="token operator">:</span> <span class="token string">"NY"</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+</code></pre>
+<p>给<code>loc.city</code>建立索引：</p>
+<pre class=" language-js"><code class="language-js">
+db<span class="token punctuation">.</span>users<span class="token punctuation">.</span><span class="token function">ensureIndex</span><span class="token punctuation">(</span><span class="token punctuation">{</span><span class="token string">"loc.city"</span><span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+</code></pre>
+<p>即可。但是注意和子文档<code>loc</code>的索引进行区分。如果建立的索引是子文档的索引，那么只有如下的查询才会使用子文档索引：</p>
+<pre class=" language-js"><code class="language-js">
+db<span class="token punctuation">.</span>users<span class="token punctuation">.</span><span class="token function">find</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+  <span class="token string">"loc"</span><span class="token punctuation">:</span> <span class="token punctuation">{</span>
+    <span class="token string">"ip"</span><span class="token punctuation">:</span> <span class="token string">"123.234.111.222"</span><span class="token punctuation">,</span>
+    <span class="token string">"city"</span><span class="token punctuation">:</span> <span class="token string">"Shelbycille"</span><span class="token punctuation">,</span>
+    <span class="token string">"state"</span><span class="token punctuation">:</span> <span class="token string">"NY"</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+</code></pre>
+<p>即必须与子文档字段顺序完全匹配的子文档查询才能使用子文档索引，而：</p>
+<pre class=" language-js"><code class="language-js">
+db<span class="token punctuation">.</span>users<span class="token punctuation">.</span><span class="token function">find</span><span class="token punctuation">(</span><span class="token punctuation">{</span><span class="token string">"loc.city"</span><span class="token punctuation">:</span> <span class="token string">"Shelbycille"</span><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+</code></pre>
+<p>才会使用子文档的键的索引。</p>
+<p>同样可以给数组元素建立索引，但是不能给数组本身建立索引。给数组元素建立索引即给数组的每一个元素建立索引，因此数组索引的代价要高于单值索引的代价。并且，一个索引中的数组字段最多只允许有一个，以防止多个数组建立索引之后索引条目爆炸式增长。</p>
+<p>多键索引：在索引中，如果某个键是数组，那么这个索引会被标记为多键索引。多键索引会比非多键慢一些，因为可能会有多个索引条目指向同一个文档，因此MongoDB在返回结果集时需要先去重。</p>
+<p>索引基数：就是指某个字段对应不同值的数量。例如性别可能只有两种取值，这种字段的基数就比较低；像用户名、住址这类字段可能每个值和其他的都不一样，这类字段的基数就很高；也有介于两者之间的，例如年龄。通常情况下，一个字段的基数越高，那么对这个字段建立的索引越有价值，因为这个索引可以快速将查询范围缩小到一个比较小的结果集，以供下一步操作快速完成。因此建立索引应该选择基数高的字段，或者在复合索引中将基数高的字段提前。</p>
+<h2 id="5-2-使用explain-和hint"><a href="#5-2-使用explain-和hint" class="headerlink" title="5.2 使用explain()和hint()"></a>5.2 使用explain()和hint()</h2><p><code>explain()</code>能够提供大量与查询相关的信息，其中返回的一些字段有助于发现查询速度慢的原因。以下列举一些字段：</p>
+<p>（1）<code>cursor</code>：表示游标的类型。可以看出本次查询是否使用了索引以及使用的什么索引。</p>
+<p>（2）<code>isMultiKey</code>：是否使用了多键索引。</p>
+<p>（3）<code>n</code>：本次查询返回的文档数量。</p>
+<p>（4）<code>nscannedObjects</code>：MongoDB按照索引指针去磁盘上查找文档的次数。如果查询包含的查询条件不是索引的一部分，或者要求返回的内容不在索引字段内，MongoDB就会从磁盘中读取原文档。</p>
+<p>（5）<code>nscanned</code>：如果使用了索引，这个字段表示查找过的索引条目，如果没有使用索引，那么这个字段表示查找的文档数量。</p>
+<p>（6）<code>scanAndOrder</code>：MongoDB是否对内存中的结果进行了排序。</p>
+<p>（7）<code>indexOnly</code>：MongoDB是否只是用了索引就完成了此次查询，即包括查找字段以及返回的结果集都包含在索引中，又称覆盖索引。</p>
+<p>（8）<code>nYields</code>：查询暂停次数，如果有写入请求，查询会周期性释放锁，以供写入执行。</p>
+<p>（9）<code>millis</code>：查询所耗毫秒数。</p>
+<p>（10）<code>indexBounds</code>：这个字段描述了索引的使用情况，给出了索引的遍历范围。</p>
+<p><code>hint()</code>可以指定查询使用的索引。</p>
+<p>查询优化器：与关系型数据库不同，当有多个索引可能适合本次查询时，MongoDB的查询优化器会并行执行这些查询，最早返回100个结果的索引就是“胜者”，并且这个索引会被缓存，在接下来的这个查询都会使用这个索引。如果建立了新的索引或者每执行1000次查询后，查询优化器就会重新评估查询计划。<code>explain()</code>返回的<code>allPlans</code>字段表示了本次查询尝试的每个查询计划。</p>
+<h2 id="5-3-何时不应该使用索引"><a href="#5-3-何时不应该使用索引" class="headerlink" title="5.3 何时不应该使用索引"></a>5.3 何时不应该使用索引</h2><p>如果数据集较小时，索引会十分高效。但是当结果集在原集合中所占比例越大，索引查找的速度就越慢。因为使用索引需要进行两次查找，最坏情况下索引查找的时间是全表查找的两倍。一般来说，当查询需返回30%的文档或更多时，就需要对比索引查找和全表查找的速度。</p>
+<h2 id="5-4-索引类型"><a href="#5-4-索引类型" class="headerlink" title="5.4 索引类型"></a>5.4 索引类型</h2><p>唯一索引：唯一索引可以确保集合的每一个文档的指定键都有唯一值。例如：</p>
+<pre class=" language-js"><code class="language-js">
+db<span class="token punctuation">.</span>users<span class="token punctuation">.</span><span class="token function">ensureIndex</span><span class="token punctuation">(</span><span class="token punctuation">{</span><span class="token string">"username"</span><span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token punctuation">{</span><span class="token string">"unique"</span><span class="token punctuation">:</span> <span class="token boolean">true</span><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+</code></pre>
+<p>这样可以防止有重复键的插入。但是如果有第一个没有该键的文档插入时，该键将被创建，值会置为<code>null</code>，如果继续插入缺少该键的文档就会报错。</p>
+<p>进行索引的所有字段都应当小于1024字节，否则这个条目将不会出现在索引中。如果唯一索引的字段超过8KB，唯一索引将会失效。</p>
+<p>可以创建复合的唯一索引，复合唯一索引中，单个键的值可以重复，但是所有键的值的组合必须在集合中是唯一的。</p>
+<p>稀疏索引：区别与关系型数据库中的稀疏索引，这里的稀疏索引是指如果文档包含指定字段，则为这些文档建立索引。如果和唯一索引一起使用，则这些字段的值必须唯一。</p>
+<h2 id="5-5-索引管理"><a href="#5-5-索引管理" class="headerlink" title="5.5 索引管理"></a>5.5 索引管理</h2><p>索引的元信息保存在<code>system.indexes</code>中，可以通过<code>db.collectionName.getIndexes()</code>来查看集合的索引。</p>
+<p>索引的标识形如<code>keyname1_dir1_keyname2_dir2_..._keynameN_dirN</code>，索引标识也是有长度限制的。</p>
+<p>如果需要删除索引，可以使用<code>dropIndex</code>。</p>
+</div></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="mailto:undefined">SinLapis</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="http://sinlapis.github.io/2017/10/28/MongoDB笔记0x05/">http://sinlapis.github.io/2017/10/28/MongoDB笔记0x05/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/MongoDB/">MongoDB</a></div><nav id="pagination"><div class="prev-post pull-left"><a href="/2017/12/24/记录：rhel中yum换centos源/"><i class="fa fa-chevron-left">  </i><span>记录：rhel中yum换centos源</span></a></div><div class="next-post pull-right"><a href="/2017/10/27/MongoDB笔记0x04/"><span>MongoDB笔记0x04</span><i class="fa fa-chevron-right"></i></a></div></nav></div></div><footer><div class="layout" id="footer"><div class="copyright">&copy;2017 - 2021 By SinLapis</div><div class="framework-info"><span>Driven - </span><a href="http://hexo.io"><span>Hexo</span></a><span class="footer-separator">|</span><span>Theme - </span><a href="https://github.com/Molunerfinn/hexo-theme-melody"><span>Melody</span></a></div><div class="busuanzi"><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><span id="busuanzi_container_page_pv"><i class="fa fa-file-o"></i><span id="busuanzi_value_page_pv"></span><span></span></span></div></div></footer><i class="fa fa-arrow-up" id="go-up" aria-hidden="true"></i><script src="https://cdn.jsdelivr.net/npm/animejs@latest/anime.min.js"></script><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@latest/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-ui-pack@latest/velocity.ui.min.js"></script><script src="/js/utils.js?version=1.6.1"></script><script src="/js/fancybox.js?version=1.6.1"></script><script src="/js/sidebar.js?version=1.6.1"></script><script src="/js/copy.js?version=1.6.1"></script><script src="/js/fireworks.js?version=1.6.1"></script><script src="/js/transition.js?version=1.6.1"></script><script src="/js/scroll.js?version=1.6.1"></script><script src="/js/head.js?version=1.6.1"></script><script>if(/Android|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent)) {
+  $('#nav').addClass('is-mobile')
+  $('footer').addClass('is-mobile')
+}</script></body></html>

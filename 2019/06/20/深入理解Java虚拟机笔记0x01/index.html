@@ -1,0 +1,57 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta name="generator" content="Hexo 3.9.0"><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta name="description" content="深入理解Java虚拟机笔记0x01"><meta name="keywords" content="笔记,Java"><meta name="author" content="SinLapis"><meta name="copyright" content="SinLapis"><title>深入理解Java虚拟机笔记0x01 | SinLapis的博客</title><link rel="shortcut icon" href="/images/87235d96-63d9-443d-a4fa-8093fac33ada_200x200.png"><link rel="stylesheet" href="/css/index.css?version=1.6.1"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@latest/css/font-awesome.min.css?version=1.6.1"><link rel="dns-prefetch" href="https://cdn.staticfile.org"><link rel="dns-prefetch" href="https://cdn.bootcss.com"><link rel="dns-prefetch" href="https://creativecommons.org"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  }
+} </script><link rel="stylesheet" href="/css/prism.css" type="text/css"></head><body><i class="fa fa-arrow-right" id="toggle-sidebar" aria-hidden="true"></i><div id="sidebar"><div class="toggle-sidebar-info text-center"><span data-toggle="Toggle article">Toggle site</span><hr></div><div class="sidebar-toc"><div class="sidebar-toc__title">Catalog</div><div class="sidebar-toc__progress"><span class="progress-notice">You've read</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar"></div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#类文件结构"><span class="toc-number">1.</span> <span class="toc-text">类文件结构</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#魔数"><span class="toc-number">1.1.</span> <span class="toc-text">魔数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Class文件版本"><span class="toc-number">1.2.</span> <span class="toc-text">Class文件版本</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#常量池"><span class="toc-number">1.3.</span> <span class="toc-text">常量池</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#访问标志"><span class="toc-number">1.4.</span> <span class="toc-text">访问标志</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#类索引、父类索引与接口索引集合"><span class="toc-number">1.5.</span> <span class="toc-text">类索引、父类索引与接口索引集合</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#字段表集合"><span class="toc-number">1.6.</span> <span class="toc-text">字段表集合</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#方法表集合"><span class="toc-number">1.7.</span> <span class="toc-text">方法表集合</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#属性表集合"><span class="toc-number">1.8.</span> <span class="toc-text">属性表集合</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Code属性"><span class="toc-number">1.8.1.</span> <span class="toc-text">Code属性</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#字节码"><span class="toc-number">1.9.</span> <span class="toc-text">字节码</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#支持的数据类型"><span class="toc-number">1.9.1.</span> <span class="toc-text">支持的数据类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#指令类型"><span class="toc-number">1.9.2.</span> <span class="toc-text">指令类型</span></a></li></ol></li></ol></li></ol></div></div><div class="author-info hide"><div class="author-info__avatar text-center"><img src="/images/3774d809.jpg"></div><div class="author-info__name text-center">SinLapis</div><div class="author-info__description text-center"></div><hr><div class="author-info-articles"><a class="author-info-articles__archives article-meta" href="/archives"><span class="pull-left">Articles</span><span class="pull-right">103</span></a><a class="author-info-articles__tags article-meta" href="/tags"><span class="pull-left">Tags</span><span class="pull-right">70</span></a><a class="author-info-articles__categories article-meta" href="/categories"><span class="pull-left">Categories</span><span class="pull-right">20</span></a></div><hr><div class="author-info-links"><div class="author-info-links__title text-center">Links</div><a class="author-info-links__name text-center" href="http://chace.in/">chace</a></div></div></div><div id="content-outer"><div class="no-bg" id="top-container"><div id="page-header"><span class="pull-left"> <a id="site-name" href="/">SinLapis的博客</a></span><i class="fa fa-bars toggle-menu pull-right" aria-hidden="true"></i><span class="pull-right menus"><a class="site-page" href="/">Home</a><a class="site-page" href="/ACGBlog">ACG</a><a class="site-page" href="/archives">Archives</a><a class="site-page" href="/tags">Tags</a><a class="site-page" href="/categories">Categories</a></span></div><div id="post-info"><div id="post-title">深入理解Java虚拟机笔记0x01</div><div id="post-meta"><time class="post-meta__date"><i class="fa fa-calendar" aria-hidden="true"></i> 2019-06-20</time><span class="post-meta__separator">|</span><i class="fa fa-inbox post-meta__icon" aria-hidden="true"></i><a class="post-meta__categories" href="/categories/Java/">Java</a></div></div></div><div class="layout" id="content-inner"><article id="post"><div class="article-container" id="post-content"><h1 id="类文件结构"><a href="#类文件结构" class="headerlink" title="类文件结构"></a>类文件结构</h1><h2 id="魔数"><a href="#魔数" class="headerlink" title="魔数"></a>魔数</h2><ul>
+<li><code>0xCAFEBABE</code>，用于表示文件类型，4字节。</li>
+</ul>
+<h2 id="Class文件版本"><a href="#Class文件版本" class="headerlink" title="Class文件版本"></a>Class文件版本</h2><ul>
+<li>4字节，高版本能够兼容低版本，但是不能运行更新版本的Class文件。</li>
+</ul>
+<h2 id="常量池"><a href="#常量池" class="headerlink" title="常量池"></a>常量池</h2><ul>
+<li>入口有表示常量池容量计数值。</li>
+<li>主要包含字面量和符号引用。</li>
+<li>字面量：接近Java语言层面的常量概念，例如文本字符串，声明为final的常量值等。</li>
+<li>符号引用：包括类和接口的全限定名（含包名以及类名）、字段的名称和描述符、方法的名称和描述符。</li>
+</ul>
+<h2 id="访问标志"><a href="#访问标志" class="headerlink" title="访问标志"></a>访问标志</h2><ul>
+<li>用于标识该Class是类还是接口、是否为public、是否为abstract、是类的话是否为final等。</li>
+</ul>
+<h2 id="类索引、父类索引与接口索引集合"><a href="#类索引、父类索引与接口索引集合" class="headerlink" title="类索引、父类索引与接口索引集合"></a>类索引、父类索引与接口索引集合</h2><ul>
+<li>用于确定类的继承关系。</li>
+</ul>
+<h2 id="字段表集合"><a href="#字段表集合" class="headerlink" title="字段表集合"></a>字段表集合</h2><ul>
+<li>用于描述接口或者类中声明的变量，包括类级变量以及实例级变量，但是不包括方法内部声明的局部变量。</li>
+<li>字段描述信息包括：字段作用域（public、private、protected）、可变性（final）、并发可见性（volatile，是否强制从主内存读写）、可否被序列化（transient）、字段数据类型（基本类型、对象、数组）。</li>
+</ul>
+<h2 id="方法表集合"><a href="#方法表集合" class="headerlink" title="方法表集合"></a>方法表集合</h2><ul>
+<li>类似字段表，同样包含类访问标志、名称索引、描述符索引、属性表集合等。</li>
+<li>方法中的代码在属性表集合中。</li>
+</ul>
+<h2 id="属性表集合"><a href="#属性表集合" class="headerlink" title="属性表集合"></a>属性表集合</h2><h3 id="Code属性"><a href="#Code属性" class="headerlink" title="Code属性"></a>Code属性</h3><ul>
+<li>Class文件中最重要的一个属性，主要包括方法编译后的字节码。</li>
+<li>异常表也在Code属性中，表示确定的代码范围（开始行数到结束行数）如果出现了某些异常要跳转到到位置。</li>
+</ul>
+<h2 id="字节码"><a href="#字节码" class="headerlink" title="字节码"></a>字节码</h2><h3 id="支持的数据类型"><a href="#支持的数据类型" class="headerlink" title="支持的数据类型"></a>支持的数据类型</h3><ul>
+<li>byte、short、int、long、float、double、char、reference</li>
+</ul>
+<h3 id="指令类型"><a href="#指令类型" class="headerlink" title="指令类型"></a>指令类型</h3><ul>
+<li>加载和存储指令：常量读进操作栈、局部变量表读进操作栈、操作栈写入局部变量表</li>
+<li>运算指令：加法、减法、乘法、除法、求余、取反、位移、按位与、按位或、按位异或、自增、比较</li>
+<li>类型转换指令</li>
+<li>对象创建与访问指令：创建类实例、创建数组、访问类与实例、加载数组元素、写回数组元素、取数组长度</li>
+<li>操作数栈管理指令：出栈、复制栈顶元素并入栈、交换栈顶两个元素</li>
+<li>控制转移指令：条件分支、复合条件分支、无条件分支</li>
+<li>方法调用和返回指令</li>
+<li>异常处理指令</li>
+<li>同步指令</li>
+</ul>
+</div></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="mailto:undefined">SinLapis</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="http://sinlapis.github.io/2019/06/20/深入理解Java虚拟机笔记0x01/">http://sinlapis.github.io/2019/06/20/深入理解Java虚拟机笔记0x01/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/笔记/">笔记</a><a class="post-meta__tags" href="/tags/Java/">Java</a></div><nav id="pagination"><div class="prev-post pull-left"><a href="/2019/06/23/深入理解Java虚拟机笔记0x02/"><i class="fa fa-chevron-left">  </i><span>深入理解Java虚拟机笔记0x02</span></a></div><div class="next-post pull-right"><a href="/2019/06/19/深入理解Java虚拟机笔记0x00/"><span>深入理解Java虚拟机笔记0x00</span><i class="fa fa-chevron-right"></i></a></div></nav></div></div><footer><div class="layout" id="footer"><div class="copyright">&copy;2017 - 2021 By SinLapis</div><div class="framework-info"><span>Driven - </span><a href="http://hexo.io"><span>Hexo</span></a><span class="footer-separator">|</span><span>Theme - </span><a href="https://github.com/Molunerfinn/hexo-theme-melody"><span>Melody</span></a></div><div class="busuanzi"><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><span id="busuanzi_container_page_pv"><i class="fa fa-file-o"></i><span id="busuanzi_value_page_pv"></span><span></span></span></div></div></footer><i class="fa fa-arrow-up" id="go-up" aria-hidden="true"></i><script src="https://cdn.jsdelivr.net/npm/animejs@latest/anime.min.js"></script><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@latest/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-ui-pack@latest/velocity.ui.min.js"></script><script src="/js/utils.js?version=1.6.1"></script><script src="/js/fancybox.js?version=1.6.1"></script><script src="/js/sidebar.js?version=1.6.1"></script><script src="/js/copy.js?version=1.6.1"></script><script src="/js/fireworks.js?version=1.6.1"></script><script src="/js/transition.js?version=1.6.1"></script><script src="/js/scroll.js?version=1.6.1"></script><script src="/js/head.js?version=1.6.1"></script><script>if(/Android|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent)) {
+  $('#nav').addClass('is-mobile')
+  $('footer').addClass('is-mobile')
+}</script></body></html>

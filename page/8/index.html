@@ -1,0 +1,1006 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta name="generator" content="Hexo 3.9.0"><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta name="description" content><meta name="keywords" content><meta name="author" content="SinLapis"><meta name="copyright" content="SinLapis"><title>SinLapis的博客</title><link rel="shortcut icon" href="/images/87235d96-63d9-443d-a4fa-8093fac33ada_200x200.png"><link rel="stylesheet" href="/css/index.css?version=1.6.1"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@latest/css/font-awesome.min.css?version=1.6.1"><link rel="dns-prefetch" href="https://cdn.staticfile.org"><link rel="dns-prefetch" href="https://cdn.bootcss.com"><link rel="dns-prefetch" href="https://creativecommons.org"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  }
+} </script><link rel="stylesheet" href="/css/prism.css" type="text/css"></head><body><i class="fa fa-arrow-right" id="toggle-sidebar" aria-hidden="true"></i><div id="sidebar"><div class="author-info"><div class="author-info__avatar text-center"><img src="/images/3774d809.jpg"></div><div class="author-info__name text-center">SinLapis</div><div class="author-info__description text-center"></div><hr><div class="author-info-articles"><a class="author-info-articles__archives article-meta" href="/archives"><span class="pull-left">Articles</span><span class="pull-right">103</span></a><a class="author-info-articles__tags article-meta" href="/tags"><span class="pull-left">Tags</span><span class="pull-right">70</span></a><a class="author-info-articles__categories article-meta" href="/categories"><span class="pull-left">Categories</span><span class="pull-right">20</span></a></div><hr><div class="author-info-links"><div class="author-info-links__title text-center">Links</div><a class="author-info-links__name text-center" href="http://chace.in/">chace</a></div></div></div><nav class="no-bg" id="nav"><div id="page-header"><span class="pull-left"> <a id="site-name" href="/">SinLapis的博客</a></span><i class="fa fa-bars toggle-menu pull-right" aria-hidden="true"></i><span class="pull-right menus"><a class="site-page" href="/">Home</a><a class="site-page" href="/ACGBlog">ACG</a><a class="site-page" href="/archives">Archives</a><a class="site-page" href="/tags">Tags</a><a class="site-page" href="/categories">Categories</a></span></div><div id="site-info"><div id="site-title">SinLapis的博客</div><div id="site-sub-title"></div></div></nav><div id="content-outer"><div class="layout" id="content-inner"><div class="recent-post-item article-container"><a class="article-title" href="/2019/07/04/Java编程思想笔记0x07/">Java编程思想笔记0x07</a><time class="post-meta__date"><i class="fa fa-calendar" aria-hidden="true"></i> 2019-07-04</time><span class="article-meta"><span class="article-meta__separator">|</span><i class="fa fa-inbox article-meta__icon" aria-hidden="true"></i><a class="article-meta__categories" href="/categories/Java/">Java</a></span><span class="article-meta tags"><span class="article-meta__separator">|</span><i class="fa fa-tag article-meta__icon" aria-hidden="true"></i><a class="article-meta__tags" href="/tags/笔记/">笔记</a><span class="article-meta__link">-</span><i class="fa fa-tag article-meta__icon" aria-hidden="true"></i><a class="article-meta__tags" href="/tags/Java/">Java</a></span><div class="content"><h1 id="泛型（二）"><a href="#泛型（二）" class="headerlink" title="泛型（二）"></a>泛型（二）</h1><h2 id="边界"><a href="#边界" class="headerlink" title="边界"></a>边界</h2><ul>
+<li>泛型边界不但可以强制规定泛型可以应用的类型，还允许泛型按照其边界类型调用方法。</li>
+</ul>
+<h2 id="通配符"><a href="#通配符" class="headerlink" title="通配符"></a>通配符</h2><blockquote>
+<p>逆变与协变用来描述类型转换后的继承关系，其定义为：如果A、B表示类型，f(⋅)表示类型转换，≤表示继承关系（比如，A≤B表示A是由B派生出来的子类）<br>f(⋅)是逆变（contravariant）的，当A≤B时有f(B)≤f(A)成立；<br>f(⋅)是协变（covariant）的，当A≤B时有f(A)≤f(B)成立；<br>f(⋅)是不变（invariant）的，当A≤B时上述两个式子均不成立，即f(A)与f(B)相互之间没有继承关系。</p>
+</blockquote>
+<ul>
+<li>在Java中，数组是协变的</li>
+</ul>
+<pre class=" language-java"><code class="language-java"><span class="token keyword">class</span> <span class="token class-name">Fruit</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+<span class="token keyword">class</span> <span class="token class-name">Apple</span> <span class="token keyword">extends</span> <span class="token class-name">Fruit</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+<span class="token keyword">class</span> <span class="token class-name">Jonathan</span> <span class="token keyword">extends</span> <span class="token class-name">Apple</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+<span class="token keyword">class</span> <span class="token class-name">Orange</span> <span class="token keyword">extends</span> <span class="token class-name">Fruit</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Test</span> <span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        Fruit<span class="token punctuation">[</span><span class="token punctuation">]</span> fruits <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Apple</span><span class="token punctuation">[</span><span class="token number">10</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+        fruits<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Apple</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        fruits<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Jonathan</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">try</span> <span class="token punctuation">{</span>
+            fruits<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Fruit</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// Runtime Error</span>
+        <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">Exception</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>e<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">try</span> <span class="token punctuation">{</span>
+            fruits<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Orange</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// Runtime Error</span>
+        <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">Exception</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>e<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>上述代码可以通过编译，但是在运行时会报错。</p>
+<p><em>由于早期Java不支持泛型，对数组的通用操作都是使用<code>Object[]</code>实现的，因此上述代码可以通过编译。但是为了避免因为声明类型和实际类型不一致而引发的问题，Java把类型检查放在了运行时</em></p>
+<p>然而使用泛型时，由于擦除的存在，所有检查都必须在编译期完成，因此诸如<code>List&lt;Fruit&gt; flist = new ArrayList&lt;Apple&gt;;</code>的代码是无法通过编译的。与数组不同，泛型没有内建的协变类型。</p>
+<p>但是这一限制可以使用通配符解除，例如<code>List&lt;? extends Fruit&gt; flist = new ArrayList&lt;Apple&gt;;</code>，这不意味着<code>flist</code>可以持有任意<code>Fruit</code>及其子类的对象，仍然需要指明其持有类型，并向上转型。</p>
+<p>此时问题又出现了，向上转型后将无法传入任何类型对象给<code>flist</code>，因为编译器不知道<code>&lt;? extends Fruit&gt;</code>指向哪个类型（此时编译器会将其标记为某种未知类型），例如它可以指向<code>Orange</code>，那么向其中放入<code>Apple</code>、<code>Fruit</code>、<code>Object</code>对象都是非法的。不过此时从<code>flist</code>中取出<code>Apple</code>对象是允许的（前提是容器中有对象）。</p>
+<pre class=" language-java"><code class="language-java"><span class="token keyword">class</span> <span class="token class-name">Gen</span><span class="token operator">&lt;</span>T<span class="token operator">></span> <span class="token punctuation">{</span>
+    T t<span class="token punctuation">;</span>
+
+    <span class="token keyword">public</span> <span class="token function">Test</span><span class="token punctuation">(</span>T t<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// this.t = t;</span>
+        <span class="token function">setT</span><span class="token punctuation">(</span>t<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    T <span class="token function">getT</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> t<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">void</span> <span class="token function">setT</span><span class="token punctuation">(</span>T t<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>t <span class="token operator">=</span> t<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">class</span> <span class="token class-name">Fruit</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+<span class="token keyword">class</span> <span class="token class-name">Apple</span> <span class="token keyword">extends</span> <span class="token class-name">Fruit</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Test</span> <span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token keyword">throws</span> Exception <span class="token punctuation">{</span>
+        Gen<span class="token operator">&lt;</span><span class="token operator">?</span> <span class="token keyword">extends</span> <span class="token class-name">Number</span><span class="token operator">></span> g <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Gen</span><span class="token operator">&lt;</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Apple</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        g<span class="token punctuation">.</span><span class="token function">setT</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Apple</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// error</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span class="token comment" spellcheck="true">// Cannot infer type arguments for Test1&lt;></span>
+<span class="token comment" spellcheck="true">// The method setT(capture#2-of ? extends Number) in the type Test1&lt;capture#2-of ? extends Number> is not applicable for the arguments (Apple)</span>
+</code></pre>
+<p><em>在上面代码中，在构造方法中却是正确的。个人推测，<code>new Gen&lt;&gt;(new Apple())</code>这部分实际上泛型是<code>Apple</code>，并且也不能是包含通配符的泛型，因此构造方法顺利通过编译，但是变量<code>g</code>的泛型是包含通配符的，即其泛型是不确定的类型，因此后续调用<code>setT()</code>方法出现问题。</em></p>
+<h3 id="逆变"><a href="#逆变" class="headerlink" title="逆变"></a>逆变</h3><ul>
+<li>使用超类型通配符可以允许向持有某种类型的容器中写入其子类，即指定泛型<code>&lt;? super ClassName&gt;</code>，甚至可以使用类型参数<code>&lt;? super T&gt;</code>（但不能针对类型参数给出一个超类型边界<code>&lt;T super ClassName&gt;</code>）。</li>
+</ul>
+<pre class=" language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">SuperType</span> <span class="token punctuation">{</span>
+    <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">writeTo</span><span class="token punctuation">(</span>List<span class="token operator">&lt;</span><span class="token operator">?</span> <span class="token keyword">super</span> Apple<span class="token operator">></span> apples<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        apples<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Apple</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        apples<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Jonathan</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>下面代码中<code>writeExact()</code>无法将<code>Apple</code>对象放入<code>List&lt;Fruit&gt;</code>中，即使是允许的。而使用了超类型通配符的<code>writeWithWildcard()</code>则以把<code>Apple</code>对象放入<code>List&lt;Fruit&gt;</code>。</p>
+<pre class=" language-java"><code class="language-java"><span class="token keyword">class</span> <span class="token class-name">GenericWriting</span> <span class="token punctuation">{</span>
+    <span class="token keyword">static</span> <span class="token operator">&lt;</span>T<span class="token operator">></span> <span class="token keyword">void</span> <span class="token function">writeExact</span><span class="token punctuation">(</span>List<span class="token operator">&lt;</span>T<span class="token operator">></span> list<span class="token punctuation">,</span> T item<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        list<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span>item<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">static</span> List<span class="token operator">&lt;</span>Apple<span class="token operator">></span> apples <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ArrayList</span><span class="token operator">&lt;</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">static</span> List<span class="token operator">&lt;</span>Fruit<span class="token operator">></span> fruits <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ArrayList</span><span class="token operator">&lt;</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">f1</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token function">writeExact</span><span class="token punctuation">(</span>apples<span class="token punctuation">,</span> <span class="token keyword">new</span> <span class="token class-name">Apple</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">//writeExact(fruits, new Apple()); // Error</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">static</span> <span class="token operator">&lt;</span>T<span class="token operator">></span> <span class="token keyword">void</span> <span class="token function">writeWithWildcard</span><span class="token punctuation">(</span>List<span class="token operator">&lt;</span><span class="token operator">?</span> <span class="token keyword">super</span> T<span class="token operator">></span> list<span class="token punctuation">,</span> T item<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        list<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span>item<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">f2</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token function">writeWithWildcard</span><span class="token punctuation">(</span>apples<span class="token punctuation">,</span> <span class="token keyword">new</span> <span class="token class-name">Apple</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">writeWithWildcard</span><span class="token punctuation">(</span>fruits<span class="token punctuation">,</span> <span class="token keyword">new</span> <span class="token class-name">Apple</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>相对应的，读取的代码可以使用子类型通配符，使读取对象时实现向上转型。</p>
+<pre class=" language-java"><code class="language-java"><span class="token keyword">class</span> <span class="token class-name">GenericReading</span> <span class="token punctuation">{</span>
+    <span class="token keyword">static</span> <span class="token operator">&lt;</span>T<span class="token operator">></span> T <span class="token function">readExact</span><span class="token punctuation">(</span>List<span class="token operator">&lt;</span>T<span class="token operator">></span> list<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> list<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">static</span> List<span class="token operator">&lt;</span>Apple<span class="token operator">></span> apples <span class="token operator">=</span> Arrays<span class="token punctuation">.</span><span class="token function">asList</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Apple</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">static</span> List<span class="token operator">&lt;</span>Fruit<span class="token operator">></span> fruits <span class="token operator">=</span> Arrays<span class="token punctuation">.</span><span class="token function">asList</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Fruit</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">f1</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        Apple a <span class="token operator">=</span> <span class="token function">readExact</span><span class="token punctuation">(</span>apples<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        Fruit f <span class="token operator">=</span> <span class="token function">readExact</span><span class="token punctuation">(</span>fruits<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        f <span class="token operator">=</span> <span class="token function">readExact</span><span class="token punctuation">(</span>apples<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">static</span> <span class="token keyword">class</span> <span class="token class-name">Reader</span><span class="token operator">&lt;</span>T<span class="token operator">></span> <span class="token punctuation">{</span>
+        T <span class="token function">readExact</span><span class="token punctuation">(</span>List<span class="token operator">&lt;</span>T<span class="token operator">></span> list<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">return</span> list<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">f2</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        Reader<span class="token operator">&lt;</span>Fruit<span class="token operator">></span> fruitReader <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Reader</span><span class="token operator">&lt;</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">//Fruit a = fruitReader.readExact(apples); // Error</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">static</span> <span class="token keyword">class</span> <span class="token class-name">CovariantReader</span><span class="token operator">&lt;</span>T<span class="token operator">></span> <span class="token punctuation">{</span>
+        T <span class="token function">readCovariant</span><span class="token punctuation">(</span>List<span class="token operator">&lt;</span><span class="token operator">?</span> <span class="token keyword">extends</span> <span class="token class-name">T</span><span class="token operator">></span> list<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">return</span> list<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">f3</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        CovariantReader<span class="token operator">&lt;</span>Fruit<span class="token operator">></span> fruitCovariantReader <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">CovariantReader</span><span class="token operator">&lt;</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        Fruit f <span class="token operator">=</span> fruitCovariantReader<span class="token punctuation">.</span><span class="token function">readCovariant</span><span class="token punctuation">(</span>fruits<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        Fruit a <span class="token operator">=</span> fruitCovariantReader<span class="token punctuation">.</span><span class="token function">readCovariant</span><span class="token punctuation">(</span>apples<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>在上面的代码中，静态方法<code>readExact()</code>由于类型参数由<code>list</code>决定，所以正确返回了<code>Apple</code>对象并向上转型。如果只是读取，可以不使用泛型。而在<code>f2()</code>中，由于创建泛型类时先指定了类型参数为<code>Fruit</code>，因此<code>Reader#readExact()</code>不能接受<code>List&lt;Apple&gt;</code>参数。此时使用子类通配符即可解决问题。</p>
+<h3 id="无界通配符"><a href="#无界通配符" class="headerlink" title="无界通配符"></a>无界通配符</h3><ul>
+<li>使用无界通配符表示，当前不知道（或者不需要知道）具体类型，但是不影响对其进行操作。例如可以从<code>List&lt;?&gt;</code>中取值出来（但是会丢失类型信息），不可以向其中写入。</li>
+</ul>
+<h3 id="捕获转换"><a href="#捕获转换" class="headerlink" title="捕获转换"></a>捕获转换</h3><ul>
+<li>如果向一个使用<code>&lt;?&gt;</code>的方法传递原生类型，对于编译器来说，可能会推断出实际的类型参数，使得这个方法可以回转并调用另一个使用这个确切类型的方法，即捕获转换。</li>
+</ul>
+<pre class=" language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Main</span> <span class="token punctuation">{</span>
+    <span class="token keyword">static</span> <span class="token operator">&lt;</span>T<span class="token operator">></span> T <span class="token function">f1</span><span class="token punctuation">(</span>List<span class="token operator">&lt;</span>T<span class="token operator">></span> list<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        T t <span class="token operator">=</span> list<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> t<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">f2</span><span class="token punctuation">(</span>List<span class="token operator">&lt;</span><span class="token operator">?</span><span class="token operator">></span> list<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token function">f1</span><span class="token punctuation">(</span>list<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        List list <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ArrayList</span><span class="token operator">&lt;</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        list<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">f1</span><span class="token punctuation">(</span>list<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">f2</span><span class="token punctuation">(</span>list<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>上面代码中，<code>main()</code>方法中调用<code>f1(list)</code>是有警告的，而经过<code>f2()</code>的捕获转换后警告消失了。</p>
+</div><hr></div><div class="recent-post-item article-container"><a class="article-title" href="/2019/07/02/Java编程思想笔记0x06/">Java编程思想笔记0x06</a><time class="post-meta__date"><i class="fa fa-calendar" aria-hidden="true"></i> 2019-07-02</time><span class="article-meta"><span class="article-meta__separator">|</span><i class="fa fa-inbox article-meta__icon" aria-hidden="true"></i><a class="article-meta__categories" href="/categories/Java/">Java</a></span><span class="article-meta tags"><span class="article-meta__separator">|</span><i class="fa fa-tag article-meta__icon" aria-hidden="true"></i><a class="article-meta__tags" href="/tags/笔记/">笔记</a><span class="article-meta__link">-</span><i class="fa fa-tag article-meta__icon" aria-hidden="true"></i><a class="article-meta__tags" href="/tags/Java/">Java</a></span><div class="content"><h1 id="泛型（一）"><a href="#泛型（一）" class="headerlink" title="泛型（一）"></a>泛型（一）</h1><h2 id="简单泛型"><a href="#简单泛型" class="headerlink" title="简单泛型"></a>简单泛型</h2><ul>
+<li><p>让一个类能够持有多种类型的对象，可以使用泛型实现。</p>
+<pre class=" language-java"><code class="language-java"><span class="token keyword">class</span> <span class="token class-name">A</span><span class="token operator">&lt;</span>T<span class="token operator">></span> <span class="token punctuation">{</span>
+    T i<span class="token punctuation">;</span>
+    <span class="token function">A</span><span class="token punctuation">(</span>T ii<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        i <span class="token operator">=</span> ii<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Test</span> <span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        A<span class="token operator">&lt;</span>Integer<span class="token operator">></span> a <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">A</span><span class="token operator">&lt;</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">int</span> i <span class="token operator">=</span> a<span class="token punctuation">.</span>i<span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">// a.i = "str test"; // 错误</span>
+        A<span class="token operator">&lt;</span>String<span class="token operator">></span> b <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">A</span><span class="token operator">&lt;</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token string">"test"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        String s <span class="token operator">=</span> b<span class="token punctuation">.</span>i<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+</li>
+</ul>
+<h3 id="示例：元组"><a href="#示例：元组" class="headerlink" title="示例：元组"></a>示例：元组</h3><ul>
+<li><p>元组是指将一组对象直接打包存储于其中的一个单一对象，这个容器对象允许读取其中的元素，但是不允许向其中存放新的对象。</p>
+<pre class=" language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">TwoTuple</span><span class="token operator">&lt;</span>A<span class="token punctuation">,</span>B<span class="token operator">></span> <span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">final</span> A first<span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token keyword">final</span> B second<span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token function">TwoTuple</span><span class="token punctuation">(</span>A a<span class="token punctuation">,</span> B b<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        first <span class="token operator">=</span> a<span class="token punctuation">;</span>
+        second <span class="token operator">=</span> b<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">public</span> String <span class="token function">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token string">"("</span> <span class="token operator">+</span> first <span class="token operator">+</span> <span class="token string">", "</span> <span class="token operator">+</span> second <span class="token operator">+</span> <span class="token string">")"</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>当希望某个方法返回两个及以上的参数是可以使用元组来实现，创建时填入类型即可。</p>
+</li>
+</ul>
+<h2 id="泛型接口"><a href="#泛型接口" class="headerlink" title="泛型接口"></a>泛型接口</h2><ul>
+<li><p>泛型可以应用于接口，例如生成器：</p>
+<pre class=" language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">interface</span> <span class="token class-name">Generator</span><span class="token operator">&lt;</span>T<span class="token operator">></span> <span class="token punctuation">{</span>
+    T <span class="token function">next</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>
+</li>
+</ul>
+<h2 id="泛型方法"><a href="#泛型方法" class="headerlink" title="泛型方法"></a>泛型方法</h2><ul>
+<li><p>泛型同样可以在类中包含参数化方法，并且与类是否泛型无关。</p>
+</li>
+<li><p>如果使用泛型方法可以取代整个类泛型化，那么就应该只使用泛型方法</p>
+</li>
+<li><p>静态方法无法访问类成员中的泛型变量。如果希望静态方法拥有泛型能力，那么就需要让静态方法称为泛型方法。</p>
+</li>
+<li><p>定义泛型方法，只需将泛型参数列表置于返回值之前：</p>
+<pre class=" language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token operator">&lt;</span>T<span class="token operator">></span> <span class="token keyword">void</span> <span class="token function">f</span><span class="token punctuation">(</span>T x<span class="token punctuation">)</span><span class="token punctuation">{</span><span class="token punctuation">}</span>
+</code></pre>
+</li>
+<li><p>调用泛型方法时，不需要指明参数类型，编译器会自动判断类型，即类型参数推断。</p>
+</li>
+</ul>
+<blockquote>
+<p>在Java 8以前，泛型方法的结果传递给另外一个方法时编译器不会进行推断，而Java 8 中编译器能够根据调用的方法和相应的声明来确定需要的参数类型。</p>
+</blockquote>
+<h2 id="匿名内部类"><a href="#匿名内部类" class="headerlink" title="匿名内部类"></a>匿名内部类</h2><ul>
+<li>泛型可以用于匿名内部类，同样以生成器为例：</li>
+</ul>
+<pre class=" language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">interface</span> <span class="token class-name">Generator</span><span class="token operator">&lt;</span>T<span class="token operator">></span> <span class="token punctuation">{</span>
+    T <span class="token function">next</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">public</span> <span class="token keyword">static</span> Generator<span class="token operator">&lt;</span>String<span class="token operator">></span> <span class="token function">generator</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">Generator</span><span class="token operator">&lt;</span>String<span class="token operator">></span> <span class="token punctuation">{</span>
+        <span class="token keyword">public</span> String <span class="token function">next</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">return</span> <span class="token string">"test"</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h2 id="擦除"><a href="#擦除" class="headerlink" title="擦除"></a>擦除</h2><ul>
+<li>Java的泛型是使用擦除来实现的，这意味着在泛型代码内部，无法获得任何有关泛型参数类型的信息，即实际上，<code>List&lt;Integer&gt;</code>和<code>List&lt;String&gt;</code>在运行时是相同的类型<code>List</code>。</li>
+<li>泛型类型参数将擦除到它的第一个边界，实际上编译器会把类型参数替换为它的擦除。</li>
+<li>当希望代码能够跨多个类工作时，使用泛型才有所帮助。例如某个类有一个返回<code>T</code>的方法，那么泛型可以帮助该方法返回正确的类型。</li>
+</ul>
+<h2 id="补救擦除的缺陷"><a href="#补救擦除的缺陷" class="headerlink" title="补救擦除的缺陷"></a>补救擦除的缺陷</h2><ul>
+<li>在需要类型信息而其已经被擦除时，必须显式地传递类型的Class对象。例如，<code>x instanceof T</code>是错误的表达，需要x先用<code>Class&lt;T&gt; ct</code>对象保存类型信息，再比较类型信息<code>ct.isInstnce(x)</code>。</li>
+</ul>
+<h3 id="创建泛型类型对象"><a href="#创建泛型类型对象" class="headerlink" title="创建泛型类型对象"></a>创建泛型类型对象</h3><ul>
+<li>传递一个工厂对象到构造器中，并使用该工厂创建新对象。</li>
+</ul>
+<pre class=" language-java"><code class="language-java"><span class="token keyword">class</span> <span class="token class-name">ClassAsFactory</span><span class="token operator">&lt;</span>T<span class="token operator">></span> <span class="token punctuation">{</span>
+    T x<span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token function">ClassAsFactory</span><span class="token punctuation">(</span>Class<span class="token operator">&lt;</span>T<span class="token operator">></span> kind<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">try</span> <span class="token punctuation">{</span>
+            x <span class="token operator">=</span> kind<span class="token punctuation">.</span><span class="token function">getDeclaredConstructor</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">newInstance</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span> <span class="token keyword">catch</span><span class="token punctuation">(</span>Exception e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>e<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">class</span> <span class="token class-name">Employee</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+
+
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Test</span> <span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        ClassAsFactory<span class="token operator">&lt;</span>Employee<span class="token operator">></span> fe <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ClassAsFactory</span><span class="token punctuation">(</span>Employee<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>上面代码中使用了无参构造器，如果传入的类型没有无参构造器则无法工作。</p>
+<pre class=" language-java"><code class="language-java"><span class="token keyword">interface</span> <span class="token class-name">FactoryI</span><span class="token operator">&lt;</span>T<span class="token operator">></span> <span class="token punctuation">{</span>
+    T <span class="token function">create</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">class</span> <span class="token class-name">Foo</span><span class="token operator">&lt;</span>T<span class="token operator">></span> <span class="token punctuation">{</span>
+    <span class="token keyword">private</span> T x<span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token operator">&lt;</span>F <span class="token keyword">extends</span> <span class="token class-name">FactoryI</span><span class="token operator">&lt;</span>T<span class="token operator">>></span> <span class="token function">Foo</span><span class="token punctuation">(</span>F factory<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">//public Foo(FactoryI factory) { // Error</span>
+        x <span class="token operator">=</span> factory<span class="token punctuation">.</span><span class="token function">create</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">class</span> <span class="token class-name">IntegerFactory</span> <span class="token keyword">implements</span> <span class="token class-name">FactoryI</span><span class="token operator">&lt;</span>Integer<span class="token operator">></span> <span class="token punctuation">{</span>
+    <span class="token keyword">public</span> Integer <span class="token function">create</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">class</span> <span class="token class-name">Widget</span> <span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">class</span> <span class="token class-name">Factory</span> <span class="token keyword">implements</span> <span class="token class-name">FactoryI</span><span class="token operator">&lt;</span>Widget<span class="token operator">></span> <span class="token punctuation">{</span>
+        <span class="token keyword">public</span> Widget <span class="token function">create</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">Widget</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Test</span> <span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">new</span> <span class="token class-name">Foo</span><span class="token operator">&lt;</span>Integer<span class="token operator">></span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">IntegerFactory</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">new</span> <span class="token class-name">Foo</span><span class="token operator">&lt;</span>Widget<span class="token operator">></span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Widget<span class="token punctuation">.</span>Factory</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>使用了显式的工厂对象后，可以应用于任何一种类型，并且获得了编译期检查。</p>
+<pre class=" language-java"><code class="language-java"><span class="token keyword">abstract</span> <span class="token keyword">class</span> <span class="token class-name">GenericWithCreate</span><span class="token operator">&lt;</span>T<span class="token operator">></span> <span class="token punctuation">{</span>
+    <span class="token keyword">final</span> T element<span class="token punctuation">;</span>
+    <span class="token function">GenericWithCreate</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        element <span class="token operator">=</span> <span class="token function">create</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">abstract</span> T <span class="token function">create</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">class</span> <span class="token class-name">X</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+
+<span class="token keyword">class</span> <span class="token class-name">Creator</span> <span class="token keyword">extends</span> <span class="token class-name">GenericWithCreate</span> <span class="token punctuation">{</span>
+    X <span class="token function">create</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">X</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Test</span> <span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        Creator c <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Creator</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>上面代码使用了模板方法。</p>
+<h3 id="泛型数组"><a href="#泛型数组" class="headerlink" title="泛型数组"></a>泛型数组</h3><ul>
+<li>一般情况下使用<code>ArrayList</code>。如果确实需要数组，则只能使用强制类型转换<code>(T[])new Object[size]</code>。</li>
+</ul>
+</div><hr></div><div class="recent-post-item article-container"><a class="article-title" href="/2019/07/01/Java编程思想笔记0x05/">Java编程思想笔记0x05</a><time class="post-meta__date"><i class="fa fa-calendar" aria-hidden="true"></i> 2019-07-01</time><span class="article-meta"><span class="article-meta__separator">|</span><i class="fa fa-inbox article-meta__icon" aria-hidden="true"></i><a class="article-meta__categories" href="/categories/Java/">Java</a></span><span class="article-meta tags"><span class="article-meta__separator">|</span><i class="fa fa-tag article-meta__icon" aria-hidden="true"></i><a class="article-meta__tags" href="/tags/笔记/">笔记</a><span class="article-meta__link">-</span><i class="fa fa-tag article-meta__icon" aria-hidden="true"></i><a class="article-meta__tags" href="/tags/Java/">Java</a></span><div class="content"><h1 id="类型信息"><a href="#类型信息" class="headerlink" title="类型信息"></a>类型信息</h1><h2 id="Class对象"><a href="#Class对象" class="headerlink" title="Class对象"></a>Class对象</h2><ul>
+<li>Java使用<code>Class</code>对象来执行其RTTI。</li>
+<li>类是程序的一部分，每个类都有一个<code>Class</code>对象</li>
+<li>类加载过程（见<a href="2019/06/23/深入理解Java虚拟机笔记0x02/">深入理解Java虚拟机笔记0x02</a>）</li>
+<li><code>Class</code>对象仅在需要的时候才被加载</li>
+<li><code>Class.forName(String className)</code>可以取得<code>Class</code>对象的引用，参数为一个包含目标类的文本名（区分大小写）。注意此方法会使类加载并初始化，作为对比，使用<code>ClassLoader</code>对象的<code>loadClass()</code>方法只会对类进行加载，而不会初始化。</li>
+<li><code>Object</code>对象有方法<code>getClass()</code>可以获取相应<code>Class</code>对象引用。</li>
+<li><code>Class#getSimpleName()</code>返回不含包名的类名，<code>Class#getCanonicalName()</code>返回全限定的类名。</li>
+<li><code>Class#getSuperclass()</code>返回其基类的<code>Class</code>对象</li>
+</ul>
+<blockquote>
+<p>关于<code>Class#newInstance()</code>：该方法已于Java 9声明废弃，使用<code>Class#getDeclaredConstructor().newInstance()</code>代替。</p>
+</blockquote>
+<h3 id="泛化的Class引用"><a href="#泛化的Class引用" class="headerlink" title="泛化的Class引用"></a>泛化的Class引用</h3><ul>
+<li>可以使用泛型将<code>Class</code>引用所指向的<code>Class</code>对象的类型进行限定，使其变得更为具体 。</li>
+<li><code>Class&lt;?&gt;</code>与<code>Class</code>：<code>Class</code>没有表现出是否要限制<code>Class</code>的意思，而<code>Class&lt;?&gt;</code>则表示此处<code>Class</code>的限制是无限制。</li>
+<li>向<code>Class</code>引用添加泛型语法的原因仅仅是为了提供编译期类型检查。</li>
+</ul>
+<h3 id="转型"><a href="#转型" class="headerlink" title="转型"></a>转型</h3><ul>
+<li><code>Class#cast()</code>可以将参数对象转换为<code>Class</code>引用的类型</li>
+</ul>
+<h2 id="类型检查"><a href="#类型检查" class="headerlink" title="类型检查"></a>类型检查</h2><ul>
+<li>关键字<code>instanceof</code>：判断对象是否为某种类型，用法：<code>x instanceof ClassName</code>。只可将其与命名类型比较，不能与<code>Class</code>对象比较。</li>
+<li><code>Class#isInstance()</code>判断参数引用是否为<code>Class</code>引用的实例。</li>
+<li>使用<code>instanceof</code>或者<code>Class#isInstance()</code>进行的判断是对象是否为目标类或者目标类的子类，而使用<code>==</code>或者<code>equals()</code>则表示对象是否确切的是目标类，而不是目标类的子类或者其他类。</li>
+</ul>
+<h2 id="反射"><a href="#反射" class="headerlink" title="反射"></a>反射</h2><ul>
+<li>Java中使用<code>Class</code>类和<code>java.lang.reflect</code>共同支持反射。在类库中，<code>Constructor</code>用于创建新的对象，<code>get()</code>和<code>set()</code>方法用于修改与<code>Field</code>对象关联的字段，<code>invoke()</code>方法用于调用与<code>Method</code>对象关联的方法；此外，<code>getFields()</code>、<code>getMethods()</code>、<code>getConstructors()</code>方法可以分别获得表示字段、方法以及构造器对象的数组。</li>
+<li>RTTI与反射的区别：对于RTTI来说，编译器在编译时打开和检查.class文件，而对于反射来说，.class文件在编译时是不可获取的。</li>
+</ul>
+</div><hr></div><div class="recent-post-item article-container"><a class="article-title" href="/2019/06/30/Java编程思想笔记0x04/">Java编程思想笔记0x04</a><time class="post-meta__date"><i class="fa fa-calendar" aria-hidden="true"></i> 2019-06-30</time><span class="article-meta"><span class="article-meta__separator">|</span><i class="fa fa-inbox article-meta__icon" aria-hidden="true"></i><a class="article-meta__categories" href="/categories/Java/">Java</a></span><span class="article-meta tags"><span class="article-meta__separator">|</span><i class="fa fa-tag article-meta__icon" aria-hidden="true"></i><a class="article-meta__tags" href="/tags/笔记/">笔记</a><span class="article-meta__link">-</span><i class="fa fa-tag article-meta__icon" aria-hidden="true"></i><a class="article-meta__tags" href="/tags/Java/">Java</a></span><div class="content"><h1 id="字符串"><a href="#字符串" class="headerlink" title="字符串"></a>字符串</h1><h2 id="不可变String"><a href="#不可变String" class="headerlink" title="不可变String"></a>不可变String</h2><ul>
+<li><code>String</code>对象是不可变的。<code>String</code>类中每一个看起来会修改<code>String</code>值的方法，实际上都是创建了一个全新的<code>String</code>对象。</li>
+<li>对于一个方法而言，参数是为该方法提供信息的，而不是想让该方法改变自己。</li>
+</ul>
+<h2 id="重载“-”与StringBuilder"><a href="#重载“-”与StringBuilder" class="headerlink" title="重载“+”与StringBuilder"></a>重载“+”与StringBuilder</h2><ul>
+<li>重载：一个操作符在应用于特定的类时，赋予其特定的含义。</li>
+<li>在Java中，用于<code>String</code>的<code>+</code>和<code>+=</code>是仅有的两个重载过的操作符，不允许程序员重载任何操作符。</li>
+<li>Java编译器会自动优化<code>String</code>操作并使用<code>StringBuilder</code>,因为其高效，但是并不是所有的状况都会被优化。因此在需要大量操作<code>String</code>时使用<code>StringBuilder</code>是明智的选择。</li>
+</ul>
+<h2 id="无意识递归"><a href="#无意识递归" class="headerlink" title="无意识递归"></a>无意识递归</h2><ul>
+<li>如果在<code>toString()</code>方法中使用<code>this</code>指针与其它字符串拼接，试图打印对象的地址，那么会引起无限的递归调用。[因为编译器试图把<code>this</code>指针转换为<code>String</code>类型，而转换的方法就是调用<code>this.toString()</code>。正确的做法是调用父类的<code>toString()</code>，即<code>super.toString()</code>。</li>
+</ul>
+<h2 id="格式化输出"><a href="#格式化输出" class="headerlink" title="格式化输出"></a>格式化输出</h2><h3 id="System-out-format"><a href="#System-out-format" class="headerlink" title="System.out.format()"></a>System.out.format()</h3><ul>
+<li>类似于C语言中的<code>printf()</code>，接受一个简单的格式化字符串以及一串参数。</li>
+</ul>
+<h3 id="Formatter类"><a href="#Formatter类" class="headerlink" title="Formatter类"></a>Formatter类</h3><ul>
+<li>创建<code>Formatter</code>对象时需要向构造器中传入输出目标，例如<code>System.out</code>。使用时调用<code>Formatter</code>对象的<code>format()</code>方法。</li>
+</ul>
+<h3 id="格式化说明符"><a href="#格式化说明符" class="headerlink" title="格式化说明符"></a>格式化说明符</h3><ul>
+<li>抽象语法：<code>%[argument_index$][flags][width][.precision]conversion</code></li>
+<li><code>width</code>：控制一个域的最小尺寸，在有必要时添加空格，来确保一个域至少达到某个长度。可以用于各种类型的数据转换。默认情况下数据是右对齐，可以使用<code>-</code>来改变对齐方向。</li>
+<li><code>precision</code>：指明数据的最大尺寸。不能用于所有的数据类型转换，例如整数类型，并且应用于不同的数据类型转换时意义也不同。应用于<code>String</code>时表示打印<code>String</code>时输出的字符的最大数量；应用于浮点数时，表示小数部分要显示的位数（默认是6位），多则舍入，少则补0。</li>
+</ul>
+<h3 id="Formatter转换"><a href="#Formatter转换" class="headerlink" title="Formatter转换"></a>Formatter转换</h3><ul>
+<li>常用的类型转换：</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>类型转换字符</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>d</td>
+<td>整数型（十进制）</td>
+</tr>
+<tr>
+<td>c</td>
+<td>Unicode字符</td>
+</tr>
+<tr>
+<td>b</td>
+<td>Boolean值</td>
+</tr>
+<tr>
+<td>s</td>
+<td>String</td>
+</tr>
+<tr>
+<td>f</td>
+<td>浮点数（十进制）</td>
+</tr>
+<tr>
+<td>e</td>
+<td>浮点数（科学计数）</td>
+</tr>
+<tr>
+<td>x</td>
+<td>整数（十六进制）</td>
+</tr>
+<tr>
+<td>h</td>
+<td>散列码（十六进制）</td>
+</tr>
+<tr>
+<td>%</td>
+<td>字符”%”</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>关于b转换，对于<code>boolean</code>基本类型和<code>Boolean</code>对象，其转换结果就是<code>true</code>或<code>false</code>；对于其它类型的参数，只要其不为<code>null</code>，那么转换结果就是<code>true</code>，即使是数字<code>0</code>，转换结果依然是<code>true</code>。</li>
+</ul>
+<h2 id="正则表达式"><a href="#正则表达式" class="headerlink" title="正则表达式"></a>正则表达式</h2><h3 id="基本构造"><a href="#基本构造" class="headerlink" title="基本构造"></a>基本构造</h3><table>
+<thead>
+<tr>
+<th>字符</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>B</td>
+<td>指定字符B</td>
+</tr>
+<tr>
+<td>\xhh</td>
+<td>十六进制值为0xhh的字符</td>
+</tr>
+<tr>
+<td>\uhhhh</td>
+<td>十六进制表示为0xhhhh的Unicode字符</td>
+</tr>
+<tr>
+<td>\t</td>
+<td>制表符Tab</td>
+</tr>
+<tr>
+<td>\n</td>
+<td>换行符</td>
+</tr>
+<tr>
+<td>\r</td>
+<td>回车</td>
+</tr>
+<tr>
+<td>\f</td>
+<td>换页</td>
+</tr>
+<tr>
+<td>\e</td>
+<td>转义（Escape）</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>字符类</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>.</td>
+<td>任意字符</td>
+</tr>
+<tr>
+<td>[abc]</td>
+<td>包含a、b、c的任何字符，同 a&#124;b&#124;c</td>
+</tr>
+<tr>
+<td>[^abc]</td>
+<td>除了a、b、c的任何字符（否定）</td>
+</tr>
+<tr>
+<td>[a-zA-Z]</td>
+<td>从a到z或从A到Z的任何字符</td>
+</tr>
+<tr>
+<td>\s</td>
+<td>空白符（空格、Tab、换行、换页和回车）</td>
+</tr>
+<tr>
+<td>\S</td>
+<td>非空白符</td>
+</tr>
+<tr>
+<td>\d</td>
+<td>数字，同[0-9]</td>
+</tr>
+<tr>
+<td>\D</td>
+<td>非数字，[^0-9]</td>
+</tr>
+<tr>
+<td>\w</td>
+<td>词字符，[a-zA-Z0-9]</td>
+</tr>
+<tr>
+<td>\W</td>
+<td>非词字符，[^\w]</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>逻辑操作符</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>XY</td>
+<td>Y跟在X后面</td>
+</tr>
+<tr>
+<td>X&#124;Y</td>
+<td>X或Y</td>
+</tr>
+<tr>
+<td>(X)</td>
+<td>捕获组，可以在表达式中使用\i来引用第i个捕获</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>边界匹配符</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>^</td>
+<td>一行的开始</td>
+</tr>
+<tr>
+<td>$</td>
+<td>一行的结束</td>
+</tr>
+<tr>
+<td>\b</td>
+<td>词的边界</td>
+</tr>
+<tr>
+<td>\B</td>
+<td>非词的边界</td>
+</tr>
+<tr>
+<td>\G</td>
+<td>前一个匹配的结束</td>
+</tr>
+</tbody>
+</table>
+<h3 id="量词"><a href="#量词" class="headerlink" title="量词"></a>量词</h3><ul>
+<li>量词描述了一个模式吸收输入文本的方式</li>
+<li>贪婪型：一次性地读入整个字符串，如果无法完成匹配就去掉最右边的一个字符再匹配，直到找到匹配的字符串或字符串的长度为0为止。它的宗旨是读尽可能多的字符，所以当读到第一个匹配时就立刻返回。</li>
+<li>厌恶型：立刻进入匹配，如果无法匹配则多读一个字符串，直到匹配成功或者字符串读完。它尽量减少了匹配到的字符串，但同样读到第一个匹配的就返回。</li>
+<li>占有型：仅匹配一次，失败不会再次尝试。</li>
+</ul>
+<h3 id="Pattern和Matcher"><a href="#Pattern和Matcher" class="headerlink" title="Pattern和Matcher"></a>Pattern和Matcher</h3><ul>
+<li><p>正则表达式对象：位于<code>java.util.regex</code>包中，使用<code>Pattern.compile()</code>编译正则表达式，并返回一个<code>Pattern</code>对象。使用<code>Pattern</code>对象的<code>matcher()</code>方法检索一个字符串，会得到一个<code>Matcher</code>对象。</p>
+</li>
+<li><p><code>Pattern</code>对象的<code>split()</code>方法可以从匹配了正则表达式的地方分割输入的字符串，返回分割后的子字符串<code>String</code>数组。</p>
+</li>
+<li><p><code>Matcher</code>对象的<code>find()</code>方法可用来在<code>CharSequence</code>中查找多个匹配</p>
+</li>
+<li><p>组：是用括号划分的正则表达式，可以根据组的编号来引用某个组。组号为0便是整个正则表达式，组号1表示第一对括号括起来的组。</p>
+</li>
+<li><p><code>Matcher</code>对象中有许多关于组的方法：</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>方法名</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>int groupCount()</code></td>
+<td>返回<code>Matcher</code>对象中组数，不包含第0组</td>
+</tr>
+<tr>
+<td><code>String group()</code></td>
+<td>返回前一次匹配的第0组</td>
+</tr>
+<tr>
+<td><code>String group(int i)</code></td>
+<td>返回前一次匹配的指定组号，如果匹配成功但是指定的组没有匹配输入字符串的任何部分则返回<code>null</code></td>
+</tr>
+<tr>
+<td><code>int start(int group)</code></td>
+<td>返回前一次匹配操作中寻找到的组的起始索引</td>
+</tr>
+<tr>
+<td><code>int end(int group)</code></td>
+<td>返回前一次匹配操作中寻找到的组的最后一个字符索引加1的值</td>
+</tr>
+</tbody>
+</table>
+<h3 id="替换"><a href="#替换" class="headerlink" title="替换"></a>替换</h3><table>
+<thead>
+<tr>
+<th>方法名</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>String replaceFirst(String replacement)</code></td>
+<td>用<code>replacement</code>替换掉第一个匹配成功的部分</td>
+</tr>
+<tr>
+<td><code>String replaceAll(String replacement)</code></td>
+<td>用<code>replacement</code>替换所有匹配成功的部分</td>
+</tr>
+<tr>
+<td><code>Matcher appendReplacement(StringBuffer sb, String replacement)</code></td>
+<td>1. 先将不匹配的地方放入<code>sb</code>中，即从上次读取的位置开始，到本次<code>start() - 1</code>；2. 将<code>replacement</code>放入<code>sb</code>中；3. 将读取位置改为<code>end()</code></td>
+</tr>
+<tr>
+<td><code>StringBuffer appendTail(StringBuffer sb)</code></td>
+<td>在多次使用<code>appendReplacement()</code>方法后，使用此方法将把剩余部分的字符串直接放入<code>sb</code>中</td>
+</tr>
+</tbody>
+</table>
+<h3 id="reset"><a href="#reset" class="headerlink" title="reset()"></a>reset()</h3><ul>
+<li><code>reset()</code>可以将现有的<code>Matcher</code>对象应用于一个新的字符序列。</li>
+</ul>
+<h2 id="扫描输入"><a href="#扫描输入" class="headerlink" title="扫描输入"></a>扫描输入</h2><h3 id="Scanner定界符"><a href="#Scanner定界符" class="headerlink" title="Scanner定界符"></a>Scanner定界符</h3><ul>
+<li>默认情况下，<code>Scanner</code>对象使用空白字符对输入进行分词。使用<code>Scanner</code>对象的<code>useDelimiter()</code>并输入正则表达式作为参数可以修改成自定义的定界符。</li>
+</ul>
+<h3 id="用正则表达式扫描"><a href="#用正则表达式扫描" class="headerlink" title="用正则表达式扫描"></a>用正则表达式扫描</h3><ul>
+<li><code>Scanner</code>对象的<code>hasNext()</code>和<code>next()</code>方法都支持输入一个<code>Pattern</code>对象，找到下一个匹配该模式的部分，调用<code>match()</code>就能获得匹配结果。如果正则表达式中有定界符，将永远不会匹配成功。</li>
+</ul>
+</div><hr></div><div class="recent-post-item article-container"><a class="article-title" href="/2019/06/28/Java编程思想笔记0x03/">Java编程思想笔记0x03</a><time class="post-meta__date"><i class="fa fa-calendar" aria-hidden="true"></i> 2019-06-28</time><span class="article-meta"><span class="article-meta__separator">|</span><i class="fa fa-inbox article-meta__icon" aria-hidden="true"></i><a class="article-meta__categories" href="/categories/Java/">Java</a></span><span class="article-meta tags"><span class="article-meta__separator">|</span><i class="fa fa-tag article-meta__icon" aria-hidden="true"></i><a class="article-meta__tags" href="/tags/笔记/">笔记</a><span class="article-meta__link">-</span><i class="fa fa-tag article-meta__icon" aria-hidden="true"></i><a class="article-meta__tags" href="/tags/Java/">Java</a></span><div class="content"><h1 id="通过异常处理错误"><a href="#通过异常处理错误" class="headerlink" title="通过异常处理错误"></a>通过异常处理错误</h1><h2 id="基本异常"><a href="#基本异常" class="headerlink" title="基本异常"></a>基本异常</h2><ul>
+<li>异常是指组织当前方法或作用于继续执行的问题</li>
+<li>与普通问题对比：普通问题在当前环境中能得到足够的信息，总能处理错误，而对于异常则在当前环境中无法获得足够信息来解决问题。</li>
+<li>抛出异常：从当前环境跳出，并且把问题交给上一级环境</li>
+<li>异常参数：异常类有两个构造器，一个是默认构造器，另一个接受一个字符串参数，能够输入自定义的错误信息</li>
+</ul>
+<h2 id="捕获异常"><a href="#捕获异常" class="headerlink" title="捕获异常"></a>捕获异常</h2><h3 id="try块"><a href="#try块" class="headerlink" title="try块"></a>try块</h3><ul>
+<li>如果不希望在方法内遇到异常就结束，可以使用<code>try</code>包裹可能出现异常的代码来捕获异常</li>
+<li>相较于不支持处理异常的语言，<code>try</code>可以不需要在每一次调用方法的前后设置错误检查的代码，从而使代码更容易编写和阅读</li>
+</ul>
+<h3 id="异常处理程序"><a href="#异常处理程序" class="headerlink" title="异常处理程序"></a>异常处理程序</h3><ul>
+<li>用于处理<code>try</code>捕获的异常，关键字为<code>catch</code>，参数为错误类型以及标识符。</li>
+</ul>
+<h3 id="终止与恢复"><a href="#终止与恢复" class="headerlink" title="终止与恢复"></a>终止与恢复</h3><ul>
+<li>终止模型：假设错误非常关键，以至于程序无法返回到异常发生的地方继续执行</li>
+<li>恢复模型：异常处理程序的工作是修正错误，然后重新尝试调用出问题的方法，并任务第二次能成功</li>
+<li>尽管恢复模型显得很吸引人，但是并不实用。其中的主要原因可能是它所导致的耦合：恢复性的处理程序需要了解异常抛出的地点，这势必要包含依赖于抛出位置的非通用代码。</li>
+</ul>
+<h2 id="自定义异常"><a href="#自定义异常" class="headerlink" title="自定义异常"></a>自定义异常</h2><ul>
+<li>自定义异常需要从已有的异常类继承，最好是选择意思相近的异常类继承，也可以选择编程相关的所有异常的父类<code>Exception</code>继承。</li>
+</ul>
+<h2 id="异常说明"><a href="#异常说明" class="headerlink" title="异常说明"></a>异常说明</h2><ul>
+<li>在方法声明中，形式参数列表后使用关键字<code>throw</code>，后面接一个所有潜在异常类型的列表，可以表示该方法可能会抛出相应的异常。调用此方法时，如果没有处理这些异常将无法通过编译。</li>
+</ul>
+<h2 id="捕获所有异常"><a href="#捕获所有异常" class="headerlink" title="捕获所有异常"></a>捕获所有异常</h2><ul>
+<li>捕获时，使用<code>Exception</code>类可以捕获到所有编程相关的异常。最好将其放在处理程序的末尾，以防它抢在其它异常处理程序之前把异常捕获了。</li>
+<li>栈轨迹：异常对象的<code>getStackTrace()</code>可以获得发生错误时调用序列，栈顶是调用序列中最后一个方法调用。</li>
+<li>重新抛出异常：在<code>catch</code>块中可以使用<code>throw</code>重新抛出异常，将异常抛给上一级环境中的异常处理程序，后续的<code>catch</code>子句将被忽略。</li>
+</ul>
+<h3 id="异常链"><a href="#异常链" class="headerlink" title="异常链"></a>异常链</h3><ul>
+<li>异常链是指在捕获一个异常后抛出另一个异常，并且希望保存原始异常的信息。</li>
+<li><code>Throwable</code>的构造器可接受另一个<code>Throwable</code>对象作为原始异常（<code>cause</code>）来追踪异常最初发生的位置。</li>
+<li><code>initCause()</code>方法可以为一个没有设置原始异常的<code>Throwable</code>对象设置原始异常。注意此方法仅能调用一次，并且如果该对象已经通过构造器设置原始异常或者该方法调用超过一次，那么会抛出<code>IllegalStateException</code>。</li>
+</ul>
+<h2 id="Java标准异常"><a href="#Java标准异常" class="headerlink" title="Java标准异常"></a>Java标准异常</h2><ul>
+<li>运行时异常（<code>RuntimeException</code>），例如空指针异常（<code>NullPointerException</code>）会被Java虚拟机自动抛出，不需要在异常说明中添加这类异常，如果没有被捕获，它们将直达<code>main()</code>方法。</li>
+</ul>
+<h2 id="使用finally清理"><a href="#使用finally清理" class="headerlink" title="使用finally清理"></a>使用finally清理</h2><ul>
+<li><code>finally</code>子句中的代码无论<code>try</code>块中是否抛出异常都会得到执行。</li>
+<li>当要把除内存之外的资源恢复到它们的初始状态时，可以使用<code>finally</code>子句。例如关闭打开的文件或者网络连接等。</li>
+<li>丢失异常：<code>try</code>块中的异常会被<code>finally</code>子句中的异常覆盖；如果在<code>finally</code>子句中返回，即使抛出异常也不会产生输出。</li>
+</ul>
+</div><hr></div><div class="recent-post-item article-container"><a class="article-title" href="/2019/06/28/Java编程思想笔记0x02/">Java编程思想笔记0x02</a><time class="post-meta__date"><i class="fa fa-calendar" aria-hidden="true"></i> 2019-06-28</time><span class="article-meta"><span class="article-meta__separator">|</span><i class="fa fa-inbox article-meta__icon" aria-hidden="true"></i><a class="article-meta__categories" href="/categories/Java/">Java</a></span><span class="article-meta tags"><span class="article-meta__separator">|</span><i class="fa fa-tag article-meta__icon" aria-hidden="true"></i><a class="article-meta__tags" href="/tags/笔记/">笔记</a><span class="article-meta__link">-</span><i class="fa fa-tag article-meta__icon" aria-hidden="true"></i><a class="article-meta__tags" href="/tags/Java/">Java</a></span><div class="content"><h1 id="持有对象"><a href="#持有对象" class="headerlink" title="持有对象"></a>持有对象</h1><h2 id="添加一组元素"><a href="#添加一组元素" class="headerlink" title="添加一组元素"></a>添加一组元素</h2><ul>
+<li><code>Collections.addAll()</code>方法接受一个<code>Collection</code>对象，以及一个数组或者一个逗号分隔符列表，将元素添加到<code>Collection</code>中。推荐使用此方法。</li>
+<li><code>Arrays.asList()</code>方法接受数组或列表，但是其返回的对象类型<code>List</code>并不是<code>java.util.List</code>，而是<code>Arrays</code>内的一个静态内部类，没有<code>add()</code>和<code>remove()</code>方法。</li>
+</ul>
+<h2 id="List"><a href="#List" class="headerlink" title="List"></a>List</h2><ul>
+<li><code>List</code>在<code>Collection</code>中添加了大量方法，可以在<code>List</code>中间插入和移除元素</li>
+</ul>
+<h3 id="类型"><a href="#类型" class="headerlink" title="类型"></a>类型</h3><ul>
+<li><code>ArrayList</code>：长于随机访问元素，但是在<code>List</code>中间插入和移除元素较慢</li>
+<li><code>LinkedList</code>：在中间插入和删除操作代价较低，提供了优化的顺序访问，但是随机访问相对较慢</li>
+</ul>
+<h3 id="部分方法"><a href="#部分方法" class="headerlink" title="部分方法"></a>部分方法</h3><ul>
+<li><code>remove()</code>：此方法接受元素类型对象（调用其<code>equals()</code>方法）或者在<code>List</code>中的序号，来删除指定元素。注意如果<code>List</code>中元素为<code>Integer</code>类型时，删除值为<code>x</code>的方式为<code>remove((Integer) x)</code>而不是<code>remove(x)</code>，后者会删掉序号为<code>x</code>的元素。</li>
+<li><code>subList()</code>：获取子列表</li>
+<li><code>containsAll()</code>：是否包含参数序列中所有的值。与参数顺序无关。</li>
+<li><code>retainsALL()</code>：参数为另一个<code>List</code>，求两个<code>List</code>交集，结果保存在调用对象里。</li>
+</ul>
+<h2 id="LinkedList"><a href="#LinkedList" class="headerlink" title="LinkedList"></a>LinkedList</h2><ul>
+<li>实现了<code>List</code>的基本接口，添加了可以使其用作栈、队列或双端队列的方法。</li>
+</ul>
+<h2 id="Stack"><a href="#Stack" class="headerlink" title="Stack"></a>Stack</h2><h2 id="Set"><a href="#Set" class="headerlink" title="Set"></a>Set</h2><h3 id="类型-1"><a href="#类型-1" class="headerlink" title="类型"></a>类型</h3><ul>
+<li><code>HashSet</code>：使用散列函数实现，查找速度较快</li>
+<li><code>TreeSet</code>：基于红黑树实现</li>
+<li><code>LinkedHashSet</code>：同样使用散列函数实现，但同时用链表维护了元素插入顺序</li>
+</ul>
+<h2 id="Map"><a href="#Map" class="headerlink" title="Map"></a>Map</h2><h2 id="Queue"><a href="#Queue" class="headerlink" title="Queue"></a>Queue</h2><ul>
+<li><code>offer()</code>：在允许的情况下将一个元素插入队尾，或者返回<code>false</code>。</li>
+<li><code>PriorityQueue</code>：使用<code>offer()</code>插入时会对元素进行排序。默认顺序是元素在队列中的自然顺序，可通过修改<code>Comparator</code>来修改顺序。</li>
+</ul>
+</div><hr></div><div class="recent-post-item article-container"><a class="article-title" href="/2019/06/26/Java编程思想笔记0x01/">Java编程思想笔记0x01</a><time class="post-meta__date"><i class="fa fa-calendar" aria-hidden="true"></i> 2019-06-26</time><span class="article-meta"><span class="article-meta__separator">|</span><i class="fa fa-inbox article-meta__icon" aria-hidden="true"></i><a class="article-meta__categories" href="/categories/Java/">Java</a></span><span class="article-meta tags"><span class="article-meta__separator">|</span><i class="fa fa-tag article-meta__icon" aria-hidden="true"></i><a class="article-meta__tags" href="/tags/笔记/">笔记</a><span class="article-meta__link">-</span><i class="fa fa-tag article-meta__icon" aria-hidden="true"></i><a class="article-meta__tags" href="/tags/Java/">Java</a></span><div class="content"><h1 id="内部类"><a href="#内部类" class="headerlink" title="内部类"></a>内部类</h1><h2 id="链接到外部类"><a href="#链接到外部类" class="headerlink" title="链接到外部类"></a>链接到外部类</h2><ul>
+<li>内部类拥有外围对象所有成员的访问权限，以及外围类的访问权限。</li>
+</ul>
+<h2 id="获取外部类引用"><a href="#获取外部类引用" class="headerlink" title="获取外部类引用"></a>获取外部类引用</h2><ul>
+<li>在内部类中，使用外部类名称以及<code>.this</code>可以获得外部类对象的引用。</li>
+</ul>
+<h3 id="内部类访问外部类变量"><a href="#内部类访问外部类变量" class="headerlink" title="内部类访问外部类变量"></a><em>内部类访问外部类变量</em></h3><ul>
+<li><em>如果内部类或者外围方法没有与外部类重名的变量，那么可以直接访问外部类的变量，如果有重名变量，则需要通过上述方法访问外部类变量。</em></li>
+</ul>
+<h2 id="创建内部类对象"><a href="#创建内部类对象" class="headerlink" title="创建内部类对象"></a>创建内部类对象</h2><ul>
+<li>如果内部类不是静态的，需要通过外部类对象来创建，例如外部类<code>Test</code>的实例<code>test</code>，其包括一个内部类<code>Inner</code>，那么创建方式为<code>test.new Test.Inner()</code></li>
+</ul>
+<h2 id="匿名内部类"><a href="#匿名内部类" class="headerlink" title="匿名内部类"></a>匿名内部类</h2><ul>
+<li>是指创建一个继承某个类的匿名类，通过<code>new</code>表达式返回的引用自动向上转型为父类的引用。</li>
+<li>可以方便快速继承类重写方法或者实现接口。</li>
+</ul>
+<h2 id="内部类的用处"><a href="#内部类的用处" class="headerlink" title="内部类的用处"></a>内部类的用处</h2><ul>
+<li>每个内部类都能独立地继承自一个（接口的）实现，所以无论外围类是否已经继承了某个（接口的）实现，对于内部类都没有影响，有效的实现了多重继承。</li>
+</ul>
+<h2 id="内部类用于回调"><a href="#内部类用于回调" class="headerlink" title="内部类用于回调"></a>内部类用于回调</h2><ul>
+<li>回调函数：有些库函数需要传给它一个函数，好在合适的时候调用，以完成目标任务。这个被传入的、后又被调用的函数就称为回调函数。</li>
+<li>通过内部类实现同名方法的不同实现，后通过回调可以选择向外部提供调用的方法。</li>
+</ul>
+<h2 id="内部类与控制框架"><a href="#内部类与控制框架" class="headerlink" title="内部类与控制框架"></a>内部类与控制框架</h2><ul>
+<li>应用程序框架：用于解决某类特定问题的一个类或一组类</li>
+<li>控制框架：一类特殊的应用程序框架，用来解决响应事件的请求</li>
+</ul>
+<h2 id="内部类与覆盖"><a href="#内部类与覆盖" class="headerlink" title="内部类与覆盖"></a>内部类与覆盖</h2><ul>
+<li>内部类无法被子类的同名内部类覆盖。</li>
+</ul>
+</div><hr></div><div class="recent-post-item article-container"><a class="article-title" href="/2019/06/25/Java编程思想笔记0x00/">Java编程思想笔记0x00</a><time class="post-meta__date"><i class="fa fa-calendar" aria-hidden="true"></i> 2019-06-25</time><span class="article-meta"><span class="article-meta__separator">|</span><i class="fa fa-inbox article-meta__icon" aria-hidden="true"></i><a class="article-meta__categories" href="/categories/Java/">Java</a></span><span class="article-meta tags"><span class="article-meta__separator">|</span><i class="fa fa-tag article-meta__icon" aria-hidden="true"></i><a class="article-meta__tags" href="/tags/笔记/">笔记</a><span class="article-meta__link">-</span><i class="fa fa-tag article-meta__icon" aria-hidden="true"></i><a class="article-meta__tags" href="/tags/Java/">Java</a></span><div class="content"><h1 id="对象"><a href="#对象" class="headerlink" title="对象"></a>对象</h1><h2 id="面向对象的程序设计方式"><a href="#面向对象的程序设计方式" class="headerlink" title="面向对象的程序设计方式"></a>面向对象的程序设计方式</h2><ol>
+<li>万物皆对象</li>
+<li>程序是对象的集合，它们通过发送消息来告知彼此要做的。</li>
+<li>每个对象都有自己的、由其他对象所构成的存储</li>
+<li>每个对象都有其类型</li>
+<li>某一特定类型的所有对象都可以接受同样的消息</li>
+</ol>
+<h2 id="封装"><a href="#封装" class="headerlink" title="封装"></a>封装</h2><ul>
+<li>只向客户端程序员暴露必须的部分，而隐藏其它部分</li>
+<li>原因：<ol>
+<li>让客户端程序员无法触及他们不应该触及的部分，关注对他们来说关键的东西。</li>
+<li>允许库设计者可以改变类内部的工作方式而不必担心会影响到客户端程序员。</li>
+</ol>
+</li>
+</ul>
+<h2 id="继承"><a href="#继承" class="headerlink" title="继承"></a>继承</h2><ul>
+<li>继承使用基类型和导出类型的概念表示了类型间的相似性。</li>
+</ul>
+<h2 id="多态"><a href="#多态" class="headerlink" title="多态"></a>多态</h2><ul>
+<li>后期绑定：当向对象发送消息时，被调用代码直到运行时才能确定。编译器确保被调用方法存在，并对调用参数和返回值执行类型检查，但并不知道被执行的确切代码。</li>
+<li>向上转型：在程序执行过程中，把导出类看做其基类的过程。</li>
+</ul>
+<h2 id="基本类型"><a href="#基本类型" class="headerlink" title="基本类型"></a>基本类型</h2><ul>
+<li>基本类型的创建：创建一个并非是引用的“自动”变量，这个变量直接存储值并置于堆栈中。</li>
+<li>基本类型占用的存储空间不随机器硬件架构变化而变化</li>
+<li>所有的数值类型都有正负号</li>
+</ul>
+<h2 id="static"><a href="#static" class="headerlink" title="static"></a>static</h2><ul>
+<li>当声明一个事物是<code>static</code>时，就意味着这个域或方法不会与包含它的那个类的任何对象实例关联在一起。即使从未创建过某个类的任何对象，也可以调用其<code>static</code>方法或访问其<code>staic</code>域。</li>
+<li>在<code>static</code>内部不能调用非静态方法。</li>
+</ul>
+<h1 id="初始化与清理"><a href="#初始化与清理" class="headerlink" title="初始化与清理"></a>初始化与清理</h1><h2 id="构造器"><a href="#构造器" class="headerlink" title="构造器"></a>构造器</h2><ul>
+<li>构造器是一种特殊类型的方法，因为它没有返回值。这与返回值为空是不同的。<code>new</code>表达式返回了对象的引用，但这并不是构造器的返回值。</li>
+<li>构造器中对变量的初始化会覆盖该变量在定义时的初始化</li>
+<li>如果类中没有构造器，那么编译器会自动创建一个默认的构造器，但是如果已经定义类一个构造器，无论是否有参数，编译器就不再创建默认构造器。</li>
+</ul>
+<h2 id="重载"><a href="#重载" class="headerlink" title="重载"></a>重载</h2><ul>
+<li>如果传入的数据类型小于方法中声明的形式参数类型，实际数据的类型就会提升。但是<code>char</code>型略有不同，如果无法找到恰好接受<code>char</code>型的方法，就会把<code>char</code>直接提升到<code>int</code>型。</li>
+</ul>
+<h2 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h2><ul>
+<li>静态初始化只在必要的时候进行。如果不创建对象，或者不访问静态域，那么就不会进行静态初始化。</li>
+<li>初始化的顺序是先静态对象，后其它对象。</li>
+</ul>
+<h2 id="可变参数列表"><a href="#可变参数列表" class="headerlink" title="可变参数列表"></a>可变参数列表</h2><ul>
+<li>可以使用类似<code>Object... args</code>的参数形式来代替显示的声明数组。</li>
+</ul>
+<h1 id="访问权限控制"><a href="#访问权限控制" class="headerlink" title="访问权限控制"></a>访问权限控制</h1><h2 id="代码组织"><a href="#代码组织" class="headerlink" title="代码组织"></a>代码组织</h2><ul>
+<li>一个Java源文件称为编译单元。一个编译单元中只能有一个public类，且该类的名称需与文件名称相同（包括大小写，不包括文件名后缀）。</li>
+<li>类库中会有一组类文件，每个文件都由一个public类和任意数量的非public类组成，因此每个文件都由一个构件。如果希望这些构件从属于同一个群组，可以使用关键字<code>package</code>。</li>
+</ul>
+<h2 id="访问权限"><a href="#访问权限" class="headerlink" title="访问权限"></a>访问权限</h2><ul>
+<li>包访问权限：是默认的访问权限，意味着当前包中的所有其它类对该成员都有访问权限。</li>
+<li>默认包：如果没有给Java文件设置任何包名称，则编译器会把处于相同目录下的Java文件看作是属于该目录下的默认包之中。</li>
+<li><code>public</code>：由<code>public</code>修饰的成员对任何类都是可用的。</li>
+<li><code>private</code>：由<code>private</code>修饰的成员，除了包含该成员的类以外，其它任何类都无法访问这个成员。</li>
+<li>如果使用<code>privatge</code>修饰构造器，那么将无法通过通常手段进行对象的创建，并且会阻碍对此类的继承。</li>
+<li><code>protected</code>：由<code>protected</code>修饰的成员仅支持当前类、继承类以及相同包的其它类访问（即提供包访问权限）</li>
+</ul>
+<h1 id="复用类"><a href="#复用类" class="headerlink" title="复用类"></a>复用类</h1><h2 id="组合"><a href="#组合" class="headerlink" title="组合"></a>组合</h2><h2 id="继承-1"><a href="#继承-1" class="headerlink" title="继承"></a>继承</h2><ul>
+<li>继承中的构建：在继承中，构建过程是从基类流向导出类的，因此基类在导出类构造器可以访问它之前就已经完成了初始化。即使导出类没有显式创建构造器，编译器也会自动创建一个默认的构造器，该构造器将调用基类的构造器。但是如果基类设置了有参构造器，那么在导出类中如果不显示声明调用基类的某个构造器，在创建过程中将会默认调用基类的无参构造器，如果基类没有声明无参构造器则编译不会通过。</li>
+</ul>
+<h2 id="代理"><a href="#代理" class="headerlink" title="代理"></a>代理</h2><ul>
+<li>将一个成员对象置于要构造的类中，同时在新类中暴露该类所有的成员方法。</li>
+</ul>
+<h2 id="final"><a href="#final" class="headerlink" title="final"></a>final</h2><ul>
+<li>使用<code>final</code>修饰的基本类型变量值不能改变，如果是引用类型变量则引用值不能改变，但是引用指向的对象自身是可以改变的。此外，使用<code>final</code>修饰的变量必须初始化（可以在声明时初始化或者在构造器中初始化）。</li>
+<li>一个既是<code>static</code>又是<code>final</code>的变量只能占据一段不能改变的存储空间，并且必须在声明时初始化。</li>
+<li>只有想要明确禁止覆盖方法时，才将方法设为final。</li>
+</ul>
+<h1 id="多态-1"><a href="#多态-1" class="headerlink" title="多态"></a>多态</h1><ul>
+<li>协变返回类型：在导出类中的被覆盖方法可以返回基类方法的返回类型的某种导出类。</li>
+</ul>
+<h1 id="接口"><a href="#接口" class="headerlink" title="接口"></a>接口</h1><h2 id="抽象类"><a href="#抽象类" class="headerlink" title="抽象类"></a>抽象类</h2><ul>
+<li>抽象类和抽象方法可以使类的抽象性明确起来，并且可以明确传达类的使用方法。此外，抽象类还是有用的重构工具。</li>
+</ul>
+<h2 id="接口-1"><a href="#接口-1" class="headerlink" title="接口"></a>接口</h2><ul>
+<li>当组合接口时，如果存在两个方法重名、参数列表或返回值不一致，那么会产生冲突。</li>
+</ul>
+</div><hr></div><div class="recent-post-item article-container"><a class="article-title" href="/2019/06/23/深入理解Java虚拟机笔记0x03/">深入理解Java虚拟机笔记0x03</a><time class="post-meta__date"><i class="fa fa-calendar" aria-hidden="true"></i> 2019-06-23</time><span class="article-meta"><span class="article-meta__separator">|</span><i class="fa fa-inbox article-meta__icon" aria-hidden="true"></i><a class="article-meta__categories" href="/categories/Java/">Java</a></span><span class="article-meta tags"><span class="article-meta__separator">|</span><i class="fa fa-tag article-meta__icon" aria-hidden="true"></i><a class="article-meta__tags" href="/tags/笔记/">笔记</a><span class="article-meta__link">-</span><i class="fa fa-tag article-meta__icon" aria-hidden="true"></i><a class="article-meta__tags" href="/tags/Java/">Java</a></span><div class="content"><h1 id="Java线程"><a href="#Java线程" class="headerlink" title="Java线程"></a>Java线程</h1><h2 id="volatile"><a href="#volatile" class="headerlink" title="volatile"></a>volatile</h2><ul>
+<li>当变量声明为volatile时，变量将具备以下两个特性：<ul>
+<li>保证此变量对所有线程的可见性，即一个线程修改了volatile变量后，其余线程可以立即获得修改后的值。</li>
+<li>禁止指令重排序优化，即设置内存屏障，保证volatile变量修改更新到所有CPU上</li>
+</ul>
+</li>
+</ul>
+<h2 id="Java线程实现"><a href="#Java线程实现" class="headerlink" title="Java线程实现"></a>Java线程实现</h2><ul>
+<li>基于操作系统的原生线程模型。Windows和Linux下都使用一对一的线程模型。</li>
+</ul>
+<h2 id="线程状态及转换"><a href="#线程状态及转换" class="headerlink" title="线程状态及转换"></a>线程状态及转换</h2><ul>
+<li>新建：创建后未启动的线程</li>
+<li>运行：正在执行或者等待CPU为其分配运行时间</li>
+<li>无限期等待：等待被其它线程显式地唤醒，不会被分配CPU时间，例如没有设置Timeout的<code>Object.wait()</code>或者<code>Thread.join()</code></li>
+<li>限期等待：不会被分配CPU时间，但是不需要其它线程显式地唤醒，一定时间后会由系统自动唤醒，例如<code>Thread.sleep()</code>，设置了Timeout的<code>Object.wait()</code>或者<code>Thread.join()</code></li>
+<li>阻塞：等待获取一个排他锁。</li>
+<li>结束：已终止的线程状态。</li>
+</ul>
+<h2 id="线程安全"><a href="#线程安全" class="headerlink" title="线程安全"></a>线程安全</h2><h3 id="线程安全程度"><a href="#线程安全程度" class="headerlink" title="线程安全程度"></a>线程安全程度</h3><ol>
+<li>不可变：无论是对象的方法实现还是方法的调用者，都不需要再采取任何的线程安全保障措施。例如final关键字修饰的变量</li>
+<li>绝对线程安全：调用者不需要任何额外的同步措施。</li>
+<li>相对线程安全：保证对对象的单独操作是安全的，调用者不需要做额外的保障措施。但对于一些特定顺序的连续调用，就可能需要在调用端使用额外的同步手段来保证调用的正确性（可以保证调用对象不同的方法时，不同的方法不会交叉执行，但是无法保证一组方法的调用顺序）。例如对<code>Vector</code>对象同时进行<code>remove()</code>和<code>get()</code>操作时可能会出现删除第i个元素后面是访问第i个元素的情况。在Java语言中，大部分的线程安全类都属于这种类型。</li>
+<li>线程兼容：对象本身并不是线程安全的，但是可以通过在调用端正确地使用同步手段来保证对象在并发环境中可以安全使用。</li>
+<li>线程对立：无论调用端是否采取同步措施，都无法在多线程环境中并发使用的代码。</li>
+</ol>
+<h3 id="线程安全的实现方法"><a href="#线程安全的实现方法" class="headerlink" title="线程安全的实现方法"></a>线程安全的实现方法</h3><h4 id="互斥同步"><a href="#互斥同步" class="headerlink" title="互斥同步"></a>互斥同步</h4><ul>
+<li>保证共享数据在同一时刻只被一个（使用信号量的条件下是一些）线程使用</li>
+<li>是一种悲观的同步策略</li>
+<li>在Java中使用<code>synchronized</code>关键字进行同步。</li>
+</ul>
+<h4 id="非阻塞同步"><a href="#非阻塞同步" class="headerlink" title="非阻塞同步"></a>非阻塞同步</h4><ul>
+<li>基于冲突检测的乐观并发策略，即先进行操作，如果没有其它线程竞争，那么操作成功；反之，再采取其它补偿措施（最常见的措施是不断重试，直到成功为止），需要硬件保证操作和冲突检测两个步骤具备原子性。</li>
+<li>CAS指令：当且仅当内存值和预期值相等时，使用新值更新内存值，否则不更新。</li>
+<li>ABA问题：在某线程获取变量值时是A，在检查之前被改为了B，然后又恢复了A，检查时会认为该变量没有修改过。多数情况下该问题不影响程序的并发，如需解决，改为使用互斥同步可能更有效。</li>
+</ul>
+<h4 id="无同步方案"><a href="#无同步方案" class="headerlink" title="无同步方案"></a>无同步方案</h4><ul>
+<li>可重入代码：可以在代码执行的任何时刻中断它，转而去执行另外一段代码（包括递归调用它本身），在中断返回后，原来的程序不会出现任何错误。</li>
+<li>线程本地存储：把使用共享数据的代码放入同一线程中。</li>
+</ul>
+<h3 id="锁优化"><a href="#锁优化" class="headerlink" title="锁优化"></a>锁优化</h3><h4 id="自旋锁"><a href="#自旋锁" class="headerlink" title="自旋锁"></a>自旋锁</h4><ul>
+<li>让请求锁的线程进行短暂的等待，看锁是否很快就被释放。</li>
+<li>避免了线程切换开销，但是等待时间过长会浪费CPU资源</li>
+<li>自适应自旋锁：是否自旋、自旋时间不再确定，由前一次在同一个对象上的自旋锁时间和拥有者的状态决定。</li>
+</ul>
+<h4 id="锁消除"><a href="#锁消除" class="headerlink" title="锁消除"></a>锁消除</h4><ul>
+<li>对一些代码上要求同步，但是被检测到不可能存在共享数据竞争的锁进行消除。判定依据来源于逃逸分析。</li>
+<li>一些线程同步代码是内嵌的Java内部的，可以通过锁消除进行优化。</li>
+</ul>
+<h4 id="锁粗化"><a href="#锁粗化" class="headerlink" title="锁粗化"></a>锁粗化</h4><ul>
+<li>如果有连续的对同一个对象加锁，则虚拟机会把加锁同步的范围扩大至整个操作序列外部，以减少加锁解锁带来的性能损耗。</li>
+</ul>
+<h4 id="轻量级锁"><a href="#轻量级锁" class="headerlink" title="轻量级锁"></a>轻量级锁</h4><ul>
+<li>使用CAS操作和对象的Mark Word实现的锁机制。</li>
+<li>前提是绝大部分的锁在同步周期内是不存在竞争的，因此CAS操作避免了使用互斥量的开销。但是如果存在锁竞争，轻量级锁比传统的互斥同步还多出CAS操作的消耗。</li>
+</ul>
+<h4 id="偏向锁"><a href="#偏向锁" class="headerlink" title="偏向锁"></a>偏向锁</h4><ul>
+<li>该种锁偏向于第一个获得它的线程，在接下来的执行过程中，如果该锁没有被其它线程获取，则持有偏向锁的线程将永远不会进行同步。一旦有其它线程获取该锁，偏向模式即结束，转变为传统的互斥同步。</li>
+</ul>
+</div><hr></div><div class="recent-post-item article-container"><a class="article-title" href="/2019/06/23/深入理解Java虚拟机笔记0x02/">深入理解Java虚拟机笔记0x02</a><time class="post-meta__date"><i class="fa fa-calendar" aria-hidden="true"></i> 2019-06-23</time><span class="article-meta"><span class="article-meta__separator">|</span><i class="fa fa-inbox article-meta__icon" aria-hidden="true"></i><a class="article-meta__categories" href="/categories/Java/">Java</a></span><span class="article-meta tags"><span class="article-meta__separator">|</span><i class="fa fa-tag article-meta__icon" aria-hidden="true"></i><a class="article-meta__tags" href="/tags/笔记/">笔记</a><span class="article-meta__link">-</span><i class="fa fa-tag article-meta__icon" aria-hidden="true"></i><a class="article-meta__tags" href="/tags/Java/">Java</a></span><div class="content"><h1 id="虚拟机类加载机制"><a href="#虚拟机类加载机制" class="headerlink" title="虚拟机类加载机制"></a>虚拟机类加载机制</h1><h2 id="类加载时机"><a href="#类加载时机" class="headerlink" title="类加载时机"></a>类加载时机</h2><h3 id="类的生命周期"><a href="#类的生命周期" class="headerlink" title="类的生命周期"></a>类的生命周期</h3><ul>
+<li>包括：加载、验证、准备、解析、初始化、使用、卸载。其中，验证、准备、解析统称为链接。</li>
+</ul>
+<h3 id="类初始化条件（当且仅当）"><a href="#类初始化条件（当且仅当）" class="headerlink" title="类初始化条件（当且仅当）"></a>类初始化条件（当且仅当）</h3><ol>
+<li>遇到new、getstatic、putstatic、invokestatic字节码指令时，如果类没有初始化则触发其初始化。使用场景：<ul>
+<li>使用new实例化对象</li>
+<li>读取或设置一个类的静态字段（不含被final修饰、已在编译期把结果放入常量池的静态字段）</li>
+<li>调用一个类的静态方法</li>
+</ul>
+</li>
+<li>对类进行反射调用的时候，如果类没有初始化则触发其初始化。</li>
+<li>初始化一个类的时候，如果发现其父类没有初始化，则触发其父类的初始化。</li>
+<li>虚拟机启动时会先初始化用户指定的主类（包含main()方法）。</li>
+<li>使用动态语言支持时*。</li>
+</ol>
+<h2 id="类加载过程"><a href="#类加载过程" class="headerlink" title="类加载过程"></a>类加载过程</h2><h3 id="加载"><a href="#加载" class="headerlink" title="加载"></a>加载</h3><h4 id="主要步骤"><a href="#主要步骤" class="headerlink" title="主要步骤"></a>主要步骤</h4><ol>
+<li>通过一个类的全限定名来获取定义此类的二进制字节流</li>
+<li>将这个字节流所代表的静态存储结构转化为方法区的运行时数据结构。</li>
+<li>在内存中生成一个代表这个类的java.lang.Class对象，作为方法区中这个类的各种数据的访问入口。</li>
+</ol>
+<h4 id="加载方式"><a href="#加载方式" class="headerlink" title="加载方式"></a>加载方式</h4><ul>
+<li>对于非数组类的加载，可以使用系统提供的引导类加载器来完成，也可以由用户自定义的类加载器完成（重写loadClass()）</li>
+<li>对于数组类的加载，主要遵循以下规则：<ul>
+<li>如果数组的组件类型（去掉一个维度）是引用类型，那就递归进行组件类型的加载，数组类将在加载该组件类型的类加载器的类名称空间上被标识。</li>
+<li>如果数组的组件类型不是引用类型，虚拟机将会把数组类标记为与引导类加载器关联。</li>
+<li>数组类的可见性与它的组件类型一致，如果组件类型不是引用类型，那数组的可见性将默认为public。</li>
+</ul>
+</li>
+</ul>
+<h3 id="验证"><a href="#验证" class="headerlink" title="验证"></a>验证</h3><ul>
+<li>主要为了确保Class文件的字节流中包含的信息符合当前虚拟机要求，并且不会危害虚拟机自身的安全。大致包括4个方面：文件格式验证、元数据验证、字节码验证、符号引用验证。</li>
+</ul>
+<h4 id="文件格式验证"><a href="#文件格式验证" class="headerlink" title="文件格式验证"></a>文件格式验证</h4><ul>
+<li>文件是否以魔数开头</li>
+<li>主、次版本号是否在当前虚拟机的处理范围内</li>
+<li>常量池中的常量是否有不支持的常量类型</li>
+<li>…</li>
+</ul>
+<h4 id="元数据验证"><a href="#元数据验证" class="headerlink" title="元数据验证"></a>元数据验证</h4><ul>
+<li>是否有父类（除java.lang.Object以外，所有类都应当有父类）</li>
+<li>父类是否继承类不允许被继承的类（被final修饰的类）</li>
+<li>非抽象类是否实现了其父类以及接口中所有要求实现的方法</li>
+<li>类中的字段、方法是否与父类产生矛盾（覆盖了父类中的final字段，重载方法参数一致但返回类型不同等不合规则的重载）</li>
+<li>…</li>
+</ul>
+<h4 id="字节码验证"><a href="#字节码验证" class="headerlink" title="字节码验证"></a>字节码验证</h4><ul>
+<li>确保操作数栈的数据类型与指令代码操作匹配</li>
+<li>确保跳转指令不会跳转到方法体以外的字节码指令上</li>
+<li>确保方法体的类型转换是有效的（父类转换为子类、或者不相干的两种类型的数据互相转换是危险的）</li>
+<li>…</li>
+</ul>
+<h4 id="符号引用验证"><a href="#符号引用验证" class="headerlink" title="符号引用验证"></a>符号引用验证</h4><ul>
+<li>符号引用中通过字符串描述的全限定名是否能找到对应的类</li>
+<li>在指定类中是否存在符合方法的字段描述符以及简单名称所描述的方法和字段</li>
+<li>符号引用中的类、字段、方法的访问性（private、protected、public，default）是否可被当前类访问</li>
+<li>…</li>
+</ul>
+<h3 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h3><ul>
+<li>为类变量分配内存并设置初始值，这些变量所使用的内存将在方法区中分配。<ul>
+<li>分配内存的变量仅包括被static修饰的变量，不包括实例变量。</li>
+<li>初始值为数据类型的零值，而如果变量的字段属表中存在ConstantValue属性（被final修饰）则初始值为定义的值。</li>
+</ul>
+</li>
+</ul>
+<h3 id="解析"><a href="#解析" class="headerlink" title="解析"></a>解析</h3><ul>
+<li>将常量池内的符号引用替换为直接引用的过程</li>
+<li>符号引用：以一组符号来描述所引用的目标，符号可以是任何形式的字面量，只要使用时能无歧义地定位带目标即可。</li>
+<li>直接引用：可以是直接指向目标的指针、相对偏移量或是一个能间接定位到目标的句柄。</li>
+</ul>
+<h3 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h3><ul>
+<li>根据用户的程序制定的计划来初始化类变量和其他资源</li>
+</ul>
+<h2 id="类加载器"><a href="#类加载器" class="headerlink" title="类加载器"></a>类加载器</h2><ul>
+<li>类加载器是在虚拟机外实现的、通过类的全限定名来获取描述此类的二进制字节流的模块，可以让应用程序自行决定如何去获取所需要的类。</li>
+<li>对于任意一个类，都需要由加载它的类加载器和这个类本身一同确立其在Java虚拟机中的唯一性，每一个类加载器，都拥有一个独立的类名称空间。即使两个类来源于同一个Class文件、同时处于同一个虚拟机中，它们的类加载器不同，那么它们就不属于同一个类。</li>
+</ul>
+<h3 id="类加载器分类"><a href="#类加载器分类" class="headerlink" title="类加载器分类"></a>类加载器分类</h3><h4 id="对虚拟机而言"><a href="#对虚拟机而言" class="headerlink" title="对虚拟机而言"></a>对虚拟机而言</h4><ul>
+<li>启动类加载器，是虚拟机的一部分</li>
+<li>其他类加载器，独立于虚拟机外部</li>
+</ul>
+<h4 id="对开发人员而言"><a href="#对开发人员而言" class="headerlink" title="对开发人员而言"></a>对开发人员而言</h4><ul>
+<li>启动类加载器，加载<code>&lt;JAVA_HOME&gt;/lib</code>目录下，或者是虚拟机配置中指定路径的，并且被虚拟机识别的（按文件名识别）的类库。</li>
+<li>扩展类加载器，加载<code>&lt;JAVA_HOME&gt;/lib/ext</code>目录下，或被java.ext.dirs系统变量指定路径下的所有类库。</li>
+<li>应用程序类加载器，加载用户类路径下所指定的类库，如果应用程序没有指定自己的类加载器，将默认使用该类加载器。</li>
+<li>自定义类加载器。</li>
+</ul>
+<h3 id="双亲委派模型"><a href="#双亲委派模型" class="headerlink" title="双亲委派模型"></a>双亲委派模型</h3><p><img src="/images/2019-06-23_155659.png" alt="类加载器的双亲委派"></p>
+<ul>
+<li>如上图所示，这种类加载器的层次关系即类加载器的双亲委派模型。</li>
+<li>工作过程：如果一个类加载器收到了类加载请求，它不会先去尝试加载该类，而是把该请求委派给父类加载器去加载，每一层都是如此，即所有类加载请求都会到顶层的启动类加载器中。只有当父加载器反馈在其搜索范围内没有搜索到所需的类，无法完成加载请求时，子加载器才会尝试自己去加载。</li>
+<li>优点：使用双亲委派模型后，Java类随着它的类加载器一起具备了一种带有优先级的层级关系。例如类java.lang.Object，无论是哪一个类加载器需要加载这个类，最终都是交给启动类加载器来加载，保证了Object类在不同的类加载器环境中都是同一个类。</li>
+</ul>
+<h1 id="程序编译与代码优化"><a href="#程序编译与代码优化" class="headerlink" title="程序编译与代码优化"></a>程序编译与代码优化</h1><h2 id="泛型"><a href="#泛型" class="headerlink" title="泛型"></a>泛型</h2><ul>
+<li>真实泛型：存在于任意阶段的代码，在系统运行期间生成，有自己的虚方法和类型数据。这种现象称为类型膨胀，基于这种方法实现的泛型称为真实泛型，例如C#。</li>
+<li>伪泛型：泛型仅存在于源码，编译后仅剩原生类型（又称裸类型），并加入强制类型转换。这种方法称为类型擦除，基于这种方法实现的泛型称为伪泛型。Java泛型是伪泛型。</li>
+</ul>
+<h2 id="即时编译"><a href="#即时编译" class="headerlink" title="即时编译"></a>即时编译</h2><ul>
+<li>在程序运行过程中，“热点代码”会被即时编译为机器码以提高运行速度，包括被多次调用的方法和被多次调用的循环体。</li>
+<li>热点探测：用于判断一段代码是否为热点代码，是否需要触发即时编译，主要有两种技术：<ul>
+<li>基于采样的热点探测：周期性检查各个线程的栈顶，如果发现某个或者某些方法经常在栈顶出现，则认为这个或这些方法为热点方法。优点是实现简单，高效，容易获得方法调用关系（展开调用堆栈），缺点是难以精确的判定方法的热度，易受线程阻塞等因素影响。</li>
+<li>基于计数器的热点探测：设置计数器，统计方法调用次数；设置阈值，如果调用次数超过该阈值则认为其是热点方法。</li>
+</ul>
+</li>
+</ul>
+</div><hr></div><nav id="pagination"><div class="pagination"><a class="extend prev" rel="prev" href="/page/7/"><i class="fa fa-chevron-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><span class="page-number current">8</span><a class="page-number" href="/page/9/">9</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><a class="extend next" rel="next" href="/page/9/"><i class="fa fa-chevron-right"></i></a></div></nav></div></div><footer><div class="layout" id="footer"><div class="copyright">&copy;2017 - 2021 By SinLapis</div><div class="framework-info"><span>Driven - </span><a href="http://hexo.io"><span>Hexo</span></a><span class="footer-separator">|</span><span>Theme - </span><a href="https://github.com/Molunerfinn/hexo-theme-melody"><span>Melody</span></a></div><div class="busuanzi"><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><span id="busuanzi_container_site_uv"><i class="fa fa-user"></i><span id="busuanzi_value_site_uv"></span><span></span></span><span class="footer-separator">|</span><span id="busuanzi_container_site_pv"><i class="fa fa-eye"></i><span id="busuanzi_value_site_pv"></span><span></span></span></div></div></footer><i class="fa fa-arrow-up" id="go-up" aria-hidden="true"></i><script src="https://cdn.jsdelivr.net/npm/animejs@latest/anime.min.js"></script><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@latest/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-ui-pack@latest/velocity.ui.min.js"></script><script src="/js/utils.js?version=1.6.1"></script><script src="/js/fancybox.js?version=1.6.1"></script><script src="/js/sidebar.js?version=1.6.1"></script><script src="/js/copy.js?version=1.6.1"></script><script src="/js/fireworks.js?version=1.6.1"></script><script src="/js/transition.js?version=1.6.1"></script><script src="/js/scroll.js?version=1.6.1"></script><script src="/js/head.js?version=1.6.1"></script><script>if(/Android|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent)) {
+  $('#nav').addClass('is-mobile')
+  $('footer').addClass('is-mobile')
+}</script></body></html>

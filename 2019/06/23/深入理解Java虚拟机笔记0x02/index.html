@@ -1,0 +1,117 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta name="generator" content="Hexo 3.9.0"><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta name="description" content="深入理解Java虚拟机笔记0x02"><meta name="keywords" content="笔记,Java"><meta name="author" content="SinLapis"><meta name="copyright" content="SinLapis"><title>深入理解Java虚拟机笔记0x02 | SinLapis的博客</title><link rel="shortcut icon" href="/images/87235d96-63d9-443d-a4fa-8093fac33ada_200x200.png"><link rel="stylesheet" href="/css/index.css?version=1.6.1"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@latest/css/font-awesome.min.css?version=1.6.1"><link rel="dns-prefetch" href="https://cdn.staticfile.org"><link rel="dns-prefetch" href="https://cdn.bootcss.com"><link rel="dns-prefetch" href="https://creativecommons.org"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  }
+} </script><link rel="stylesheet" href="/css/prism.css" type="text/css"></head><body><i class="fa fa-arrow-right" id="toggle-sidebar" aria-hidden="true"></i><div id="sidebar"><div class="toggle-sidebar-info text-center"><span data-toggle="Toggle article">Toggle site</span><hr></div><div class="sidebar-toc"><div class="sidebar-toc__title">Catalog</div><div class="sidebar-toc__progress"><span class="progress-notice">You've read</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar"></div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#虚拟机类加载机制"><span class="toc-number">1.</span> <span class="toc-text">虚拟机类加载机制</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#类加载时机"><span class="toc-number">1.1.</span> <span class="toc-text">类加载时机</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#类的生命周期"><span class="toc-number">1.1.1.</span> <span class="toc-text">类的生命周期</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#类初始化条件（当且仅当）"><span class="toc-number">1.1.2.</span> <span class="toc-text">类初始化条件（当且仅当）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#类加载过程"><span class="toc-number">1.2.</span> <span class="toc-text">类加载过程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#加载"><span class="toc-number">1.2.1.</span> <span class="toc-text">加载</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#主要步骤"><span class="toc-number">1.2.1.1.</span> <span class="toc-text">主要步骤</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#加载方式"><span class="toc-number">1.2.1.2.</span> <span class="toc-text">加载方式</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#验证"><span class="toc-number">1.2.2.</span> <span class="toc-text">验证</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#文件格式验证"><span class="toc-number">1.2.2.1.</span> <span class="toc-text">文件格式验证</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#元数据验证"><span class="toc-number">1.2.2.2.</span> <span class="toc-text">元数据验证</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#字节码验证"><span class="toc-number">1.2.2.3.</span> <span class="toc-text">字节码验证</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#符号引用验证"><span class="toc-number">1.2.2.4.</span> <span class="toc-text">符号引用验证</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#准备"><span class="toc-number">1.2.3.</span> <span class="toc-text">准备</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#解析"><span class="toc-number">1.2.4.</span> <span class="toc-text">解析</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#初始化"><span class="toc-number">1.2.5.</span> <span class="toc-text">初始化</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#类加载器"><span class="toc-number">1.3.</span> <span class="toc-text">类加载器</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#类加载器分类"><span class="toc-number">1.3.1.</span> <span class="toc-text">类加载器分类</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#对虚拟机而言"><span class="toc-number">1.3.1.1.</span> <span class="toc-text">对虚拟机而言</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#对开发人员而言"><span class="toc-number">1.3.1.2.</span> <span class="toc-text">对开发人员而言</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#双亲委派模型"><span class="toc-number">1.3.2.</span> <span class="toc-text">双亲委派模型</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#程序编译与代码优化"><span class="toc-number">2.</span> <span class="toc-text">程序编译与代码优化</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#泛型"><span class="toc-number">2.1.</span> <span class="toc-text">泛型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#即时编译"><span class="toc-number">2.2.</span> <span class="toc-text">即时编译</span></a></li></ol></li></ol></div></div><div class="author-info hide"><div class="author-info__avatar text-center"><img src="/images/3774d809.jpg"></div><div class="author-info__name text-center">SinLapis</div><div class="author-info__description text-center"></div><hr><div class="author-info-articles"><a class="author-info-articles__archives article-meta" href="/archives"><span class="pull-left">Articles</span><span class="pull-right">103</span></a><a class="author-info-articles__tags article-meta" href="/tags"><span class="pull-left">Tags</span><span class="pull-right">70</span></a><a class="author-info-articles__categories article-meta" href="/categories"><span class="pull-left">Categories</span><span class="pull-right">20</span></a></div><hr><div class="author-info-links"><div class="author-info-links__title text-center">Links</div><a class="author-info-links__name text-center" href="http://chace.in/">chace</a></div></div></div><div id="content-outer"><div class="no-bg" id="top-container"><div id="page-header"><span class="pull-left"> <a id="site-name" href="/">SinLapis的博客</a></span><i class="fa fa-bars toggle-menu pull-right" aria-hidden="true"></i><span class="pull-right menus"><a class="site-page" href="/">Home</a><a class="site-page" href="/ACGBlog">ACG</a><a class="site-page" href="/archives">Archives</a><a class="site-page" href="/tags">Tags</a><a class="site-page" href="/categories">Categories</a></span></div><div id="post-info"><div id="post-title">深入理解Java虚拟机笔记0x02</div><div id="post-meta"><time class="post-meta__date"><i class="fa fa-calendar" aria-hidden="true"></i> 2019-06-23</time><span class="post-meta__separator">|</span><i class="fa fa-inbox post-meta__icon" aria-hidden="true"></i><a class="post-meta__categories" href="/categories/Java/">Java</a></div></div></div><div class="layout" id="content-inner"><article id="post"><div class="article-container" id="post-content"><h1 id="虚拟机类加载机制"><a href="#虚拟机类加载机制" class="headerlink" title="虚拟机类加载机制"></a>虚拟机类加载机制</h1><h2 id="类加载时机"><a href="#类加载时机" class="headerlink" title="类加载时机"></a>类加载时机</h2><h3 id="类的生命周期"><a href="#类的生命周期" class="headerlink" title="类的生命周期"></a>类的生命周期</h3><ul>
+<li>包括：加载、验证、准备、解析、初始化、使用、卸载。其中，验证、准备、解析统称为链接。</li>
+</ul>
+<h3 id="类初始化条件（当且仅当）"><a href="#类初始化条件（当且仅当）" class="headerlink" title="类初始化条件（当且仅当）"></a>类初始化条件（当且仅当）</h3><ol>
+<li>遇到new、getstatic、putstatic、invokestatic字节码指令时，如果类没有初始化则触发其初始化。使用场景：<ul>
+<li>使用new实例化对象</li>
+<li>读取或设置一个类的静态字段（不含被final修饰、已在编译期把结果放入常量池的静态字段）</li>
+<li>调用一个类的静态方法</li>
+</ul>
+</li>
+<li>对类进行反射调用的时候，如果类没有初始化则触发其初始化。</li>
+<li>初始化一个类的时候，如果发现其父类没有初始化，则触发其父类的初始化。</li>
+<li>虚拟机启动时会先初始化用户指定的主类（包含main()方法）。</li>
+<li>使用动态语言支持时*。</li>
+</ol>
+<h2 id="类加载过程"><a href="#类加载过程" class="headerlink" title="类加载过程"></a>类加载过程</h2><h3 id="加载"><a href="#加载" class="headerlink" title="加载"></a>加载</h3><h4 id="主要步骤"><a href="#主要步骤" class="headerlink" title="主要步骤"></a>主要步骤</h4><ol>
+<li>通过一个类的全限定名来获取定义此类的二进制字节流</li>
+<li>将这个字节流所代表的静态存储结构转化为方法区的运行时数据结构。</li>
+<li>在内存中生成一个代表这个类的java.lang.Class对象，作为方法区中这个类的各种数据的访问入口。</li>
+</ol>
+<h4 id="加载方式"><a href="#加载方式" class="headerlink" title="加载方式"></a>加载方式</h4><ul>
+<li>对于非数组类的加载，可以使用系统提供的引导类加载器来完成，也可以由用户自定义的类加载器完成（重写loadClass()）</li>
+<li>对于数组类的加载，主要遵循以下规则：<ul>
+<li>如果数组的组件类型（去掉一个维度）是引用类型，那就递归进行组件类型的加载，数组类将在加载该组件类型的类加载器的类名称空间上被标识。</li>
+<li>如果数组的组件类型不是引用类型，虚拟机将会把数组类标记为与引导类加载器关联。</li>
+<li>数组类的可见性与它的组件类型一致，如果组件类型不是引用类型，那数组的可见性将默认为public。</li>
+</ul>
+</li>
+</ul>
+<h3 id="验证"><a href="#验证" class="headerlink" title="验证"></a>验证</h3><ul>
+<li>主要为了确保Class文件的字节流中包含的信息符合当前虚拟机要求，并且不会危害虚拟机自身的安全。大致包括4个方面：文件格式验证、元数据验证、字节码验证、符号引用验证。</li>
+</ul>
+<h4 id="文件格式验证"><a href="#文件格式验证" class="headerlink" title="文件格式验证"></a>文件格式验证</h4><ul>
+<li>文件是否以魔数开头</li>
+<li>主、次版本号是否在当前虚拟机的处理范围内</li>
+<li>常量池中的常量是否有不支持的常量类型</li>
+<li>…</li>
+</ul>
+<h4 id="元数据验证"><a href="#元数据验证" class="headerlink" title="元数据验证"></a>元数据验证</h4><ul>
+<li>是否有父类（除java.lang.Object以外，所有类都应当有父类）</li>
+<li>父类是否继承类不允许被继承的类（被final修饰的类）</li>
+<li>非抽象类是否实现了其父类以及接口中所有要求实现的方法</li>
+<li>类中的字段、方法是否与父类产生矛盾（覆盖了父类中的final字段，重载方法参数一致但返回类型不同等不合规则的重载）</li>
+<li>…</li>
+</ul>
+<h4 id="字节码验证"><a href="#字节码验证" class="headerlink" title="字节码验证"></a>字节码验证</h4><ul>
+<li>确保操作数栈的数据类型与指令代码操作匹配</li>
+<li>确保跳转指令不会跳转到方法体以外的字节码指令上</li>
+<li>确保方法体的类型转换是有效的（父类转换为子类、或者不相干的两种类型的数据互相转换是危险的）</li>
+<li>…</li>
+</ul>
+<h4 id="符号引用验证"><a href="#符号引用验证" class="headerlink" title="符号引用验证"></a>符号引用验证</h4><ul>
+<li>符号引用中通过字符串描述的全限定名是否能找到对应的类</li>
+<li>在指定类中是否存在符合方法的字段描述符以及简单名称所描述的方法和字段</li>
+<li>符号引用中的类、字段、方法的访问性（private、protected、public，default）是否可被当前类访问</li>
+<li>…</li>
+</ul>
+<h3 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h3><ul>
+<li>为类变量分配内存并设置初始值，这些变量所使用的内存将在方法区中分配。<ul>
+<li>分配内存的变量仅包括被static修饰的变量，不包括实例变量。</li>
+<li>初始值为数据类型的零值，而如果变量的字段属表中存在ConstantValue属性（被final修饰）则初始值为定义的值。</li>
+</ul>
+</li>
+</ul>
+<h3 id="解析"><a href="#解析" class="headerlink" title="解析"></a>解析</h3><ul>
+<li>将常量池内的符号引用替换为直接引用的过程</li>
+<li>符号引用：以一组符号来描述所引用的目标，符号可以是任何形式的字面量，只要使用时能无歧义地定位带目标即可。</li>
+<li>直接引用：可以是直接指向目标的指针、相对偏移量或是一个能间接定位到目标的句柄。</li>
+</ul>
+<h3 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h3><ul>
+<li>根据用户的程序制定的计划来初始化类变量和其他资源</li>
+</ul>
+<h2 id="类加载器"><a href="#类加载器" class="headerlink" title="类加载器"></a>类加载器</h2><ul>
+<li>类加载器是在虚拟机外实现的、通过类的全限定名来获取描述此类的二进制字节流的模块，可以让应用程序自行决定如何去获取所需要的类。</li>
+<li>对于任意一个类，都需要由加载它的类加载器和这个类本身一同确立其在Java虚拟机中的唯一性，每一个类加载器，都拥有一个独立的类名称空间。即使两个类来源于同一个Class文件、同时处于同一个虚拟机中，它们的类加载器不同，那么它们就不属于同一个类。</li>
+</ul>
+<h3 id="类加载器分类"><a href="#类加载器分类" class="headerlink" title="类加载器分类"></a>类加载器分类</h3><h4 id="对虚拟机而言"><a href="#对虚拟机而言" class="headerlink" title="对虚拟机而言"></a>对虚拟机而言</h4><ul>
+<li>启动类加载器，是虚拟机的一部分</li>
+<li>其他类加载器，独立于虚拟机外部</li>
+</ul>
+<h4 id="对开发人员而言"><a href="#对开发人员而言" class="headerlink" title="对开发人员而言"></a>对开发人员而言</h4><ul>
+<li>启动类加载器，加载<code>&lt;JAVA_HOME&gt;/lib</code>目录下，或者是虚拟机配置中指定路径的，并且被虚拟机识别的（按文件名识别）的类库。</li>
+<li>扩展类加载器，加载<code>&lt;JAVA_HOME&gt;/lib/ext</code>目录下，或被java.ext.dirs系统变量指定路径下的所有类库。</li>
+<li>应用程序类加载器，加载用户类路径下所指定的类库，如果应用程序没有指定自己的类加载器，将默认使用该类加载器。</li>
+<li>自定义类加载器。</li>
+</ul>
+<h3 id="双亲委派模型"><a href="#双亲委派模型" class="headerlink" title="双亲委派模型"></a>双亲委派模型</h3><p><img src="/images/2019-06-23_155659.png" alt="类加载器的双亲委派"></p>
+<ul>
+<li>如上图所示，这种类加载器的层次关系即类加载器的双亲委派模型。</li>
+<li>工作过程：如果一个类加载器收到了类加载请求，它不会先去尝试加载该类，而是把该请求委派给父类加载器去加载，每一层都是如此，即所有类加载请求都会到顶层的启动类加载器中。只有当父加载器反馈在其搜索范围内没有搜索到所需的类，无法完成加载请求时，子加载器才会尝试自己去加载。</li>
+<li>优点：使用双亲委派模型后，Java类随着它的类加载器一起具备了一种带有优先级的层级关系。例如类java.lang.Object，无论是哪一个类加载器需要加载这个类，最终都是交给启动类加载器来加载，保证了Object类在不同的类加载器环境中都是同一个类。</li>
+</ul>
+<h1 id="程序编译与代码优化"><a href="#程序编译与代码优化" class="headerlink" title="程序编译与代码优化"></a>程序编译与代码优化</h1><h2 id="泛型"><a href="#泛型" class="headerlink" title="泛型"></a>泛型</h2><ul>
+<li>真实泛型：存在于任意阶段的代码，在系统运行期间生成，有自己的虚方法和类型数据。这种现象称为类型膨胀，基于这种方法实现的泛型称为真实泛型，例如C#。</li>
+<li>伪泛型：泛型仅存在于源码，编译后仅剩原生类型（又称裸类型），并加入强制类型转换。这种方法称为类型擦除，基于这种方法实现的泛型称为伪泛型。Java泛型是伪泛型。</li>
+</ul>
+<h2 id="即时编译"><a href="#即时编译" class="headerlink" title="即时编译"></a>即时编译</h2><ul>
+<li>在程序运行过程中，“热点代码”会被即时编译为机器码以提高运行速度，包括被多次调用的方法和被多次调用的循环体。</li>
+<li>热点探测：用于判断一段代码是否为热点代码，是否需要触发即时编译，主要有两种技术：<ul>
+<li>基于采样的热点探测：周期性检查各个线程的栈顶，如果发现某个或者某些方法经常在栈顶出现，则认为这个或这些方法为热点方法。优点是实现简单，高效，容易获得方法调用关系（展开调用堆栈），缺点是难以精确的判定方法的热度，易受线程阻塞等因素影响。</li>
+<li>基于计数器的热点探测：设置计数器，统计方法调用次数；设置阈值，如果调用次数超过该阈值则认为其是热点方法。</li>
+</ul>
+</li>
+</ul>
+</div></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="mailto:undefined">SinLapis</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="http://sinlapis.github.io/2019/06/23/深入理解Java虚拟机笔记0x02/">http://sinlapis.github.io/2019/06/23/深入理解Java虚拟机笔记0x02/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/笔记/">笔记</a><a class="post-meta__tags" href="/tags/Java/">Java</a></div><nav id="pagination"><div class="prev-post pull-left"><a href="/2019/06/23/深入理解Java虚拟机笔记0x03/"><i class="fa fa-chevron-left">  </i><span>深入理解Java虚拟机笔记0x03</span></a></div><div class="next-post pull-right"><a href="/2019/06/20/深入理解Java虚拟机笔记0x01/"><span>深入理解Java虚拟机笔记0x01</span><i class="fa fa-chevron-right"></i></a></div></nav></div></div><footer><div class="layout" id="footer"><div class="copyright">&copy;2017 - 2021 By SinLapis</div><div class="framework-info"><span>Driven - </span><a href="http://hexo.io"><span>Hexo</span></a><span class="footer-separator">|</span><span>Theme - </span><a href="https://github.com/Molunerfinn/hexo-theme-melody"><span>Melody</span></a></div><div class="busuanzi"><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><span id="busuanzi_container_page_pv"><i class="fa fa-file-o"></i><span id="busuanzi_value_page_pv"></span><span></span></span></div></div></footer><i class="fa fa-arrow-up" id="go-up" aria-hidden="true"></i><script src="https://cdn.jsdelivr.net/npm/animejs@latest/anime.min.js"></script><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@latest/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-ui-pack@latest/velocity.ui.min.js"></script><script src="/js/utils.js?version=1.6.1"></script><script src="/js/fancybox.js?version=1.6.1"></script><script src="/js/sidebar.js?version=1.6.1"></script><script src="/js/copy.js?version=1.6.1"></script><script src="/js/fireworks.js?version=1.6.1"></script><script src="/js/transition.js?version=1.6.1"></script><script src="/js/scroll.js?version=1.6.1"></script><script src="/js/head.js?version=1.6.1"></script><script>if(/Android|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent)) {
+  $('#nav').addClass('is-mobile')
+  $('footer').addClass('is-mobile')
+}</script></body></html>
